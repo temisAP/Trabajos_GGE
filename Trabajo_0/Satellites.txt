@@ -1,0 +1,26 @@
+2013_Shekoofa
+
+Microsoft Word - Final Manuscript-SpaceOps2008
+	LANDSAT, Terra, DLR-TUBSAT and BILSAT-1
+	The Union of Concerned Scientists (UCS) Satellite Database, URL: http://www.ucsusa.org/satellite_database [as of July 2007]. 
+
+Design criteria for electrical power subsystem's to...
+
+	OUFTI-1 LEO 4.7
+	?rsted LEO 40
+	CHAMP LEO 140
+	CryoSat LEO 810
+	STRV-1 a/b GTO 32
+	Meteosat GEO 2000
+	GPS IIR MEO 1050
+	SOHO Interplanetary 1500
+	SMART-1 Interplanetary 1975
+	AdeSat LEO 2.5
+	XTE LEO 800
+	Ocean Sat LEO 1700
+	Eurostar GEO 3000
+	Alcatel GEO 3000
+	CBERS-1 LEO 1100
+	GMP GEO 2500
+	ENVISAT LEO 6750
+	
