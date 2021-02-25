@@ -3,7 +3,7 @@ format short
 filename='satellites.xls';
 
 data = xlsread(filename);
-mass = data(:,1);
+mass = data(2:end,1);
 for i=2:length(mass)
     if mass(i) <= mass(i-1)
         mass(i) = mass(i-1)+1e-6;
@@ -11,12 +11,12 @@ for i=2:length(mass)
 end
 massq = linspace(0,max(mass)+10,100);
 
-power = data(:,2);
+power = data(2:end,2);
 powerfit = fit(mass,power,'poly1');
 power_coeff = coeffvalues(powerfit);
 powerq = power_coeff(1)*massq + power_coeff(2);
 
-capacity = data(:,3);
+capacity = data(2:end,3);
 capacityfit = fit(mass,capacity,'poly1');
 capacity_coeff = coeffvalues(capacityfit);
 capacityq = capacity_coeff(1)*massq + capacity_coeff(2);
@@ -29,9 +29,10 @@ h = figure();
     box on; grid on
     legend('Interpreter', 'Latex', 'location', 'best')
     title("\textit{\textbf{Potencia vs masa}}",'Interpreter','latex')
-    xlabel('$Masa$ [kg]','Interpreter','latex')
-    ylabel({'$Potencia$';'[W]'},'Interpreter','latex')
-    Save_as_PDF(h, 'mass_vs_power',0);  
+    xlabel('$m$ [kg]','Interpreter','latex')
+    ylh = ylabel({'$P$';'[m]'},'Interpreter','latex');
+    ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.3);
+    Save_as_PDF(h, 'Figures/mass_vs_power',0);  
     
 h = figure();
     hold on
@@ -41,20 +42,9 @@ h = figure();
     box on; grid on
     legend('Interpreter', 'Latex', 'location', 'best')
     title("\textit{\textbf{Capacidad vs masa}}",'Interpreter','latex')
-    xlabel('$Masa$ [kg]','Interpreter','latex')
-    ylabel({'$Capacidad$';'[A·h]'},'Interpreter','latex')
-    Save_as_PDF(h, 'mass_vs_capacity',0);  
+    xlabel('$m$ [kg]','Interpreter','latex')
+    ylh = ylabel({'$C$';'[m]'},'Interpreter','latex');
+    ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.3);
+    Save_as_PDF(h, 'Figures/mass_vs_capacity',0);  
     
-    
-h = figure();
-    hold on
-    scatter(mass, power, 'k','DisplayName', 'Datos')
-    plot(massq, powerq, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-        ['P = ',num2str(power_coeff(1)),' m + ', num2str(power_coeff(2))])
-    box on; grid on
-    legend('Interpreter', 'Latex', 'location', 'best')
-    title("\textit{\textbf{Potencia vs masa}}",'Interpreter','latex')
-    xlabel('$Masa$ [kg]','Interpreter','latex')
-    ylabel({'$Potencia$';'[W]'},'Interpreter','latex')
-    Save_as_PDF(h, 'mass_vs_power',0);  
     
