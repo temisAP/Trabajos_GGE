@@ -1,1 +1,2 @@
 power ,mass, date --> pag 117
+celulas ,bateria -->133

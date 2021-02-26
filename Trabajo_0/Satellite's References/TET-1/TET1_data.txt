@@ -1,0 +1,7 @@
+masa-> pag2
+power,duracion->pag5
+bateria->pag6
+
+Capacidad -> (1 dice 240Wh, en 2 240Ah)
+
+Fecha --> Paper 3, pag1
