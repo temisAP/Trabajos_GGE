@@ -1,13 +1,13 @@
 close all
 format short
-filename='satellites.xls';
+filename='satellites.ods';
 
 %% Read data
 
 data = xlsread(filename);
 mass = data(2:end,1);
 power = data(2:end,2);
-capacity = data(2:end,3);
+capacity = data(2:end,4);
 
 %% Interpolation
 
@@ -28,34 +28,34 @@ capacityq = capacity_coeff(1)*massq + capacity_coeff(2);
 
 %% Graphical representation
 
-h = figure();
+h1 = figure(1);
     hold on
     scatter(mass, power, 'k','DisplayName', 'Datos')
     plot(massq, powerq, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
         ['P = ',num2str(power_coeff(1)),' m + ', num2str(power_coeff(2))])
     box on; grid on
     legend('Interpreter', 'Latex', 'location', 'NorthWest')
-    title("\textit{\textbf{Potencia vs masa}}",'Interpreter','latex')
+    %title("\textit{\textbf{Potencia vs masa}}",'Interpreter','latex')
     xlh = xlabel('$m$ [kg]','Interpreter','latex');
-    xlh.Position(1) = xlh.Position(1) + 42.5;
+    xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
     ylh = ylabel({'$P$';'[W]'},'Interpreter','latex');
-    ylh.Position(1) = ylh.Position(1) - 3;   % abs(ylh.Position(1) * 0.3)
-    ylh.Position(2) = ylh.Position(2) + 75;
-    Save_as_PDF(h, 'Figures/mass_vs_power',0);  
+    ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
+    ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.45);
+    Save_as_PDF(h1, 'Figures/mass_vs_power',0);  
     
-h = figure();
+h2 = figure(2);
     hold on
     scatter(mass, capacity, 'k','DisplayName', 'Datos')
     plot(massq, capacityq, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
         ['C = ',num2str(capacity_coeff(1)),' m + ', num2str(capacity_coeff(2))])
     box on; grid on
     legend('Interpreter', 'Latex', 'location', 'NorthWest')
-    title("\textit{\textbf{Capacidad vs masa}}",'Interpreter','latex')
+    %title("\textit{\textbf{Capacidad vs masa}}",'Interpreter','latex')
     xlh = xlabel('$m$ [kg]','Interpreter','latex');
-    xlh.Position(1) = xlh.Position(1) + 42.5;
+    xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
     ylh = ylabel({'$C$';'[Ah]'},'Interpreter','latex');
-    ylh.Position(1) = ylh.Position(1) - 3;
-    ylh.Position(2) = ylh.Position(2) + 75;
-    Save_as_PDF(h, 'Figures/mass_vs_capacity',0);  
+    ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
+    ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.425);
+    Save_as_PDF(h2, 'Figures/mass_vs_capacity',0);  
     
     
