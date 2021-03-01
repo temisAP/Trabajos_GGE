@@ -1,0 +1,21 @@
+%{
+    Programa que resuelve el Trabajo 1 de la asignatura
+    Generacion y Gestion de Potencia Eelectrica
+%}
+
+clc;
+clear all;
+close all;
+
+%% DATOS
+
+mu = 398600;                % km^3/s^2
+rT = 6378;                  % km
+h = [450, 500, 600];        % km
+r = rT + h;                 % km
+b = 0;                      % angulo beta -> sol/tietta
+w = [0.05, 0.1, 0.5];       % rad/s
+
+T = 2*pi*sqrt(r.^3/mu);     % s
+wa = 1./sqrt(r.^3/mu);      % rad/s
+t = 
