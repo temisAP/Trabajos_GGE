@@ -13,7 +13,7 @@ mu = 398600;                % km^3/s^2
 rT = 6378;                  % km
 h = [450, 500, 600];        % km
 r = rT + h;                 % km
-b = 0;                      % angulo beta -> sol/tietta
+beta = 0;                   % angulo beta -> sol/tietta
 w = [0.05, 0.1, 0.5];       % rad/s
 
 
@@ -41,4 +41,9 @@ legend()
 % Eclipse
 ro = asin(rT./(rT + h));
 
+
+
+% Potencia
+Wo = 1360;              % W
+W = Wo*cos(beta)*sin(alfa)
 
