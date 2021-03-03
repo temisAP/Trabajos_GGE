@@ -32,7 +32,7 @@ h1 = figure(1);
     hold on
     scatter(mass, power, 'k','DisplayName', 'Datos')
     plot(massq, powerq, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-        ['P = ',num2str(power_coeff(1)),' m + ', num2str(power_coeff(2))])
+        ['P = ',num2str(power_coeff(1)),' m + ', num2str(power_coeff(2)),' [W]'])
     box on; grid on
     legend('Interpreter', 'Latex', 'location', 'NorthWest')
     %title("\textit{\textbf{Potencia vs masa}}",'Interpreter','latex')
@@ -47,7 +47,7 @@ h2 = figure(2);
     hold on
     scatter(mass, capacity, 'k','DisplayName', 'Datos')
     plot(massq, capacityq, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-        ['C = ',num2str(capacity_coeff(1)),' m + ', num2str(capacity_coeff(2))])
+        ['C = ',num2str(capacity_coeff(1)),' m + ', num2str(capacity_coeff(2)),' [Ah]'])
     box on; grid on
     legend('Interpreter', 'Latex', 'location', 'NorthWest')
     %title("\textit{\textbf{Capacidad vs masa}}",'Interpreter','latex')
