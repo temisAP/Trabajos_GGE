@@ -85,10 +85,7 @@ P_m_s = P_xs + P_ys;
 P_m_total = (P_m_s + P_m_i)/2;
 
 Potencia_media_generada = trapz(t(1,:), P_m_total(1,:))/T(1);
-Potencia_media_analitica = G*A*fc*rend*cos(beta_s)*(1 + sqrt(2))/2*1/(wa(1)*2*pi)*(cos(pi - phi(1)/2) + cos(pi + phi(1)/2));
-%(cos(pi - phi(1)/2) - cos(pi + phi(1)/2));
-% (integral(@(x)sin(x),0,pi-phi(1)/2)+abs(integral(@(x)sin(x), pi+phi(1)/2,
-% 2*pi)));
+Potencia_media_analitica = G*A*fc*rend*cos(beta_s)*(1 + sqrt(2))/2*1/(wa(1)*2*pi)*(cos(pi - phi(1)/2) - cos(pi + phi(1)/2));
 
 %% PLOT
 
