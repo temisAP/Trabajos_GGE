@@ -47,7 +47,7 @@ phi = 2*acos(cos(rho)/cos(beta_s));
 Te = T.*(phi/(2*pi));
 
 % Angulo actitud sat respecto a beta // angulo rotado desde t = 0
-for i = 1:3
+for i = 1:length(h)
     t(i,:) = linspace(0,T(i),1e4+1);
     alfa(i,:) = t(i,:)*wa(i);
     alfa_1(i,:) = rad2deg(t(i,:)*wa(i));
@@ -82,12 +82,13 @@ P_i = P_xi + P_yi;
 P_s = P_xs + P_ys;
 P_m = (P_s + P_i)/2;
 
-for i=1:3
+for i=1:length(h)
+    Potencia_media_inferior_generada(i) = trapz(t(i,:), P_i(i,:))/T(i);
+    Potencia_media_superior_generada(i) = trapz(t(i,:), P_s(i,:))/T(i);
     Potencia_media_generada(i) = trapz(t(i,:), P_m(i,:))/T(i);
     Potencia_media_analitica(i) = G*A*fc*rend*cos(beta_s)*(1 + sqrt(2))/2*1/(2*pi)*(integral(@(x)sin(x),0,(pi-phi(i)/2))+abs(integral(@(x)sin(x),(pi+phi(i)/2), 2*pi)))+...
                                2*G*A*fc*rend*sin(beta_s)*(1 + sqrt(2))/2*(T(i)-Te(i))/(2*T(i));
 end
-
 
 %% PLOT
 
@@ -95,7 +96,7 @@ graph_rep = 'yes';
 
 if graph_rep == 'yes'
     
-    for i = 1:3
+    for i = 1:length(h)
         h(fig) = figure(fig);
         hold on
         plot(alfa_1(i,:), P_i(i,:), '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
@@ -123,7 +124,7 @@ graph_rep = 'noo';
 
 if graph_rep == 'yes'
     
-    for i = 1:3
+    for i = 1:length(h)
         h(fig) = figure(fig);
         hold on
         plot(t(i,:), P_i(i,:), '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...

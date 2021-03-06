@@ -10,14 +10,25 @@ fig = 1;
 
 %% DATOS
 
+% Tierra
 mu = 398600;                % km^3/s^2
 rT = 6378;                  % km
+J2 = 1.0827*10^-3;          % -
+
+% Sol
+beta = deg2rad(0);          % rad (angulo beta -> sol/tierra)
+G = 1361 ;                  % W/m2
+
+% Orbita
 h = [450, 500, 600];        % km
 r = rT + h;                 % km
-beta = deg2rad(0);          % rad (angulo beta -> sol/tierra)
-w = [0.05, 0.1, 0.5];       % rad/s
 RAAN = deg2rad(22);         % rad
-J2 = 1.0827*10^-3;          % -
+
+% Satelite
+w = [0.05, 0.1, 0.5];       % rad/s
+A = 0.3*0.1;                % m^2 Area 3U 
+fc = 0.9;                   % factor de ocupacion REF : c.pdf ( pindado) pag 10.
+rend = 0.29;                % aprox valor DataSheet Azure triple joint
 
 %% CALCULO INCLINACION
 
@@ -40,7 +51,7 @@ for i = 1:3
 end
 
 %% ECLIPSE
-
+disp('*** Eclipses ***')
 eclipse = ones(size(anom_ver)); % Vector señal eclipse booleano (0-1)
 
 % Angulos de Sol y eclipse para cada orbita
@@ -50,17 +61,27 @@ for orb=1:length(h)
     
     Reo = Rx(inclinacion)*Rz(RAAN);         % Tierra - Orbita -> angulo con sol + inclinacion
     rho(orb) = asin(rT./(rT + h(orb)));
-    beta_s(orb) = pi/2 - acos((Reo*[cos(beta),sin(beta),0]')'*[0,0,1]');
+    beta_s(orb) = pi/2 - acos((Reo*[1,0,0]')'*[0,0,1]');
     phi(orb) = real(2*acos(cos(rho(orb))/cos(beta_s(orb))));
     
     if phi(orb) ~= 0
-        disp(['Eclipse para h = ',num2str(h(orb)), 'km'])
         eclipse(orb, anom_ver(orb,:) >= (pi - phi(orb)/2) & anom_ver(orb,:) < (pi + phi(orb)/2) ) = 0;
-    else
-        disp('No hay eclipse')
-    end
+        t_eclipse(orb) = max(time(eclipse(orb,:) == 0)) - min(time(eclipse(orb,:) == 0));
+        anom_ver_eclipse_ini(orb) = min(anom_ver(eclipse(orb,:) == 0));
+        anom_ver_eclipse_fin(orb) = max(anom_ver(eclipse(orb,:) == 0));
 
+        disp(['Eclipse para h = ',num2str(h(orb)), ' km'])
+        disp(['  ','t_eclipse = ',num2str(round(t_eclipse(orb))),' s'])
+        disp(['  ','anom_ver_eclipse_ini = ',num2str(rad2deg(anom_ver_eclipse_ini(orb))),' deg'])
+        disp(['  ','anom_ver_eclipse_fin = ',num2str(rad2deg(anom_ver_eclipse_fin(orb))+180),' deg'])
+        
+    else
+        disp(['No hay eclipse para h = ',num2str(h(orb)), 'km'])
+    end
+    
 end
+
+% Plot eclipses
 
 h_plot(fig) = figure(fig);
     hold on
@@ -99,86 +120,70 @@ h_plot(fig)=figure(fig);
 
 
 %% SIMULACION
-%{
 
-Matrices de cambio de base
-
-    R_sol_tierra = Rz(beta);    % sol -> tierra -> beta
-    R_tierra_plano = Rx(inc)*Rz(RAAN);   % tierra -> plano orbital
-    R_plano_orbita = Rz(anom_ver(orb,t));    % plano orbital -> orbita
-    R_orbita_sat = Rx(angulo_panel(t,orb,vel,p));   % orbita -> sat
-
-    R_sol_sat = R_sol_tierra*R_tierra_plano*R_plano_orbita*R_orbita_sat;
-
-    potencia = (R_sol_sat*[1 0 0]')*[0 1 0]';
-
-
-%}
 
 for orb = 1:length(h)                   % Bucle en alturas
     
-    inclinacion = inc(orb);
+    inclinacion = inc(orb);             % Inclinacion para cada orbita
     
-    for vel = 1:length(w)               % Bucle en velocidades angulares
-        
-        for p = 1:4                      % Bucle en paneles
-                        
+    for vel = 1:length(w)               % Bucle en velocidades angulares        
+        for p = 1:4                      % Bucle en paneles                 
             for t = 1:length(time(orb,:))   % Bucle en tiempo
                 
-                % C_tierra_sol = Rz(beta);                      % sol -> tierra -> beta
-                C_plano_tierra = Rx(inclinacion)*Rz(RAAN);      % tierra -> plano orbital  
+                % C_tierra_sol = Rz(beta);                      % Sol -> Tierra -> beta
+                C_plano_tierra = Rx(inclinacion)*Rz(RAAN);      % Tierra -> plano orbital  
                 C_orbita_plano = Rz(anom_ver(orb,t));           % plano orbital -> orbita
                 C_sat_orbita = Rx(w(vel)*t+(p-1)*pi/2);         % orbita -> sat
 
-                %C_orbita_tierra = C_orbita_plano*C_plano_tierra;
                 C_sat_tierra = C_sat_orbita*C_orbita_plano*C_plano_tierra;
 
-                %senal = eclipse(orb,t)*senal_panel(t,orb,vel,p);
                 
                 r_tierra = [1 0 0];
                 r_orbita = C_sat_tierra*r_tierra'; 
                 
-                potencia(t,p,orb,vel) = 1361*0.29*0.1*0.3*0.9*(r_orbita'*[0 0 1]')*eclipse(orb,t);  % Caras con panel: Y Z
-                
-                %r_orbita = C_orbita_tierra*r_tierra';
-                %test(t,p) = abs( r_orbita'*[0 0 1]' )*eclipse(orb,t);  % Caras con panel: Y Z
-
-%                 Ros = Rz(anom_ver(orb,t));          % Orbita - Sat
-%                 Rsp = Rx(angulo_panel(t,orb,vel,p));    % Sat - paneles
-%                 senal = eclipse(orb,t)*senal_panel(t,orb,vel,p);
-%                 %test(t,p) = abs([1 0 0]*Ros*Rsp*[0 -1 0]'*senal);
-%                 test(t,p) = abs([0 1 0]*Rsp*Ros*Reo*[1 0 0]'*senal);
-                
+                potencia_panel(t,p,orb,vel) = G*rend*A*fc*(r_orbita'*[0 0 1]')*eclipse(orb,t);  % Caras con panel: Y Z
+                                
             end
         end
-        
     end
-    
 end
 
-potencia = max(0,potencia);
-suma = sum(potencia,2);
-% Plot test
+% Suma de la contribucion de los paneles
+potencia_panel = max(0,potencia_panel); %Hacer 0 cuando las caras están de espaldas al Sol
+P_m = sum(potencia_panel,2);
+
+% Plot potencias
 for orb=1:length(h)
     for vel =1:length(w)
         h_plot(fig) = figure(fig);
             hold on
             for p = 1:4
-                plot(anom_ver(1,:),potencia(:,p,orb,vel),'DisplayName',['Panel ' num2str(p)])
+                plot(rad2deg(anom_ver(1,:)),potencia_panel(:,p,orb,vel),'DisplayName',['Panel ' num2str(p)])
             end
-            plot(anom_ver(1,:),suma(:,1,orb,vel),'DisplayName','Potencia total')
+            plot(rad2deg(anom_ver(1,:)),P_m(:,1,orb,vel),'DisplayName','Potencia total')
             box on
             legend()
-            title(['Simuacion ',num2str(h(orb)),' ',num2str(vel)])
-            xlabel('Anomalia verdadera')
+            title(['Simuacion ',num2str(h(orb)),' ',num2str(w(vel))])
+            xlabel('\nu[deg]')
             ylabel('Potencia')
             hold off
             fig = fig+1;
     end
 end
 
+% Potencias medias
+disp(' *** Potencias medias ***')
+
+for orb = 1:length(h)                   % Bucle en alturas    
+    disp(['Potencias medias generadas para h = ',num2str(h(orb)), ' km'])    
+    for vel = 1:length(w)               % Bucle en velocidades angulares     
+        Potencia_media_generada(orb,vel) = trapz(time(orb,:), P_m(:,1,orb,vel))/T(orb);
+        disp(['  ','w = ', num2str(w(vel)),' rad/s -> ','Pm = ',num2str(Potencia_media_generada(orb,vel)), ' W'])
+    end
+end
 
 %% CAMBIOS DE BASE
+
 %{
 RAAN = 0;
 inc = 0;
@@ -188,10 +193,19 @@ Ros = Rz(anom_ver);                 % Orbita - Sat -> ejes giran con anomalia ve
 Rsp = Ry(pi/2)*Rz(angulo_panel);    % Sat - paneles -> rotado 90 en y para que 
                                     % coincida el eje Z con la direccion 3U
                                     % Rota en funcion del tiempo sobre Z
- 
+
 %}
 
+%{
 
+    R_sol_tierra = Rz(beta);                        % sol -> tierra -> beta
+    R_tierra_plano = Rx(inc)*Rz(RAAN);              % tierra -> plano orbital
+    R_plano_orbita = Rz(anom_ver(orb,t));           % plano orbital -> orbita
+    R_orbita_sat = Rx(angulo_panel(t,orb,vel,p));   % orbita -> sat
+
+    R_sol_sat = R_sol_tierra*R_tierra_plano*R_plano_orbita*R_orbita_sat;
+
+%}
 
 
 
