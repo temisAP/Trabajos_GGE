@@ -117,6 +117,34 @@ if graph_rep == 'yes'
     end
     
 end
+
+
+graph_rep = 'noo';
+
+if graph_rep == 'yes'
+    
+    for i = 1:3
+        h(fig) = figure(fig);
+        hold on
+        plot(t(i,:), P_i(i,:), '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+            ["Potencia m\'inima"])
+        plot(t(i,:), P_s(i,:), '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+            ["Potencia m\'axima"])
+        plot(t(i,:), P_m(i,:), '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+            ["Potencia media"])
+        box on; grid on
+        legend('Interpreter', 'Latex', 'location', 'Best')
+        xlh = xlabel('$t$ [s]','Interpreter','latex');
+        xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
+        ylh = ylabel({'$P$';'[W]'},'Interpreter','latex');
+        ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
+        ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.45);
+        Save_as_PDF(h(fig), ['Figures/analitica',num2str(fig)],0);
+        hold off
+        fig = fig+1;
+    end
+    
+end
     
 
 %% FUNCIONES MATRICES ROTACION ( Angulo en radianes)
