@@ -132,18 +132,20 @@ for orb = 1%:length(h)                   % Bucle en alturas
                 % C_tierra_sol = Rz(beta);    % sol -> tierra -> beta
                 C_plano_tierra = Rx(inc)*Rz(RAAN);   % tierra -> plano orbital  
                 C_orbita_plano = Rz(anom_ver(orb,t));    % plano orbital -> orbita
-                C_sat_orbita = Rx(angulo_panel(t,orb,vel,p));   % orbita -> sat
+                C_sat_orbita = Rx(w(vel)*t+(p-1)*pi/2);   % orbita -> sat
 
-                C_orbita_tierra = C_orbita_plano*C_plano_tierra;
-                %C_sat_tierra = C_sat_orbita*C_orbita_plano*C_plano_tierra;
-
-                r_tierra = [1 0 0];
-                %r_orbita = C_sat_tierra*r_tierra';
-                r_orbita = C_orbita_tierra*r_tierra';
+                %C_orbita_tierra = C_orbita_plano*C_plano_tierra;
+                C_sat_tierra = C_sat_orbita*C_orbita_plano*C_plano_tierra;
 
                 senal = eclipse(orb,t)*senal_panel(t,orb,vel,p);
-                %test(t,p) = abs( r_orbita'*[0 0 1]' )*senal;  % Caras con panel: Y Z
-                test(t,p) = abs( r_orbita'*[0 0 1]' )*eclipse(orb,t);  % Caras con panel: Y Z
+                
+                r_tierra = [1 0 0];
+                r_orbita = C_sat_tierra*r_tierra'; 
+                
+                test(t,p) = ( r_orbita'*[0 0 1]' );  % Caras con panel: Y Z
+                
+                %r_orbita = C_orbita_tierra*r_tierra';
+                %test(t,p) = abs( r_orbita'*[0 0 1]' )*eclipse(orb,t);  % Caras con panel: Y Z
 
 
 
@@ -162,7 +164,7 @@ for orb = 1%:length(h)                   % Bucle en alturas
     end
     
 end
-
+test(:,p) = test( test(:,p)>=0,p );
 suma = sum(test,2);
 
 % Plot test
@@ -177,7 +179,6 @@ figure()
     title('Simuacion')
     xlabel('anomalia verdadera')
     ylabel('Potencia')
-
 
 
 %% CAMBIOS DE BASE
