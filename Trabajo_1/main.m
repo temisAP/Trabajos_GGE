@@ -110,15 +110,15 @@ for orb = 1%:length(h)                   % Bucle en alturas
         for t = 1:length(time(orb,:))   % Bucle en tiempo
             
             senal = eclipse(orb,t);
-            Ros = Rz(2*anom_ver(orb,t));          % Orbita - Sat
+            Ros = Rz(anom_ver(orb,t));          % Orbita - Sat
             %bsat(t,orb,vel) = [1 0 0]*Ros*[1 0 0]'*senal;
             %bsat(t,orb,vel) = (-([1 0 0]*Ros*[1 0 0]'+1)/2 + 1)*senal;
             %bsat = (-([1 0 0]*Ros+1)/2 + 1)*senal;
-            %Rsp = Ry(pi/2)*Rz(angulo_panel(t,orb,vel,1));    % Sat - paneles
+            Rsp = Rx(angulo_panel(t,orb,vel,1));    % Sat - paneles
             %bpan(t,orb,vel) = [0 -1 0]*Rsp*[1 0 0]';
             %bpan(t,orb,vel) = bsat*Rsp*[0 -1 0]';
-            %senal = eclipse(orb,t)*senal_panel(t,orb,vel,1);
-            %test(t) = [1 0 0]*Ros*Rsp*[1 0 0]'*senal;
+            senal = eclipse(orb,t)*senal_panel(t,orb,vel,1);
+            test(t) = abs([1 0 0]*Ros*Rsp*[0 -1 0]'*senal);
             
         end
         
@@ -129,9 +129,9 @@ end
 % Plot test
 figure()
     hold on
-    plot(bsat(:,1,1))
+%    plot(bsat(:,1,1))
 %    plot(bpan(:,1,1))
-    %plot(test)
+    plot(anom_ver(1,:),test)
 
 
 
@@ -140,7 +140,7 @@ Wo = 1361;              % W
 
 
 %% CAMBIOS DE BASE
-
+%{
 RAAN = 0;
 inc = 0;
 
@@ -150,7 +150,7 @@ Rsp = Ry(pi/2)*Rz(angulo_panel);    % Sat - paneles -> rotado 90 en y para que
                                     % coincida el eje Z con la direccion 3U
                                     % Rota en funcion del tiempo sobre Z
  
-
+%}
 
 %% FUNCIONES
 
