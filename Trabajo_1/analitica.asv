@@ -82,9 +82,8 @@ P_i = P_xi + P_yi;
 P_s = P_xs + P_ys;
 P_m = (P_s + P_i)/2;
 
-for i=1:3
-Potencia_media_generada(i) = trapz(t(i,:), P_m(i,:))/T(i);
-end
+Potencia_media_generada = trapz(t(1,:), P_m(1,:))/T(1);
+
 
 %Potencia_media_analitica = G*A*fc*rend*cos(beta_s)*(1 + sqrt(2))/2*1/(wa(1)*2*pi)*(cos(pi - phi(1)/2) + cos(pi + phi(1)/2));
 %(cos(pi - phi(1)/2) - cos(pi + phi(1)/2));
@@ -99,30 +98,42 @@ end
 
 graph_rep = 'yes';
 
-if graph_rep == 'yes'
+if graph_rep == 'yes':
     
     for i = 1:3
         h(fig) = figure(fig);
         hold on
-        plot(alfa_1(i,:), P_i(i,:), '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-            ["Potencia m\'inima"])
+        plot(alfa_1(i,:), P_i(i,:), '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+            ['Potencia mínima'])
         plot(alfa_1(i,:), P_s(i,:), '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-            ["Potencia m\'axima"])
-        plot(alfa_1(i,:), P_m(i,:), '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-            ["Potencia media"])
+            ['Potencia máxima'])
+        plot(alfa_1(i,:), P_m(i,:), '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+            ['Potencia máxima'])
         box on; grid on
-        legend('Interpreter', 'Latex', 'location', 'Best')
+        legend('Interpreter', 'Latex', 'location', 'NorthWest')
         xlh = xlabel('$\alpha$ [deg]','Interpreter','latex');
         xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
         ylh = ylabel({'$P$';'[W]'},'Interpreter','latex');
         ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
         ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.45);
         Save_as_PDF(h(fig), ['Figures/analitica',num2str(fig)],0);
-        hold off
         fig = fig+1;
     end
     
 end
+% for i=1:3
+%     
+%     figure(i)
+%     hold on
+%     plot(alfa(i,:), P_yi(i,:))
+%     plot(alfa(i,:), P_ys(i,:))
+%     plot(alfa(i,:), P_xi(i,:))
+%     plot(alfa(i,:), P_xs(i,:))
+%     legend()
+%     title('cos(angulo panel)')
+%     grid on
+%     
+% end
     
 
 %% FUNCIONES MATRICES ROTACION ( Angulo en radianes)
