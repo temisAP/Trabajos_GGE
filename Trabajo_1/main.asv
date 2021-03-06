@@ -143,6 +143,11 @@ for orb = 1:length(h)                   % Bucle en alturas
                 %r_orbita = C_orbita_tierra*r_tierra';
                 %test(t,p) = abs( r_orbita'*[0 0 1]' )*eclipse(orb,t);  % Caras con panel: Y Z
 
+
+
+
+
+
 %                 Ros = Rz(anom_ver(orb,t));          % Orbita - Sat
 %                 Rsp = Rx(angulo_panel(t,orb,vel,p));    % Sat - paneles
 %                 senal = eclipse(orb,t)*senal_panel(t,orb,vel,p);
@@ -156,15 +161,15 @@ for orb = 1:length(h)                   % Bucle en alturas
     
 end
 
-potencia = max(0,potencia);
-suma = sum(potencia,2);
+test = max(0,test);
+suma = sum(test,2);
 % Plot test
 for orb=1:length(h)
     for vel =1:length(w)
         h_plot(fig) = figure(fig);
             hold on
             for p = 1:4
-                plot(anom_ver(1,:),potencia(:,p,orb,vel),'DisplayName',['Panel ' num2str(p)])
+                plot(anom_ver(1,:),test(:,p,orb,vel),'DisplayName',['Panel ' num2str(p)])
             end
             plot(anom_ver(1,:),suma(:,1,orb,vel),'DisplayName','Potencia total')
             box on
