@@ -6,6 +6,7 @@
 clc;
 clear all;
 close all;
+fig = 1;
 
 
 %% DATOS
@@ -17,8 +18,13 @@ r = rT + h;                 % km
 beta = 0;                   % angulo beta -> sol/tietta
 w = [0.05, 0.1, 0.5];       % rad/s
 RAAN = deg2rad(22);
-inc = deg2rad(90);
+J2 = 1.0827*10^-3;
 
+%% CALCULO INCLINACION
+
+cte = 2*pi/(365.25*24*3600);
+
+inc = acos(((-3*rT^2*J2*mu^0.5)./(2*cte*r.^(7/2))).^-1);
 
 
 %% PERIODO ORBITAL Y ANGULOS EN FUNCION DEL TIEMPO
@@ -36,37 +42,42 @@ for i = 1:3
     end
 end
 
-% Cambios de base
-Reo = Rx(inc)*Rz(RAAN);         % Tierra - Orbita -> angulo con sol + inclinacion
-
-
-
 
 %% ECLIPSE
 
-% Angulo 
+% Angulo de vision de la Tierra
 rho = asin(rT./(rT + h));
-beta_s = pi/2 - acos((Reo*[1,0,0]')'*[0,0,1]');
-phi = real(2*acos(cos(rho)/cos(beta_s)));
+% Cambios de base
 
-% Vector señal eclipse 1-0
-eclipse = ones(size(anom_ver));
-if phi ~= [0, 0, 0]
-    disp('Eclipse')
-    for i = 1:3
-        eclipse(i, anom_ver(i,:) >= (pi - phi(i)/2) & anom_ver(i,:) < (pi + phi(i)/2) ) = 0;
+for orb=1:length(h)
+    
+    inclinacion = inc(orb);
+    
+    Reo = Rx(inclinacion)*Rz(RAAN);         % Tierra - Orbita -> angulo con sol + inclinacion
+    beta_s = pi/2 - acos((Reo*[1,0,0]')'*[0,0,1]');
+    phi = real(2*acos(cos(rho)/cos(beta_s)));
+    
+    % Vector señal eclipse 1-0
+    eclipse = ones(size(anom_ver));
+    if phi ~= [0, 0, 0]
+        disp('Eclipse')
+        for i = 1:3
+            eclipse(i, anom_ver(i,:) >= (pi - phi(i)/2) & anom_ver(i,:) < (pi + phi(i)/2) ) = 0;
+        end
+    else
+        disp('No hay eclipse')
     end
-else
-    disp('No hay eclipse')
+
 end
 
-figure()
+h_plot(fig) = figure(fig);
     hold on
     plot(eclipse(1,:),'DisplayName','450 km')
     plot(eclipse(2,:),'DisplayName','500 km')
     plot(eclipse(3,:),'DisplayName','600 km')
     legend()
     title('Eclipse')
+    fig = fig+1;
 
 
     
@@ -87,7 +98,7 @@ for orb = 1:length(h)       % Bucle en alturas
     
 end
 
-figure()
+h_plot(fig)=figure(fig);
     hold on
     for p = 1:1
         %plot(time(1,:), cos(angulo_panel(:,1,1,p)).*senal_panel(:,1,1,p),...
@@ -98,7 +109,7 @@ figure()
     end
     legend()
     title('cos(angulo panel)')
-
+    fig = fig+1;
 
 
 %% SIMULACION
@@ -115,22 +126,18 @@ potencia = (R_sol_sat*[1 0 0]')*[0 1 0]';
 
 %}
 
-for orb = 1%:length(h)                   % Bucle en alturas
+for orb = 1:length(h)                   % Bucle en alturas
     
-    for vel = 1%:length(w)               % Bucle en velocidades angulares
+    inclinacion = inc(orb);
+    
+    for vel = 1:length(w)               % Bucle en velocidades angulares
         
         for p = 1:4                      % Bucle en paneles
-            
-%             if p == 1 || 3
-%                  normal_panel = [0 1 0];
-%             else
-%                 normal_panel = [0 0 1];
-%             end
-            
+                        
             for t = 1:length(time(orb,:))   % Bucle en tiempo
                 
                 % C_tierra_sol = Rz(beta);    % sol -> tierra -> beta
-                C_plano_tierra = Rx(inc)*Rz(RAAN);   % tierra -> plano orbital  
+                C_plano_tierra = Rx(inclinacion)*Rz(RAAN);   % tierra -> plano orbital  
                 C_orbita_plano = Rz(anom_ver(orb,t));    % plano orbital -> orbita
                 C_sat_orbita = Rx(w(vel)*t+(p-1)*pi/2);   % orbita -> sat
 
@@ -142,7 +149,7 @@ for orb = 1%:length(h)                   % Bucle en alturas
                 r_tierra = [1 0 0];
                 r_orbita = C_sat_tierra*r_tierra'; 
                 
-                test(t,p) = 1361*0.29*0.1*0.3*0.9*(r_orbita'*[0 0 1]')*eclipse(orb,t);  % Caras con panel: Y Z
+                test(t,p,orb,vel) = 1361*0.29*0.1*0.3*0.9*(r_orbita'*[0 0 1]')*eclipse(orb,t);  % Caras con panel: Y Z
                 
                 %r_orbita = C_orbita_tierra*r_tierra';
                 %test(t,p) = abs( r_orbita'*[0 0 1]' )*eclipse(orb,t);  % Caras con panel: Y Z
@@ -168,17 +175,23 @@ end
 test = max(0,test);
 suma = sum(test,2);
 % Plot test
-figure()
-    hold on
-    for p = 1:4
-        plot(anom_ver(1,:),test(:,p),'DisplayName',['Panel ' num2str(p)])
+for orb=1:length(h)
+    for vel =1:length(w)
+        h_plot(fig) = figure(fig);
+            hold on
+            for p = 1:4
+                plot(anom_ver(1,:),test(:,p,orb,vel),'DisplayName',['Panel ' num2str(p)])
+            end
+            plot(anom_ver(1,:),suma(:,1,orb,vel),'DisplayName','Potencia total')
+            box on
+            legend()
+            title('Simuacion')
+            xlabel('anomalia verdadera')
+            ylabel('Potencia')
+            hold off
+            fig = fig+1;
     end
-    plot(anom_ver(1,:),suma,'DisplayName','Potencia total')
-    box on
-    legend()
-    title('Simuacion')
-    xlabel('anomalia verdadera')
-    ylabel('Potencia')
+end
 
 
 %% CAMBIOS DE BASE
