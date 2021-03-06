@@ -83,16 +83,10 @@ P_s = P_xs + P_ys;
 P_m = (P_s + P_i)/2;
 
 for i=1:3
-Potencia_media_generada(i) = trapz(t(i,:), P_m(i,:))/T(i);
+    Potencia_media_generada(i) = trapz(t(i,:), P_m(i,:))/T(i);
+    Potencia_media_analitica(i) = G*A*fc*rend*cos(beta_s)*(1 + sqrt(2))/2*1/(2*pi)*(integral(@(x)sin(x),0,(pi-phi(i)/2))+abs(integral(@(x)sin(x),(pi+phi(i)/2), 2*pi)))+...
+                               2*G*A*fc*rend*sin(beta_s)*(1 + sqrt(2))/2*(T(i)-Te(i))/(2*T(i));
 end
-
-%Potencia_media_analitica = G*A*fc*rend*cos(beta_s)*(1 + sqrt(2))/2*1/(wa(1)*2*pi)*(cos(pi - phi(1)/2) + cos(pi + phi(1)/2));
-%(cos(pi - phi(1)/2) - cos(pi + phi(1)/2));
-% (integral(@(x)sin(x),0,pi-phi(1)/2)+abs(integral(@(x)sin(x), pi+phi(1)/2,
-% 2*pi)));
-
-% P_media_yi =  G*A*fc*1*rend*sin(beta_s)*(T-Te)/T;         % Potencia cota inferior en y
-% P_media_ys =  G*A*fc*sqrt(2)*rend*sin(beta_s)*(T-Te)/T;   % Potencia cota superior en y
 
 
 %% PLOT
