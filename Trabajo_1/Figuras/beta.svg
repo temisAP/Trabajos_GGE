@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="beta.svg">
+  <defs
+     id="defs2">
+    <clipPath
+       id="clip0">
+      <rect
+         x="3"
+         y="126"
+         width="462"
+         height="242"
+         id="rect1573" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="457.90879"
+     inkscape:cy="626.26727"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       clip-path="url(#clip0)"
+       transform="matrix(0.26458333,0,0,0.26458333,21.87926,94.343444)"
+       id="g1618">
+      <path
+         d="m 257.5,189 c 0,-34.518 27.311,-62.5 61,-62.5 33.689,0 61,27.982 61,62.5 0,34.518 -27.311,62.5 -61,62.5 -33.689,0 -61,-27.982 -61,-62.5 z"
+         stroke="#000000"
+         stroke-width="1.33333"
+         stroke-miterlimit="8"
+         fill="none"
+         fill-rule="evenodd"
+         id="path1578" />
+      <path
+         d="M 168,191 H 463.4"
+         stroke="#000000"
+         stroke-width="2"
+         stroke-miterlimit="8"
+         fill="none"
+         fill-rule="evenodd"
+         id="path1580" />
+      <path
+         d="M 0.216259,-0.25366 96.8764,82.1545 96.4439,82.6618 -0.216259,0.25366 Z M 98.2406,78.4992 101.733,86.7333 93.0504,84.587 Z"
+         transform="matrix(1,0,0,-1,163.5,326.233)"
+         id="path1582" />
+      <path
+         d="M 0.666667,-6.72562e-7 0.666672,5.33333 H -0.666661 L -0.666667,6.72562e-7 Z M 0.666676,9.33333 l 5e-6,5.33337 h -1.333333 l -5e-6,-5.33337 z m 9e-6,9.33337 6e-6,5.3333 h -1.333333 l -6e-6,-5.3333 z m 1e-5,9.3333 5e-6,5.3333 H -0.666633 L -0.666638,28 Z m 9e-6,9.3333 6e-6,5.3334 h -1.333334 l -5e-6,-5.3334 z m 1e-5,9.3334 5e-6,5.3333 h -1.333333 l -6e-6,-5.3333 z m 9e-6,9.3333 5e-6,5.3333 H -0.666605 L -0.66661,56 Z m 1e-5,9.3333 5e-6,5.3334 h -1.333333 l -6e-6,-5.3334 z m 9e-6,9.3334 5e-6,5.3333 h -1.333333 l -5e-6,-5.3333 z m 9e-6,9.3333 6e-6,5.3333 H -0.666577 L -0.666582,84 Z m 1e-5,9.3333 4e-6,4.0667 h -1.333333 l -4e-6,-4.0667 z M 4.0001,96.0667 1.04987e-4,104.067 -3.9999,96.0667 Z"
+         transform="matrix(1,0,0,-1,317.5,366.567)"
+         id="path1584" />
+      <path
+         d="m 68.5001,190.833 h 5.3333 v 1.334 h -5.3333 z m 9.3333,0 h 5.3333 v 1.334 h -5.3333 z m 9.3333,0 h 5.3334 v 1.334 h -5.3334 z m 9.3334,0 h 5.3329 v 1.334 h -5.3329 z m 9.3329,0 h 5.334 v 1.334 h -5.334 z m 9.334,0 h 5.333 v 1.334 h -5.333 z m 9.333,0 h 5.333 v 1.334 H 124.5 Z m 9.333,0 h 5.334 v 1.334 h -5.334 z m 9.334,0 h 5.333 v 1.334 h -5.333 z m 5.2,-3.333 8,4 -8,4 z"
+         id="path1586" />
+      <path
+         d="M 0,0 58.6,49.8667"
+         stroke="#000000"
+         stroke-width="0.666667"
+         stroke-miterlimit="8"
+         stroke-dasharray="2.66667, 2"
+         fill="none"
+         fill-rule="evenodd"
+         transform="matrix(1,0,0,-1,261.5,242.367)"
+         id="path1588" />
+      <text
+         font-family="'Cambria Math', 'Cambria Math_MSFontService', sans-serif"
+         font-weight="400"
+         font-size="15px"
+         transform="translate(269.153,210)"
+         id="text1616">𝛽<tspan
+   font-size="11px"
+   x="7.9533401"
+   y="3"
+   id="tspan1590">𝑠</tspan><tspan
+   font-size="15px"
+   x="-124.553"
+   y="129"
+   id="tspan1592">𝑊</tspan><tspan
+   font-size="11px"
+   x="-112.573"
+   y="132"
+   id="tspan1594">0</tspan><tspan
+   font-size="15px"
+   x="56.779999"
+   y="148"
+   id="tspan1596">𝑊</tspan><tspan
+   font-size="11px"
+   x="68.760002"
+   y="151"
+   id="tspan1598">0</tspan><tspan
+   font-size="15px"
+   x="78.006699"
+   y="148"
+   id="tspan1600">sin</tspan><tspan
+   font-size="15px"
+   x="99.013298"
+   y="148"
+   id="tspan1602">𝛽</tspan><tspan
+   font-size="11px"
+   x="106.967"
+   y="151"
+   id="tspan1604">𝑠</tspan><tspan
+   font-size="15px"
+   x="-207.28"
+   y="-25"
+   id="tspan1606">𝑊</tspan><tspan
+   font-size="11px"
+   x="-195.3"
+   y="-22"
+   id="tspan1608">0</tspan><tspan
+   font-size="15px"
+   x="-186.05299"
+   y="-25"
+   id="tspan1610">cos</tspan><tspan
+   font-size="15px"
+   x="-163.05299"
+   y="-25"
+   id="tspan1612">𝛽</tspan><tspan
+   font-size="11px"
+   x="-155.10001"
+   y="-22"
+   id="tspan1614">𝑠</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#008000;fill-opacity:1;stroke:none;"
+         x="57.306732"
+         y="46.997791"
+         id="text1651"><tspan
+           sodipodi:role="line"
+           id="tspan1649"
+           x="57.306732"
+           y="46.997791">vfvfb</tspan></text>
+    </g>
+  </g>
+</svg>
