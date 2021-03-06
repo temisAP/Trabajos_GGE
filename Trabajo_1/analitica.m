@@ -76,7 +76,7 @@ P_ys =  G*A*fc*sqrt(2)*rend*sin(beta_s)*alfa_y;
 P_xi =  abs(G*A*fc*1*rend*cos(beta_s)*sin(alfa));         % Potencia cota inferior en y
 P_xs =  abs(G*A*fc*sqrt(2)*rend*cos(beta_s)*sin(alfa));
 
-% Potencias medias
+% Potencias medias.
 
 P_i = P_xi + P_yi;
 P_s = P_xs + P_ys;
