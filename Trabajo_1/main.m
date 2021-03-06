@@ -17,7 +17,7 @@ r = rT + h;                 % km
 beta = 0;                   % angulo beta -> sol/tietta
 w = [0.05, 0.1, 0.5];       % rad/s
 RAAN = deg2rad(0);
-inc = deg2rad(0);
+inc = deg2rad(10);
 
 
 
@@ -37,7 +37,7 @@ for i = 1:3
 end
 
 % Cambios de base
-Reo = Rz(RAAN)*Rx(inc);         % Tierra - Orbita -> angulo con sol + inclinacion
+Reo = Rx(inc)*Rz(RAAN);         % Tierra - Orbita -> angulo con sol + inclinacion
 
 
 
@@ -46,7 +46,7 @@ Reo = Rz(RAAN)*Rx(inc);         % Tierra - Orbita -> angulo con sol + inclinacio
 
 % Angulo 
 rho = asin(rT./(rT + h));
-beta_s = pi/2 - acos([1,0,0]*Reo*[1,0,0]');
+beta_s = pi/2 - acos((Reo*[1,0,0]')'*[0,0,1]');
 phi = real(2*acos(cos(rho)/cos(beta_s)));
 
 % Vector señal eclipse 1-0
@@ -91,11 +91,11 @@ for orb = 1%:length(h)                   % Bucle en alturas
             
             for t = 1:length(time(orb,:))   % Bucle en tiempo
                                                         
-                Ros = Rz(2*anom_ver(orb,t));          % Orbita - Sat
+                Ros = Rz(anom_ver(orb,t));          % Orbita - Sat
                 Rsp = Rx(angulo_panel(t,orb,vel,p));    % Sat - paneles
                 senal = eclipse(orb,t)*senal_panel(t,orb,vel,p);
                 %test(t,p) = abs([1 0 0]*Ros*Rsp*[0 -1 0]'*senal);
-                test(t,p) = ([0 -1 0]*Rsp*Ros*Reo*[1 0 0]'*senal);
+                test(t,p) = abs([0 1 0]*Rsp*Ros*Reo*[1 0 0]'*senal);
                 
             end
         end
