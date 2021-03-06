@@ -8,6 +8,7 @@ clear all;
 close all;
 fig = 1;
 
+
 %% DATOS
 
 % Tierra
@@ -30,10 +31,14 @@ A = 0.3*0.1;                % m^2 Area 3U
 fc = 0.9;                   % factor de ocupacion REF : c.pdf ( pindado) pag 10.
 rend = 0.29;                % aprox valor DataSheet Azure triple joint
 
+
+
 %% CALCULO INCLINACION
 
 cte = 2*pi/(365.25*24*3600);
-inc = acos(((-3*rT^2*J2*mu^0.5)./(2*cte*r.^(7/2))).^-1);
+inc = acos(((-3*rT^2*J2*mu^0.5)./(2*cte*r.^(7/2))).^(-1));
+
+
 
 %% PERIODO ORBITAL Y ANGULOS EN FUNCION DEL TIEMPO
 
@@ -41,7 +46,7 @@ inc = acos(((-3*rT^2*J2*mu^0.5)./(2*cte*r.^(7/2))).^-1);
 T = 2*pi*sqrt(r.^3/mu);                 % s
 anom_ver_punto = 1./sqrt(r.^3/mu);      % Velocidad angular anomalia verdadera
 
-N=1e4+1; %Mallado temporal
+N=1e4+1; % Mallado temporal
 for i = 1:3
     time(i,:) = linspace(0,T(i),N);            % Vector de tiempos 1 periodo
     anom_ver(i,:) = time(i,:)*anom_ver_punto(i);   % Anomalia verdadera
@@ -49,6 +54,8 @@ for i = 1:3
         roll(:,i,j) = time(i,:)*w(j);              % Rotacion sat sobre su eje Z
     end
 end
+
+
 
 %% ECLIPSE
 disp('*** Eclipses ***')
@@ -82,15 +89,14 @@ for orb=1:length(h)
 end
 
 % Plot eclipses
-
-h_plot(fig) = figure(fig);
-    hold on
-    plot(eclipse(1,:),'DisplayName','450 km')
-    plot(eclipse(2,:),'DisplayName','500 km')
-    plot(eclipse(3,:),'DisplayName','600 km')
-    legend()
-    title('Eclipse')
-    fig = fig+1;
+% h_plot(fig) = figure(fig);
+%     hold on
+%     plot(eclipse(1,:),'DisplayName','450 km')
+%     plot(eclipse(2,:),'DisplayName','500 km')
+%     plot(eclipse(3,:),'DisplayName','600 km')
+%     legend()
+%     title('Eclipse')
+%     fig = fig+1;
 
 
     
@@ -105,22 +111,21 @@ for orb = 1:length(h)       % Bucle en alturas
     end
 end
 
-h_plot(fig)=figure(fig);
-    hold on
-    for p = 1:1
-        %plot(time(1,:), cos(angulo_panel(:,1,1,p)).*senal_panel(:,1,1,p),...
-        %     'DisplayName',['Panel ' num2str(p)])
-        plot(time(1,:), cos(angulo_panel(:,1,1,p)),'DisplayName',['Panel ' num2str(p)])
-         plot(time(1,:), senal_panel(:,1,1,p),'DisplayName',['Señal Panel ' num2str(p)])
-        % plot(t(1,:), cos_panel(i,:).*( cos(anom_ver(1,:)*2 + pi) + 1 )/2)
-    end
-    legend()
-    title('cos(angulo panel)')
-    fig = fig+1;
+% h_plot(fig)=figure(fig);
+%     hold on
+%     for p = 1:1
+%         %plot(time(1,:), cos(angulo_panel(:,1,1,p)).*senal_panel(:,1,1,p),...
+%         %     'DisplayName',['Panel ' num2str(p)])
+%         plot(time(1,:), cos(angulo_panel(:,1,1,p)),'DisplayName',['Panel ' num2str(p)])
+%          plot(time(1,:), senal_panel(:,1,1,p),'DisplayName',['Señal Panel ' num2str(p)])
+%         % plot(t(1,:), cos_panel(i,:).*( cos(anom_ver(1,:)*2 + pi) + 1 )/2)
+%     end
+%     legend()
+%     title('cos(angulo panel)')
+%     fig = fig+1;
 
 
 %% SIMULACION
-
 
 for orb = 1:length(h)                   % Bucle en alturas
     
@@ -181,37 +186,6 @@ for orb = 1:length(h)                   % Bucle en alturas
         disp(['  ','w = ', num2str(w(vel)),' rad/s -> ','Pm = ',num2str(Potencia_media_generada(orb,vel)), ' W'])
     end
 end
-
-%% CAMBIOS DE BASE
-
-%{
-RAAN = 0;
-inc = 0;
-
-Reo = Rz(RAAN)*Rx(inc);             % Tierra - Orbita -> angulo con sol + inclinacion
-Ros = Rz(anom_ver);                 % Orbita - Sat -> ejes giran con anomalia verdadera
-Rsp = Ry(pi/2)*Rz(angulo_panel);    % Sat - paneles -> rotado 90 en y para que 
-                                    % coincida el eje Z con la direccion 3U
-                                    % Rota en funcion del tiempo sobre Z
-
-%}
-
-%{
-
-    R_sol_tierra = Rz(beta);                        % sol -> tierra -> beta
-    R_tierra_plano = Rx(inc)*Rz(RAAN);              % tierra -> plano orbital
-    R_plano_orbita = Rz(anom_ver(orb,t));           % plano orbital -> orbita
-    R_orbita_sat = Rx(angulo_panel(t,orb,vel,p));   % orbita -> sat
-
-    R_sol_sat = R_sol_tierra*R_tierra_plano*R_plano_orbita*R_orbita_sat;
-
-%}
-
-
-
-
-
-
 
 
 
