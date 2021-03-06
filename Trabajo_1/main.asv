@@ -138,12 +138,11 @@ for orb = 1%:length(h)                   % Bucle en alturas
                 %C_sat_tierra = C_sat_orbita*C_orbita_plano*C_plano_tierra;
 
                 r_tierra = [1 0 0];
-                %r_orbita = C_sat_tierra*r_tierra';
-                r_orbita = C_orbita_tierra*r_tierra';
+                r_orbita = C_sat_tierra*r_tierra';
 
                 senal = eclipse(orb,t)*senal_panel(t,orb,vel,p);
                 %test(t,p) = abs( r_orbita'*[0 0 1]' )*senal;  % Caras con panel: Y Z
-                test(t,p) = abs( r_orbita'*[0 0 1]' )*eclipse(orb,t);  % Caras con panel: Y Z
+                test(t,p) = abs( r_orbita'*[0 0 1]' );  % Caras con panel: Y Z
 
 
 
