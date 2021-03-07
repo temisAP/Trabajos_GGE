@@ -108,7 +108,7 @@ if graph_rep == 'yes'
         axis([0, 361, 0, 20])
         box on; grid on
         legend('Interpreter', 'Latex', 'location', 'Best')
-        xlh = xlabel('$\alpha$ [deg]','Interpreter','latex');
+        xlh = xlabel('$\theta\:[^{\circ}]$','Interpreter','latex');
         xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
         ylh = ylabel({'$P$';'[W]'},'Interpreter','latex');
         ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
