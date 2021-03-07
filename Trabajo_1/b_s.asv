@@ -55,8 +55,8 @@ end
 %% PRINCIPIO DEL BUCLE
 
 beta = linspace(deg2rad(-23.5),deg2rad(360-23.5),366);
-t1 = datetime('21/12/2021');
-t2 = datetime('21/12/2022');
+t1 = datetime(2021,12,21);
+t2 = datetime(2022,12,21);
 days = t1:t2;
 DateString = cellstr(datestr(days));
 DateString = strrep(DateString(:,1),'Jan','Ene');
@@ -138,20 +138,20 @@ end
 if calculo == 'n'
     load('Potencia_media_generada');
 elseif calculo == 'y'
-    save('Potencia_media_generada'); 
+    save('Potencia_media_generada');
 end
 
 for vel = 1:length(w)               % Bucle en velocidades angulares
     h_plot = figure(fig);
         hold on
         pot(:,:) = Potencia_media_generada(:,vel,:);
-        plot(days,pot(1,:),'-', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(1)),' km'])
-        plot(days,pot(2,:),'--', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(2)),' km'])
-        plot(days, pot(3,:),'-.', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(3)),' km'])
+        plot(pot(1,:),'-', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(1)),' km'])
+        plot(pot(2,:),'--', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(2)),' km'])
+        plot(pot(3,:),'-.', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(3)),' km'])
         legend('Interpreter', 'Latex', 'location', 'best')
-        datetick('x','dd/mm/yy','keeplimits')  % set date label format on axis hAX x-axis
         xlh = xlabel('Fecha','Interpreter','latex');
         xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
+        set(gca, 'XtickLabel', cellstr( datestr(out{1,1}(1:10000:47040)) ) );
         ylh = ylabel({'$P_{media}$';'[W]'},'Interpreter','latex');
         ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.4); %X
         ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.15); %Y
