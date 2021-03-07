@@ -17,8 +17,9 @@ rT = 6378;                  % km
 J2 = 1.0827*10^-3;          % -
 
 % Sol
-beta = deg2rad(0);          % rad (angulo beta -> sol/tierra)
-G = 1361 ;                  % W/m2
+beta = deg2rad(0);                  % rad (angulo beta -> sol/tierra)
+beta_v = [cos(beta) sin(beta) 0];   % versor solar
+G = 1361 ;                          % W/m2
 
 % Orbita
 h = [450, 500, 600];        % km
@@ -37,8 +38,6 @@ rend = 0.29;                % aprox valor DataSheet Azure triple joint
 
 cte = 2*pi/(365.25*24*3600);
 inc = acos(((-3*rT^2*J2*mu^0.5)./(2*cte*r.^(7/2))).^(-1));
-
-
 
 %% PERIODO ORBITAL Y ANGULOS EN FUNCION DEL TIEMPO
 
@@ -68,7 +67,7 @@ for orb=1:length(h)
     
     Reo = Rx(inclinacion)*Rz(RAAN);         % Tierra - Orbita -> angulo con sol + inclinacion
     rho(orb) = asin(rT./(rT + h(orb)));
-    beta_s(orb) = pi/2 - acos((Reo*[1,0,0]')'*[0,0,1]');
+    beta_s(orb) = pi/2 - acos((Reo*beta_v')'*[0,0,1]');
     phi(orb) = real(2*acos(cos(rho(orb))/cos(beta_s(orb))));
     
     if phi(orb) ~= 0
@@ -135,15 +134,15 @@ for orb = 1:length(h)                   % Bucle en alturas
         for p = 1:4                      % Bucle en paneles                 
             for t = 1:length(time(orb,:))   % Bucle en tiempo
                 
-                % C_tierra_sol = Rz(beta);                      % Sol -> Tierra -> beta
+                C_tierra_sol = Rz(beta);                        % Sol -> Tierra -> beta
                 C_plano_tierra = Rx(inclinacion)*Rz(RAAN);      % Tierra -> plano orbital  
                 C_orbita_plano = Rz(anom_ver(orb,t));           % plano orbital -> orbita
                 C_sat_orbita = Rx(w(vel)*t+(p-1)*pi/2);         % orbita -> sat
 
-                C_sat_tierra = C_sat_orbita*C_orbita_plano*C_plano_tierra;
+                C_sat_tierra = C_sat_orbita*C_orbita_plano*C_plano_tierra*C_tierra_sol ;
 
                 
-                r_tierra = [1 0 0];
+                r_tierra = beta_v;
                 r_orbita = C_sat_tierra*r_tierra'; 
                 
                 potencia_panel(t,p,orb,vel) = G*rend*A*fc*(r_orbita'*[0 0 1]')*eclipse(orb,t);  % Caras con panel: Y Z
@@ -186,7 +185,6 @@ for orb = 1:length(h)                   % Bucle en alturas
         disp(['  ','w = ', num2str(w(vel)),' rad/s -> ','Pm = ',num2str(Potencia_media_generada(orb,vel)), ' W'])
     end
 end
-
 
 
 %% FUNCIONES
