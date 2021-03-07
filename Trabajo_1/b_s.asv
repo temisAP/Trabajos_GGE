@@ -59,7 +59,7 @@ t1 = datetime(2021,12,21);
 t2 = datetime(2022,12,21);
 days = t1:t2;
 
-calculo == 'n';
+calculo = 'n';
 
 if calculo == 'y'
 
@@ -136,10 +136,15 @@ if calculo == 'n'
     load('Potencia_media_generada');
 end
 
-for orb = 1:length(h)                   % Bucle en alturas
-    for vel = 1:length(w)               % Bucle en velocidades angulares
-        plot(days(:),Potencia_media_generada(orb,vel,:))
+for vel = 1:length(w)               % Bucle en velocidades angulares
+    figure(fig);
+    hold on
+    for orb = 1:length(h)                   % Bucle en alturas
+        pot(:) = Potencia_media_generada(orb,vel,:);
+        plot(days,pot,'-', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = '])
     end
+    hold off
+    fig = fig+1;
 end
 
 

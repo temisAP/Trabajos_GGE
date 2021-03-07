@@ -136,13 +136,23 @@ if calculo == 'n'
     load('Potencia_media_generada');
 end
 
-for orb = 1:length(h)                   % Bucle en alturas
-    for vel = 1:length(w)               % Bucle en velocidades angulares
-        pot(:) = Potencia_media_generada(orb,vel,:);
-        figure(fig);
-            plot(days,pot)
-            fig = fig+1;
-    end
+for vel = 1:length(w)               % Bucle en velocidades angulares
+    h_plot = figure(fig);
+        hold on
+        pot(:,:) = Potencia_media_generada(:,vel,:);
+        plot(days,pot(1,:),'-', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(1)),' km'])
+        plot(days,pot(2,:),'--', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(2)),' km'])
+        plot(days,pot(3,:),'-.', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(3)),' km'])
+        legend('Interpreter', 'Latex', 'location', 'best')
+        xlh = xlabel('Fecha','Interpreter','latex');
+        xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
+        ylh = ylabel({'$P_{media}$';'[W]'},'Interpreter','latex');
+        ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.35); %X
+        ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.1); %Y
+        Save_as_PDF(h_plot, ['Figures/b_s',num2str(vel)],0);    % Save_as_PDF(h, 'Figuras/test',0)
+        grid on
+        hold off
+        fig = fig+1;
 end
 
 
