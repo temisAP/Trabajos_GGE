@@ -45,12 +45,12 @@ inc = acos(((-3*rT^2*J2*mu^0.5)./(2*cte*r.^(7/2))).^(-1));
 T = 2*pi*sqrt(r.^3/mu);                 % s
 anom_ver_punto = 1./sqrt(r.^3/mu);      % Velocidad angular anomalia verdadera
 
-N=1e5+1; % Mallado temporal
-for orb = 1:3
-    time(orb,:) = linspace(0,T(orb),N);            % Vector de tiempos 1 periodo
-    anom_ver(orb,:) = time(orb,:)*anom_ver_punto(orb);   % Anomalia verdadera
-    for vel = 1:3
-        roll(:,orb,vel) = wrapTo2Pi(time(orb,:)*w(vel));              % Rotacion sat sobre su eje Z
+N=1e4+1; % Mallado temporal
+for i = 1:3
+    time(i,:) = linspace(0,T(i),N);            % Vector de tiempos 1 periodo
+    anom_ver(i,:) = time(i,:)*anom_ver_punto(i);   % Anomalia verdadera
+    for j = 1:3
+        roll(:,i,j) = time(i,:)*w(j);              % Rotacion sat sobre su eje Z
     end
 end
 
@@ -137,8 +137,8 @@ for orb = 1:length(h)                   % Bucle en alturas
                 C_tierra_sol = Rz(beta);                        % Sol -> Tierra -> beta
                 C_plano_tierra = Rx(inclinacion)*Rz(RAAN);      % Tierra -> plano orbital  
                 C_orbita_plano = Rz(anom_ver(orb,t));           % plano orbital -> orbita
-                % C_sat_orbita = Rx(w(vel)*t+(p-1)*pi/2);         % orbita -> sat
-                C_sat_orbita = Rx(roll(t,orb,vel)+(p-1)*pi/2);         % orbita -> sat
+                C_sat_orbita = Rx(w(vel)*t+(p-1)*pi/2);         % orbita -> sat
+
                 C_sat_tierra = C_sat_orbita*C_orbita_plano*C_plano_tierra*C_tierra_sol ;
 
                 
@@ -163,15 +163,12 @@ for orb=1:length(h)
             hold on
             for p = 1:4
                 % plot(rad2deg(anom_ver(1,:)),potencia_panel(:,p,orb,vel),'DisplayName',['Panel ' num2str(p)])
-                plot(time(1,:),potencia_panel(:,p,orb,vel),'DisplayName',['Panel ' num2str(p)])
             end
-            % plot(rad2deg(anom_ver(1,:)),P_m(:,1,orb,vel),'DisplayName','Potencia total')
-            plot(time(1,:),P_m(:,1,orb,vel),'DisplayName','Potencia total')
+            plot(rad2deg(anom_ver(1,:)),P_m(:,1,orb,vel),'DisplayName','Potencia total')
             box on
             legend()
             title(['Simuacion ',num2str(h(orb)),' ',num2str(w(vel))])
-            % xlabel('\nu[deg]')
-            xlabel('tiempo [s]')
+            xlabel('\nu[deg]')
             ylabel('Potencia')
             hold off
             fig = fig+1;
