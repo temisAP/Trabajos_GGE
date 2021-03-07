@@ -105,6 +105,7 @@ if graph_rep == 'yes'
             ["Potencia m\'axima"])
         plot(alfa_1(i,:), P_m(i,:), '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
             ["Potencia media"])
+        axis([0, 361, 0, 20])
         box on; grid on
         legend('Interpreter', 'Latex', 'location', 'Best')
         xlh = xlabel('$\alpha$ [deg]','Interpreter','latex');
@@ -133,6 +134,7 @@ if graph_rep == 'yes'
             ["Potencia m\'axima"])
         plot(t(i,:), P_m(i,:), '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
             ["Potencia media"])
+        axis([0, 361, 0, 20])
         box on; grid on
         legend('Interpreter', 'Latex', 'location', 'Best')
         xlh = xlabel('$t$ [s]','Interpreter','latex');
