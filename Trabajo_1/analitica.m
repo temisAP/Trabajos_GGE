@@ -107,13 +107,10 @@ if graph_rep == 'yes'
             ["Potencia media"])
         axis([0, 361, 0, 20])
         box on; grid on
-        legend('Interpreter', 'Latex', 'location', 'Best')
-        xlh = xlabel('$\alpha$ [deg]','Interpreter','latex');
-        xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
-        ylh = ylabel({'$P$';'[W]'},'Interpreter','latex');
-        ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
-        ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.45);
-        Save_as_PDF(h(fig), ['Figures/analitica',num2str(fig)],0);
+        legend('Interpreter', 'Latex', 'location', 'SouthEast')
+        xlabel('$\theta$ [$^\circ$]','Interpreter','latex');
+        ylabel({'$P$';'[W]'},'Interpreter','latex');
+        Save_as_PDF(h(fig), ['Figures/analitica',num2str(fig)],'horizontal');
         hold off
         fig = fig+1;
     end
@@ -137,12 +134,9 @@ if graph_rep == 'yes'
         axis([0, 361, 0, 20])
         box on; grid on
         legend('Interpreter', 'Latex', 'location', 'Best')
-        xlh = xlabel('$t$ [s]','Interpreter','latex');
-        xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
-        ylh = ylabel({'$P$';'[W]'},'Interpreter','latex');
-        ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
-        ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.45);
-        Save_as_PDF(h(fig), ['Figures/analitica',num2str(fig)],0);
+        xlabel('$t$ [s]','Interpreter','latex');
+        ylabel({'$P$';'[W]'},'Interpreter','latex');
+        Save_as_PDF(h(fig), ['Figures/analitica',num2str(fig)],'horizontal');
         hold off
         fig = fig+1;
     end
