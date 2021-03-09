@@ -55,9 +55,14 @@ end
 %% PRINCIPIO DEL BUCLE
 
 beta = linspace(deg2rad(-23.5),deg2rad(360-23.5),366);
-t1 = datetime(2021,12,21);
-t2 = datetime(2022,12,21);
+t1 = datetime('21/12/2021');
+t2 = datetime('21/12/2022');
 days = t1:t2;
+DateString = cellstr(datestr(days));
+DateString = strrep(DateString(:,1),'Jan','Ene');
+DateString = strrep(DateString(:,1),'Apr','Abr');
+DateString = strrep(DateString(:,1),'Aug','Ago');
+DateString = strrep(DateString(:,1),'Dec','Dic');
 
 calculo = 'n';
 
@@ -98,13 +103,11 @@ for b=1:length(beta)
             for p = 1:4                      % Bucle en paneles
                 for t = 1:length(time(orb,:))   % Bucle en tiempo
                     
-                    C_tierra_sol = Rz(beta(b));                      % Sol -> Tierra -> beta
                     C_plano_tierra = Rx(inclinacion)*Rz(RAAN);      % Tierra -> plano orbital
                     C_orbita_plano = Rz(anom_ver(orb,t));           % plano orbital -> orbita
-                    C_sat_orbita = Rx(w(vel)*t+(p-1)*pi/2);         % orbita -> sat
+                    C_sat_orbita = Rx(roll(t,orb,vel)+(p-1)*pi/2);         % orbita -> sat
                     
-                    C_sat_tierra = C_sat_orbita*C_orbita_plano*C_plano_tierra*C_tierra_sol ;
-                    
+                    C_sat_tierra = C_sat_orbita*C_orbita_plano*C_plano_tierra;
                     
                     r_tierra = beta_v;
                     r_orbita = C_sat_tierra*r_tierra';
@@ -134,14 +137,49 @@ end
 
 if calculo == 'n'
     load('Potencia_media_generada');
+elseif calculo == 'y'
+    save('Potencia_media_generada'); 
 end
 
-for orb = 1:length(h)                   % Bucle en alturas
-    for vel = 1:length(w)               % Bucle en velocidades angulares
-        pot(:) = Potencia_media_generada(orb,vel,:);
-        figure(fig);
-            plot(days,pot)
-            fig = fig+1;
+for vel = 1:length(w)               % Bucle en velocidades angulares
+    h_plot = figure(fig);
+        hold on
+        pot(:,:) = Potencia_media_generada(:,vel,:);
+        plot(days,pot(1,:),'-', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(1)),' km'])
+        plot(days,pot(2,:),'--', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(2)),' km'])
+        plot(days, pot(3,:),'-.', 'LineWidth', 2, 'Color', 'k', 'DisplayName', ['h = ',num2str(h(3)),' km'])
+        legend('Interpreter', 'Latex', 'location', 'best')
+        datetick('x','dd/mm/yy','keeplimits')  % set date label format on axis hAX x-axis
+        xlh = xlabel('Fecha','Interpreter','latex');
+        xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
+        ylh = ylabel({'$P_{media}$';'[W]'},'Interpreter','latex');
+        ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.4); %X
+        ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.15); %Y
+        box on
+        grid on
+        Save_as_PDF(h_plot, ['Figures/b_s',num2str(vel)],0);    % Save_as_PDF(h, 'Figuras/test',0)
+        hold off
+        fig = fig+1;
+end
+
+%% MAXIMOS Y MINIMOS
+
+for orb = 1:length(h)
+    disp(['Potencias medias generadas para h = ',num2str(h(orb)), ' km'])    
+    for vel = 1:length(w)               
+        ppt(:) = Potencia_media_generada(orb,vel,:);
+        
+        [pk_max,loc_max] = findpeaks(ppt);
+        
+        [pk_min,loc_min] = findpeaks(-ppt);
+        
+        disp([' ','w =', num2str(w(vel)),' rad/s'])
+        for i=1:length(pk_max)
+            disp([' ','(',num2str(pk_max(i)),',',datestr(days(loc_max(i))),')'])
+        end
+        for i=1:length(pk_min)
+            disp([' ','(',num2str(-pk_min(i)),',',datestr(days(loc_min(i))),')'])
+        end
     end
 end
 
