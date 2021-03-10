@@ -45,7 +45,7 @@ inc = acos(((-3*rT^2*J2*mu^0.5)./(2*cte*r.^(7/2))).^(-1));
 T = 2*pi*sqrt(r.^3/mu);                 % s
 anom_ver_punto = 1./sqrt(r.^3/mu);      % Velocidad angular anomalia verdadera
 
-N=5e3+1; % Mallado temporal
+N=1e5+1; % Mallado temporal
 for orb = 1:3
     time(orb,:) = linspace(0,T(orb),N);            % Vector de tiempos 1 periodo
     anom_ver(orb,:) = time(orb,:)*anom_ver_punto(orb);   % Anomalia verdadera
@@ -145,9 +145,12 @@ for orb = 1:length(h)                   % Bucle en alturas
                 r_tierra = beta_v;
                 r_orbita = C_sat_tierra*r_tierra'; 
                 
-                potencia_panel(t,p,orb,vel) = G*rend*A*fc*(r_orbita'*[0 0 1]')*eclipse(orb,t);  % Caras con panel: Y Z
-                                
+                % potencia_panel(t,p,orb,vel) = G*rend*A*fc*(r_orbita'*[0 0 1]')*eclipse(orb,t);  % Caras con panel: Y Z
+                potencia_panel(t,p,orb,vel) = G*rend*A*fc*(r_orbita'*[0 0 1]');
             end
+            
+            % potencia_panel(:,p,orb,vel) = potencia_panel(:,p,orb,vel).*eclipse(orb,:)';  % Caras con panel: Y Z
+            
         end
     end
 end
@@ -156,25 +159,52 @@ end
 potencia_panel = max(0,potencia_panel); %Hacer 0 cuando las caras están de espaldas al Sol
 P_m = sum(potencia_panel,2);
 
-% Plot potencias
-for orb=1:length(h)
-    for vel =1:length(w)
-        h_plot(fig) = figure(fig);
+
+
+%% Plot potencias
+for orb = 1:length(h)
+    
+    for vel = 1:length(w)
+        
+        [sup, inf] = envelope(P_m(:,1,orb,vel),300,'peak');
+        
+        sup = sup'.*eclipse(orb,:); 
+        inf = inf'.*eclipse(orb,:);
+        P_m(:,1,orb,vel) = P_m(:,1,orb,vel).*eclipse(orb,:)';
+        
+%         sup(sup == 0) = NaN;
+%         inf(inf == 0) = NaN;
+        
+        h_ = figure();
             hold on
+            plot(rad2deg(anom_ver(1,:)),P_m(:,1,orb,vel),'-','LineWidth',0.5,'Color',[150, 150, 150]/255,'DisplayName','Potencia total')
+            plot(rad2deg(anom_ver(1,:)),sup,'-.','LineWidth',2,'Color','k','DisplayName','Envolvente superior')
+            plot(rad2deg(anom_ver(1,:)),inf,'--','LineWidth',2,'Color','k','DisplayName','Envolvente inferior') 
+            box on; grid on
+            axis([0,361, 0, 16])
+            legend('Interpreter', 'Latex', 'location', 'SouthEast')
+            xlh = xlabel('$\theta$ [$^\circ$]','Interpreter','latex');
+            xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
+            ylh = ylabel({'$P$';'[W]'},'Interpreter','latex');
+            ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
+            ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.45);
+            Save_as_PDF(h_,['Figures/Simulacion_Potencia_h' num2str(h(orb)) '_w' num2str(w(vel)*100)],0);
+            close all
+
 %             for p = 1:4
 %                 plot(rad2deg(anom_ver(1,:)),potencia_panel(:,p,orb,vel),'DisplayName',['Panel ' num2str(p)])
 %                 %plot(time(1,:),potencia_panel(:,p,orb,vel),'DisplayName',['Panel ' num2str(p)])
 %             end
-            plot(rad2deg(anom_ver(1,:)),P_m(:,1,orb,vel),'LineWidth',0.5,'DisplayName','Potencia total')
-            % plot(time(1,:),P_m(:,1,orb,vel),'DisplayName','Potencia total')
-            box on
-            legend()
-            title(['Simuacion ',num2str(h(orb)),' ',num2str(w(vel))])
-            xlabel('\nu[deg]')
-            %xlabel('tiempo [s]')
-            ylabel('Potencia')
-            hold off
-            fig = fig+1;
+%             plot(rad2deg(anom_ver(1,:)),P_m(:,1,orb,vel),'LineWidth',0.1,'DisplayName','Potencia total')
+%             % plot(time(1,:),P_m(:,1,orb,vel),'DisplayName','Potencia total')
+%             box on
+%             legend()
+%             title(['Simuacion ',num2str(h(orb)),' ',num2str(w(vel))])
+%             xlabel('\nu[deg]')
+%             %xlabel('tiempo [s]')
+%             ylabel('Potencia')
+%             hold off
+%             fig = fig+1;
     end
 end
 
@@ -193,38 +223,35 @@ end
 
 %% PLOTS PARA INFOMRE
 
-h = figure(fig);        % Paneles x
+h_ = figure();        % Paneles x
     hold on
     plot(time(1,:),potencia_panel(:,1,1,1), '-', 'LineWidth', 2, 'Color', 'k','DisplayName','Panel X$^+$')
     plot(time(1,:),potencia_panel(:,3,1,1), '--', 'LineWidth', 2, 'Color', 'k','DisplayName','Panel X$^-$')
     axis([0,2*pi/w(1)*1.55, 0, 4.3])
     box on; grid on
-    legend('Interpreter', 'Latex', 'location', 'Best')
+    legend('Interpreter', 'Latex', 'location', 'SouthEast')
     xlh = xlabel('$t$ [s]','Interpreter','latex');
     xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
     ylh = ylabel({'$P$';'[W]'},'Interpreter','latex');
     ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
     ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.45);
-    Save_as_PDF(h,"Figures/Simulacion_X",0);
+    Save_as_PDF(h_,"Figures/Simulacion_X",0);
     hold off
-fig = fig+1;
 
-
-h = figure(fig);        % Paneles x
+h_ = figure();        % Paneles x
     hold on
-    plot(time(1,:),potencia_panel(:,2,1,3), '-', 'LineWidth', 2, 'Color', 'k','DisplayName','Panel Y$^+$')
-    plot(time(1,:),potencia_panel(:,4,1,3), '--', 'LineWidth', 2, 'Color', 'k','DisplayName','Panel Y$^-$')
+    plot(time(1,:),potencia_panel(:,2,1,3),'-','LineWidth',2,'Color','k','DisplayName','Panel Y$^+$')
+    plot(time(1,:),potencia_panel(:,4,1,3),'--','LineWidth',2,'Color','k','DisplayName','Panel Y$^-$')
     axis([0,2*pi/w(3)*1.75, 0, 4.3])
     box on; grid on
-    legend('Interpreter', 'Latex', 'location', 'Best')
+    legend('Interpreter', 'Latex', 'location', 'SouthEast')
     xlh = xlabel('$t$ [s]','Interpreter','latex');
     xlh.Position(1) = xlh.Position(1) + abs(xlh.Position(1) * 0.75);
     ylh = ylabel({'$P$';'[W]'},'Interpreter','latex');
     ylh.Position(1) = ylh.Position(1) - abs(ylh.Position(1) * 0.7);
     ylh.Position(2) = ylh.Position(2) + abs(ylh.Position(2) * 0.45);
-    Save_as_PDF(h,"Figures/Simulacion_Y",0);
+    Save_as_PDF(h_,"Figures/Simulacion_Y",0);
     hold off
-fig = fig+1;
 
 %% FUNCIONES
 
