@@ -148,17 +148,17 @@ I_tramo2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^eta(end
 I_PCsol = [I_tramo1' I_tramo2'];
 
 figure(4)
-hold on
-plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-    ["Valores experimentales"])
-plot(V_mess, I_PCsol, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-    ["Pindado \& Cubas num\'erico"])
-axis([0, 3, 0, 0.5])
-box on; grid on
-legend('Interpreter', 'Latex', 'location', 'Best')
-xlabel('$V$ [V]','Interpreter','latex');
-ylabel({'$I$';'[A]'},'Interpreter','latex');
-Save_as_PDF(figure(4), ['Figuras/num_PindadoCubas_', char(sheet(s))],...
-    'horizontal');
-hold off
+    hold on
+    plot(V_mess, I_mess, '-.', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+        ["Valores experimentales"])
+    plot(V_mess, I_PCsol, '-', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+        ["Pindado \& Cubas num\'erico"])
+    axis([0, 3, 0, 0.5])
+    box on; grid on
+    legend('Interpreter', 'Latex', 'location', 'Best')
+    xlabel('$V$ [V]','Interpreter','latex');
+    ylabel({'$I$';'[A]'},'Interpreter','latex');
+    Save_as_PDF(figure(4), ['Figuras/num_PindadoCubas_', char(sheet(s))],...
+        'horizontal');
+    hold off
 

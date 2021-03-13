@@ -61,17 +61,17 @@ aux2 = betha*log(alpha);
 k_Das = lambertw(-1,aux2)/log(alpha);
 h = (1/alpha)*((1/betha)-1/k_Das-1);
 
-I_Das_analytic = ((1-(V_mess./Voc).^k_Das)/(1+h.*(V_mess./Voc))).*Isc;
+I_Das_analytic = ((1-(V_mess/Voc).^k_Das)/(1+h*(V_mess/Voc)))*Isc;
 
 % Plot de valores experimentales y Das analytic
-h_ = figure(2);
+h_ = figure(2)
     hold on
-    plot(V_mess, I_mess, '-', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
-    plot(V_mess, I_Das_analytic, '-.', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Das')
-    %scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracterististicos')
+    plot(V_mess, I_mess, 'linewidth', 2)
+    plot(V_mess, I_Das_analytic, 'linewidth', 2)
+    plot([0 Vmp Voc], [Isc Imp 0], 'o', 'MarkerSize', 10)
     hold off
     box on; grid on
-    xlabel('$V$ [V]','Interpreter','latex')
-    ylabel('$I$ [A]','Interpreter','latex')
-    %legend('Interpreter', 'Latex', 'location', 'SouthWest')
-    %Save_as_PDF(h_, ['Figuras/1_An_Das_', sheet{s}], 'horizontal');
+    xlabel('Voltage [V]')
+    ylabel('Current [A]')
+    legend('Experimental', 'Das Analytic')
+    title(string(sheet(s)))
