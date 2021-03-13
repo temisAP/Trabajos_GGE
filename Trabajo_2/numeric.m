@@ -35,14 +35,19 @@ alpha = xlsread('IV_curves.xlsx', string(sheet(s)), 'B6');
 
 
 % Plot de valores experimentales
-figure()
-grid on
+figure(1);
 hold on
-plot(V_mess, I_mess, 'linewidth', 2)
-plot([0 Vmp Voc], [Isc Imp 0], 'o', 'MarkerSize', 10)
-xlabel('Voltage [V]')
-ylabel('Current [A]')
-title('Valores experimentales')
+plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    ["Valores experimentales"])
+plot([0 Vmp Voc], [Isc Imp 0], 'o', 'MarkerSize', 10, 'Color', 'k',...
+    'DisplayName', ["Datos fabricante"])
+axis([0, 3, 0, 0.5])
+box on; grid on
+legend('Interpreter', 'Latex', 'location', 'Best')
+xlabel('$V$ [V]','Interpreter','latex');
+ylabel({'$I$';'[A]'},'Interpreter','latex');
+Save_as_PDF(figure(1), ['Figuras/valores_exp_', char(sheet(s))],'horizontal');
+hold off
 
 %% Karmalkar & Haneefa numérico
 
@@ -66,14 +71,20 @@ end
 
 I_Ksol = (1-(1-gamma(end))*v_mess - gamma(end)*v_mess.^m(end))*Isc;
 
-figure()
-grid on
+figure(2)
 hold on
-plot(V_mess, I_mess, 'linewidth', 2)
-plot(V_mess, I_Ksol, 'linewidth', 2)
-xlabel('Voltage [V]')
-ylabel('Current [A]')
-title('Valores experimentales vs Karmalkar & Haneefa')
+plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    ["Valores experimentales"])
+plot(V_mess, I_Ksol, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    ["Karmalkar \& Haneefa num\'erico"])
+axis([0, 3, 0, 0.5])
+box on; grid on
+legend('Interpreter', 'Latex', 'location', 'Best')
+xlabel('$V$ [V]','Interpreter','latex');
+ylabel({'$I$';'[A]'},'Interpreter','latex');
+Save_as_PDF(figure(2), ['Figuras/num_KarmalkarHaneefa_', char(sheet(s))],...
+    'horizontal');
+hold off
 
 %% Das numérico
 
@@ -94,20 +105,25 @@ end
 
 I_Dsol = (1-v_mess.^k(end))./(1+h(end)*v_mess)*Isc;
 
-figure()
-grid on
+figure(3)
 hold on
-plot(V_mess, I_mess, 'linewidth', 2)
-plot(V_mess, I_Dsol, 'linewidth', 2)
-xlabel('Voltage [V]')
-ylabel('Current [A]')
-title('Valores experimentales vs Das')
+plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    ["Valores experimentales"])
+plot(V_mess, I_Dsol, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    ["Das num\'erico"])
+axis([0, 3, 0, 0.5])
+box on; grid on
+legend('Interpreter', 'Latex', 'location', 'Best')
+xlabel('$V$ [V]','Interpreter','latex');
+ylabel({'$I$';'[A]'},'Interpreter','latex');
+Save_as_PDF(figure(3), ['Figuras/num_Das_', char(sheet(s))],'horizontal');
+hold off
 
 %% Pindado & Cubas numérico
 
 beta0 = 1;
 
-% Al ser una función definida a trozos, se define el vector V_mess_PC el
+% Al ser una función definida a trozos, se define el vector V_mess_tramo2 el
 % cual contiene únicamente valores de V >= Vmp
 V_mess_tramo1 = V_mess(V_mess <= Vmp);
 V_mess_tramo2 = V_mess(V_mess >= Vmp);
@@ -131,14 +147,18 @@ I_tramo2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^eta(end
 
 I_PCsol = [I_tramo1' I_tramo2'];
 
-figure()
-grid on
+figure(4)
 hold on
-plot(V_mess, I_mess, 'linewidth', 2)
-plot(V_mess, I_PCsol, 'linewidth', 2)
-xlabel('Voltage [V]')
-ylabel('Current [A]')
-title('Valores experimentales vs Pindado & Cubas')
-
-
+plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    ["Valores experimentales"])
+plot(V_mess, I_PCsol, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    ["Pindado \& Cubas num\'erico"])
+axis([0, 3, 0, 0.5])
+box on; grid on
+legend('Interpreter', 'Latex', 'location', 'Best')
+xlabel('$V$ [V]','Interpreter','latex');
+ylabel({'$I$';'[A]'},'Interpreter','latex');
+Save_as_PDF(figure(4), ['Figuras/num_PindadoCubas_', char(sheet(s))],...
+    'horizontal');
+hold off
 
