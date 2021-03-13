@@ -2,26 +2,20 @@ clear all;
 close all;
 clc;
 
-% Constantes
-%k = 1.3806503e-23;  % [J/k] Stefan Boltzman
-q = 1.60217646e-19; % [C] Carga del electrón
-
-% Nombre de las hojas del archivo excel
-sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PSC'};
-
-% Selección de hoja (s)
-% 1 ---> RTC France
-% 2 ---> TNJ
-% 3 ---> ZTJ
-% 4 ---> 3G30C
-% 5 ---> PWP201
-% 6 ---> KC200GT2
-% 7 ---> SPVSX5
-% 8 ---> PSC
-
-
 for s = 3
+    % Nombre de las hojas del archivo excel
+    sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PSC'};
 
+    % Selección de hoja (s)
+    % 1 ---> RTC France
+    % 2 ---> TNJ
+    % 3 ---> ZTJ
+    % 4 ---> 3G30C
+    % 5 ---> PWP201
+    % 6 ---> KC200GT2
+    % 7 ---> SPVSX5
+    % 8 ---> PSC
+    
     % Carga de valores experimentales
     V_mess = xlsread('IV_curves.xlsx', sheet{s}, 'A21:A1202');
     I_mess = xlsread('IV_curves.xlsx', sheet{s}, 'B21:B1202');
@@ -36,18 +30,18 @@ for s = 3
 
 
     % Plot de valores experimentales
-    figure(1);
+    h_ = figure(1);
     hold on
     plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
         ["Valores experimentales"])
     plot([0 Vmp Voc], [Isc Imp 0], 'o', 'MarkerSize', 10, 'Color', 'k',...
         'DisplayName', ["Datos fabricante"])
-    axis([0, 3, 0, 0.5])
+    axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
     box on; grid on
     legend('Interpreter', 'Latex', 'location', 'Best')
     xlabel('$V$ [V]','Interpreter','latex');
     ylabel({'$I$';'[A]'},'Interpreter','latex');
-    Save_as_PDF(figure(1), ['Figuras/valores_exp_', sheet{s}],'horizontal');
+    Save_as_PDF(h_, ['Figuras/valores_exp_', sheet{s}],'horizontal');
     hold off
 
     %% Karmalkar & Haneefa numérico
@@ -72,18 +66,18 @@ for s = 3
 
     I_Ksol = (1-(1-gamma(end))*v_mess - gamma(end)*v_mess.^m(end))*Isc;
 
-    figure(2)
+    h_ = figure(2);
     hold on
-    plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    plot(V_mess, I_mess, '-.', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
         ["Valores experimentales"])
-    plot(V_mess, I_Ksol, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    plot(V_mess, I_Ksol, '-', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
         ["Karmalkar \& Haneefa num\'erico"])
-    axis([0, 3, 0, 0.5])
+    axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
     box on; grid on
     legend('Interpreter', 'Latex', 'location', 'Best')
     xlabel('$V$ [V]','Interpreter','latex');
     ylabel({'$I$';'[A]'},'Interpreter','latex');
-    Save_as_PDF(figure(2), ['Figuras/1_Nu_KyH', sheet{s}],...
+    Save_as_PDF(h_, ['Figuras/1_Nu_KyH_', sheet{s}],...
         'horizontal');
     hold off
 
@@ -106,18 +100,18 @@ for s = 3
 
     I_Dsol = (1-v_mess.^k(end))./(1+h(end)*v_mess)*Isc;
 
-    figure(3)
+    h_ = figure(3);
     hold on
-    plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    plot(V_mess, I_mess, '-.', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
         ["Valores experimentales"])
-    plot(V_mess, I_Dsol, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    plot(V_mess, I_Dsol, '-', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
         ["Das num\'erico"])
-    axis([0, 3, 0, 0.5])
+    axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
     box on; grid on
     legend('Interpreter', 'Latex', 'location', 'Best')
     xlabel('$V$ [V]','Interpreter','latex');
     ylabel({'$I$';'[A]'},'Interpreter','latex');
-    Save_as_PDF(figure(3), ['Figuras/1_Nu_Das', char(sheet(s))],'horizontal');
+    Save_as_PDF(h_, ['Figuras/1_Nu_Das_', sheet{s}],'horizontal');
     hold off
 
     %% Pindado & Cubas numérico
@@ -126,7 +120,7 @@ for s = 3
 
     % Al ser una función definida a trozos, se define el vector V_mess_tramo2 el
     % cual contiene únicamente valores de V >= Vmp
-    V_mess_tramo1 = V_mess(V_mess <= Vmp);
+    V_mess_tramo1 = V_mess(V_mess < Vmp);
     V_mess_tramo2 = V_mess(V_mess >= Vmp);
     I_mess_tramo2 = I_mess((length(V_mess) - length(V_mess_tramo2) + 1):end);
 
@@ -148,21 +142,21 @@ for s = 3
 
     I_PCsol = [I_tramo1' I_tramo2'];
 
-    figure(4)
+    h_ = figure(4);
         hold on
-        plot(V_mess, I_mess, '-.', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+        plot(V_mess, I_mess, '-.', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
             ["Valores experimentales"])
-        plot(V_mess, I_PCsol, '-', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+        plot(V_mess, I_PCsol, '-', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
             ["Pindado \& Cubas num\'erico"])
-        axis([0, 3, 0, 0.5])
+        axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
         box on; grid on
         legend('Interpreter', 'Latex', 'location', 'Best')
         xlabel('$V$ [V]','Interpreter','latex');
         ylabel({'$I$';'[A]'},'Interpreter','latex');
-        Save_as_PDF(figure(4), ['Figuras/1_Nu_PyC_', char(sheet(s))],...
-            'horizontal');
+        Save_as_PDF(h_, ['Figuras/1_Nu_PyC_', sheet{s}],'horizontal');
         hold off
-        
-     % clear all
+     
+%      clear all;
+%      close all;      
 
 end
