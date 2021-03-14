@@ -44,18 +44,18 @@ for s = 1:8
     I_Karmalkar_analytic = (1-(1-gamma)*(V_mess/Voc)-gamma*(V_mess/Voc).^m)*Isc;
 
     % Plot de valores experimentales y Karmalkar analytic
-%     h_ = figure(1);
-%         hold on
-%         plot(V_mess, I_mess, '-', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
-%         plot(V_mess, I_Karmalkar_analytic, '-.', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Karmalkar Analytic')
-%         scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracterististicos')
-%         hold off
-%         axis([0, V_mess(end), 0, I_mess(1)*1.05])
-%         box on; grid on
-%         xlabel('$V$ [V]','Interpreter','latex')
-%         ylabel('$I$ [A]','Interpreter','latex')
-%         legend('Interpreter', 'Latex', 'location', 'SouthWest')
-%         Save_as_PDF(h_, ['Figuras/1_An_KyH_', sheet{s}], 'horizontal');
+    h_ = figure(1);
+        hold on
+        plot(V_mess, I_mess, '-', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
+        plot(V_mess, I_Karmalkar_analytic, '-.', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Karmalkar Analytic')
+        scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracterististicos')
+        hold off
+        axis([0, V_mess(end), 0, I_mess(1)*1.05])
+        box on; grid on
+        xlabel('$V$ [V]','Interpreter','latex')
+        ylabel({'$I$';'[A]'},'Interpreter','latex')
+        legend('Interpreter', 'Latex', 'location', 'SouthWest')
+        Save_as_PDF(h_, ['Figuras/1_An_KyH_', sheet{s}], 'horizontal');
     
     save_filename = 'Fit_model_analytic.xlsx';
     save_sheet = 'KyH';
@@ -83,18 +83,18 @@ for s = 1:8
     I_Das_analytic = ((1-(V_mess./Voc).^k_Das)./(1+h.*(V_mess./Voc))).*Isc;
 
     % Plot de valores experimentales y Das analytic
-%     h_ = figure(2);
-%         hold on
-%         plot(V_mess, I_mess, '-', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
-%         plot(V_mess, I_Das_analytic, '-.', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Das')
-%         scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracterististicos')
-%         axis([0, V_mess(end), 0, I_mess(1)*1.05])
-%         hold off
-%         box on; grid on
-%         xlabel('$V$ [V]','Interpreter','latex')
-%         ylabel('$I$ [A]','Interpreter','latex')
-%         legend('Interpreter', 'Latex', 'location', 'SouthWest')
-%         Save_as_PDF(h_, ['Figuras/1_An_Das_', sheet{s}], 'horizontal');
+    h_ = figure(2);
+        hold on
+        plot(V_mess, I_mess, '-', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
+        plot(V_mess, I_Das_analytic, '-.', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Das')
+        scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracterististicos')
+        axis([0, V_mess(end), 0, I_mess(1)*1.05])
+        hold off
+        box on; grid on
+        xlabel('$V$ [V]','Interpreter','latex')
+        ylabel({'$I$';'[A]'},'Interpreter','latex')
+        legend('Interpreter', 'Latex', 'location', 'SouthWest')
+        Save_as_PDF(h_, ['Figuras/1_An_Das_', sheet{s}], 'horizontal');
         
     save_filename = 'Fit_model_analytic.xlsx';
     save_sheet = 'Das';

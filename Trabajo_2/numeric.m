@@ -30,19 +30,19 @@ for s = 1:8
 
 
     % Plot de valores experimentales
-%     h_ = figure(1);
-%         hold on
-%         plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-%             ["Valores experimentales"])
-%         plot([0 Vmp Voc], [Isc Imp 0], 'o', 'MarkerSize', 10, 'Color', 'k',...
-%             'DisplayName', ["Datos fabricante"])
-%         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
-%         box on; grid on
-%         legend('Interpreter', 'Latex', 'location', 'Best')
-%         xlabel('$V$ [V]','Interpreter','latex');
-%         ylabel({'$I$';'[A]'},'Interpreter','latex');
-%         Save_as_PDF(h_, ['Figuras/valores_exp_', sheet{s}],'horizontal');
-%         hold off
+    h_ = figure(1);
+        hold on
+        plot(V_mess, I_mess, '-.', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+            ["Valores experimentales"])
+        plot([0 Vmp Voc], [Isc Imp 0], 'o', 'MarkerSize', 10, 'Color', 'k',...
+            'DisplayName', ["Datos fabricante"])
+        axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
+        box on; grid on
+        legend('Interpreter', 'Latex', 'location', 'Best')
+        xlabel('$V$ [V]','Interpreter','latex');
+        ylabel({'$I$';'[A]'},'Interpreter','latex');
+        Save_as_PDF(h_, ['Figuras/valores_exp_', sheet{s}],'horizontal');
+        hold off
 
     %% Karmalkar & Haneefa numérico
 
@@ -66,20 +66,20 @@ for s = 1:8
 
     I_Ksol = (1-(1-gamma(end))*v_mess - gamma(end)*v_mess.^m(end))*Isc;
 
-%     h_ = figure(2);
-%         hold on
-%         plot(V_mess, I_mess, '-.', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
-%             ["Valores experimentales"])
-%         plot(V_mess, I_Ksol, '-', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
-%             ["Karmalkar \& Haneefa num\'erico"])
-%         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
-%         box on; grid on
-%         legend('Interpreter', 'Latex', 'location', 'Best')
-%         xlabel('$V$ [V]','Interpreter','latex');
-%         ylabel({'$I$';'[A]'},'Interpreter','latex');
-%         Save_as_PDF(h_, ['Figuras/1_Nu_KyH_', sheet{s}],...
-%             'horizontal');
-%         hold off
+    h_ = figure(2);
+        hold on
+        plot(V_mess, I_mess, '-.', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
+            ["Valores experimentales"])
+        plot(V_mess, I_Ksol, '-', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
+            ["Karmalkar \& Haneefa num\'erico"])
+        axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
+        box on; grid on
+        legend('Interpreter', 'Latex', 'location', 'Best')
+        xlabel('$V$ [V]','Interpreter','latex');
+        ylabel({'$I$';'[A]'},'Interpreter','latex');
+        Save_as_PDF(h_, ['Figuras/1_Nu_KyH_', sheet{s}],...
+            'horizontal');
+        hold off
     
     save_filename = 'numeric.xlsx';
     save_sheet = 'KyH';
@@ -121,20 +121,20 @@ for s = 1:8
 
     I_Dsol = (1-v_mess.^k(end))./(1+h(end)*v_mess)*Isc;
 
-%     h_ = figure(3);
-%         hold on
-%         plot(V_mess, I_mess, '-.', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
-%             ["Valores experimentales"])
-%         plot(V_mess, I_Dsol, '-', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
-%             ["Das num\'erico"])
-%         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
-%         box on; grid on
-%         legend('Interpreter', 'Latex', 'location', 'Best')
-%         xlabel('$V$ [V]','Interpreter','latex');
-%         ylabel({'$I$';'[A]'},'Interpreter','latex');
-%         Save_as_PDF(h_, ['Figuras/1_Nu_Das_', sheet{s}],'horizontal');
-%         hold off
-%         
+    h_ = figure(3);
+        hold on
+        plot(V_mess, I_mess, '-.', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
+            ["Valores experimentales"])
+        plot(V_mess, I_Dsol, '-', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
+            ["Das num\'erico"])
+        axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
+        box on; grid on
+        legend('Interpreter', 'Latex', 'location', 'Best')
+        xlabel('$V$ [V]','Interpreter','latex');
+        ylabel({'$I$';'[A]'},'Interpreter','latex');
+        Save_as_PDF(h_, ['Figuras/1_Nu_Das_', sheet{s}],'horizontal');
+        hold off
+        
     save_filename = 'numeric.xlsx';
     save_sheet = 'Das';
     
@@ -183,19 +183,19 @@ for s = 1:8
 
     I_PCsol = [I_tramo1' I_tramo2'];
 
-%     h_ = figure(4);
-%         hold on
-%         plot(V_mess, I_mess, '-.', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
-%             ["Valores experimentales"])
-%         plot(V_mess, I_PCsol, '-', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
-%             ["Pindado \& Cubas num\'erico"])
-%         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
-%         box on; grid on
-%         legend('Interpreter', 'Latex', 'location', 'Best')
-%         xlabel('$V$ [V]','Interpreter','latex');
-%         ylabel({'$I$';'[A]'},'Interpreter','latex');
-%         Save_as_PDF(h_, ['Figuras/1_Nu_PyC_', sheet{s}],'horizontal');
-%         hold off
+    h_ = figure(4);
+        hold on
+        plot(V_mess, I_mess, '-.', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
+            ["Valores experimentales"])
+        plot(V_mess, I_PCsol, '-', 'LineWidth', 1.5, 'Color', 'k','DisplayName', ...
+            ["Pindado \& Cubas num\'erico"])
+        axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
+        box on; grid on
+        legend('Interpreter', 'Latex', 'location', 'Best')
+        xlabel('$V$ [V]','Interpreter','latex');
+        ylabel({'$I$';'[A]'},'Interpreter','latex');
+        Save_as_PDF(h_, ['Figuras/1_Nu_PyC_', sheet{s}],'horizontal');
+        hold off
 %         
     save_filename = 'numeric.xlsx';
     save_sheet = 'PyC';
