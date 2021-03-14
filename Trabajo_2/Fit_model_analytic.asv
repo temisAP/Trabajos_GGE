@@ -2,6 +2,7 @@
 clear all
 clc
 close all
+format sh
 
 % Nombre de las hojas del archivo excel
 read_filename = 'IV_curves.xlsx';
@@ -63,15 +64,15 @@ for s = 1:8
     % Name
     pos = strjoin({'A',num2str(s+1)},'');
     A = cellstr(sheet{s});
-    xlswrite(save_filename,A,save_sheet,pos);
+    xlswrite(save_filename,A,save_sheet,pos)
     % m
     pos = strjoin({'B',num2str(s+1)},'');
-    A = round(m,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
+    A = round(m,2);
+    xlswrite(save_filename,A,save_sheet,pos)
     % gamma
     pos = strjoin({'C',num2str(s+1)},'');
-    A = round(gamma,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
+    A = round(gamma,2);
+    xlswrite(save_filename,A,save_sheet,pos)
 
 
     %% Das' model
@@ -102,15 +103,15 @@ for s = 1:8
     % Name
     pos = strjoin({'A',num2str(s+1)},'');
     A = cellstr(sheet{s});
-    xlswrite(save_filename,A,save_sheet,pos);
+    xlswrite(save_filename,A,save_sheet,pos)
     % k_Das
     pos = strjoin({'B',num2str(s+1)},'');
-    A = round(k_Das,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
+    A = round(k_Das,2);
+    xlswrite(save_filename,A,save_sheet,pos)
     % h
     pos = strjoin({'C',num2str(s+1)},'');
-    A = round(h,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
+    A = round(h,2);
+    xlswrite(save_filename,A,save_sheet,pos)
         
         
     close all
