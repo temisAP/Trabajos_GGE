@@ -77,8 +77,7 @@ for s = 1:8
         legend('Interpreter', 'Latex', 'location', 'Best')
         xlabel('$V$ [V]','Interpreter','latex');
         ylabel({'$I$';'[A]'},'Interpreter','latex');
-        Save_as_PDF(h_, ['Figuras/1_Nu_KyH_', sheet{s}],...
-            'horizontal');
+        Save_as_PDF(h_, ['Figuras/1_Nu_KyH_', sheet{s}],'horizontal');
         hold off
     
     save_filename = 'numeric.xlsx';
@@ -196,7 +195,7 @@ for s = 1:8
         ylabel({'$I$';'[A]'},'Interpreter','latex');
         Save_as_PDF(h_, ['Figuras/1_Nu_PyC_', sheet{s}],'horizontal');
         hold off
-%         
+        
     save_filename = 'numeric.xlsx';
     save_sheet = 'PyC';
     
@@ -213,7 +212,24 @@ for s = 1:8
     A = round(Error_PC(i),3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
 
-     
+    h_ = figure(5);
+        hold on
+        plot(V_mess, I_mess, '-.', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+            ["Valores experimentales"])
+        plot(V_mess, I_Ksol, '-', 'LineWidth', 1, 'Color', 'r','DisplayName', ...
+            ["Karmalkar \& Haneefa num\'erico"])
+        plot(V_mess, I_Dsol, '-', 'LineWidth', 1, 'Color', 'b','DisplayName', ...
+            ["Das num\'erico"])
+        plot(V_mess, I_PCsol, '-', 'LineWidth', 1, 'Color', 'g','DisplayName', ...
+            ["Pindado \& Cubas num\'erico"])
+        axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
+        box on; grid on
+        legend('Interpreter', 'Latex', 'location', 'Best')
+        xlabel('$V$ [V]','Interpreter','latex');
+        ylabel({'$I$';'[A]'},'Interpreter','latex');
+        Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal');
+        hold off
+    
     if s ~= 8
         clear all;
         close all;
