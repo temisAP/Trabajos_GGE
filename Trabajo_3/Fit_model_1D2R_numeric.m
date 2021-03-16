@@ -28,7 +28,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 %% Bucle para cada hoja
 for s = 1:8
     
-    clear u
+    clear V_mess I_mess Isc Imp Vmp Voc betha alpha u
     
     % Carga de valores experimentales
     V_mess = xlsread(read_filename, sheet{s}, 'A21:A1202');
@@ -72,9 +72,9 @@ for s = 1:8
 %         xlabel('$V$ [V]','Interpreter','latex')
 %         ylabel({'$I$';'[A]'},'Interpreter','latex')
 %         legend('Interpreter', 'Latex', 'location', 'SouthWest')
-%         Save_as_PDF(h_, ['Figures/1D2R', sheet{s}], 'horizontal');
+%         Save_as_PDF(h_, ['Figures/1D2R_numeric', sheet{s}], 'horizontal');
     
-    save_filename = 'Fit_model_1D2R.xlsx';
+    save_filename = 'Fit_model_1D2R_numeric.xlsx';
     save_sheet = 'Hoja1';
         
     % Name
