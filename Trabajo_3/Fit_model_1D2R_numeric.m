@@ -24,8 +24,8 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 % 7 ---> SPVSX5
 % 8 ---> PSC
 
-
 %% Bucle para cada hoja
+
 for s = 1:8
     
     clear V_mess I_mess Isc Imp Vmp Voc betha alpha u
@@ -44,7 +44,13 @@ for s = 1:8
     I_mess = I_mess';
     
     % Minimize Least squares
-    [umin,fval]=fminsearch(@(u)RECT(u,V_mess,I_mess),[1,1e-8,1,10,1]);
+    
+    try 
+        [umin,fval]=fminsearch(@(u)RECT(u,V_mess,I_mess),[1,1e-8,1,10,1]);
+    catch 
+        disp('error while fminsearch')
+        umin = zeros(5,1);
+    end
     
     % Results: parameters of equivalent circuit
     
@@ -110,8 +116,12 @@ function I_modelo = Panel_Current(u, V_mesh)
 global Vt
 
 %Ipv=u(1); I0=u(2); Rs=u(3); Rsh=u(4); a=u(5);
-
-I_modelo =fzero(@(I) u(1)-u(2)*(exp((V_mesh+u(3)*I)/(Vt*u(5)))-1)-(V_mesh+u(3)*I)/u(4)-I, 0);
+try
+    I_modelo =fzero(@(I) u(1)-u(2)*(exp((V_mesh+u(3)*I)/(Vt*u(5)))-1)-(V_mesh+u(3)*I)/u(4)-I, 0);
+catch
+    disp('error while fzero')
+    I_modelo = 1e10;
+end 
 end
 
 function error = RECT(u, V_mesh, I_exp)

@@ -62,7 +62,7 @@ for s = 1:8
     %% Paso2 despejar Rs
     
     Rs_guess =0.08;
-    Rs_sol = fzero(@(Rs) log((Rsh0*(Isc-Imp)-Vmp-a2*Vt*((Rsh0-Vmp/Imp)/(Vmp/Imp-Rs)))/((Rsh0*Isc-Voc)-a2*Vt((Rsh0-Rs0)/(Rs0-Rs)))) ...
+    Rs_sol = fzero(@(Rs) log((Rsh0*(Isc-Imp)-Vmp-a2*Vt*((Rsh0-Vmp/Imp)/(Vmp/Imp-Rs)))/((Rsh0*Isc-Voc)-a2*Vt*((Rsh0-Rs0)/(Rs0-Rs)))) ...
         -(Vmp+Imp*Rs-Voc)*(((Rsh0-Vmp/Imp)/(Vmp/Imp-Rs))-(((Rsh0-Rs0)/(Rs0-Rs))*exp((Vmp+Imp*Rs-Voc)/(a2*Vt))))/...
         ((Rsh0*(Isc-Imp)-Vmp)-(Rsh0*Isc-Voc)*exp((Vmp+Imp*Rs-Voc)/(a2*Vt))),Rs_guess);
     % syms Rs Rsh0 Rs0 Isc Voc Imp Vmp a2 Vt
@@ -80,13 +80,13 @@ for s = 1:8
     a1=0.9980;
     %% Paso 4 obtener I_01
     
-    I_01 = a1/(a1-a2)*exp(-Voc/(a1*Vt))*(a2*Vt*(Rsh0-Rs0)-(Rs0-Rs)*(Rsh0*Isc-Voc))/((Rsh0-Rs)*(Rs0-Rs));
-    I_01=2.4409*10^-16;
+    I01 = a1/(a1-a2)*exp(-Voc/(a1*Vt))*(a2*Vt*(Rsh0-Rs0)-(Rs0-Rs)*(Rsh0*Isc-Voc))/((Rsh0-Rs)*(Rs0-Rs));
+    I01=2.4409*10^-16;
     
     %% Paso 5 obtener I_02
     
-    I_02 = a2/(a1-a2)*exp(-Voc/(a2*Vt))*(a1*Vt*(Rsh0-Rs0)-(Rs0-Rs)*(Rsh0*Isc-Voc))/((Rsh0-Rs)*(Rs0-Rs));
-    I_02=8.4461*10^-10;
+    I02 = a2/(a1-a2)*exp(-Voc/(a2*Vt))*(a1*Vt*(Rsh0-Rs0)-(Rs0-Rs)*(Rsh0*Isc-Voc))/((Rsh0-Rs)*(Rs0-Rs));
+    I02=8.4461*10^-10;
     
     %% Paso 6 Obtener Rsh
     
@@ -101,7 +101,7 @@ for s = 1:8
     %% MODELO 2D2R
     I_modelo = zeros(size(V_mess,2),1)';
     for i=1:size(V_mess,2)
-        I_modelo(i) = fzero(@(I) Ipv - I_01*(exp((V_mess(1,i)+I*Rs)/(a1*Vt))-1) - I_02*(exp((V_mess(1,i)+I*Rs)/(a2*Vt))-1) - (V_mess(1,i)+I*Rs)/Rsh - I, 0);
+        I_modelo(i) = fzero(@(I) Ipv - I01*(exp((V_mess(1,i)+I*Rs)/(a1*Vt))-1) - I02*(exp((V_mess(1,i)+I*Rs)/(a2*Vt))-1) - (V_mess(1,i)+I*Rs)/Rsh - I, 0);
     end
     error = (sum((I_modelo - I_mess).^2))^0.5;
     
@@ -155,7 +155,7 @@ for s = 1:8
     A = round(a1,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
     % a2
-    pos = strjoin({'G',num2str(s+1)},'');
+    pos = strjoin({'H',num2str(s+1)},'');
     A = round(a2,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
     

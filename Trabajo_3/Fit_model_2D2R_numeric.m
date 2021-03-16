@@ -44,7 +44,12 @@ for s = 1:8
     I_mess = I_mess';
 
     % Minimize Least squares
-    [umin,fval]=fminsearch(@(u)RECT(u,V_mess,I_mess),[1,1e-8,1e-81,10,1,1]);
+    try
+        [umin,fval]=fminsearch(@(u)RECT(u,V_mess,I_mess),[1,1e-8,1e-8,1,10,1,1]);
+    catch
+        disp('error while fminsearch')
+        umin = zeros(7,1);
+    end
 
     % Results: parameters of equivalent circuit
 
@@ -108,7 +113,7 @@ for s = 1:8
     A = round(a1,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
     % a2
-    pos = strjoin({'G',num2str(s+1)},'');
+    pos = strjoin({'F',num2str(s+1)},'');
     A = round(a2,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
 
@@ -120,9 +125,13 @@ function I_modelo = Panel_Current(u, V_mesh)
 global Vt
 
 %Ipv=u(1); I01=u(2); I02=u(3); Rs=u(4); Rsh=u(5); a1=u(6); a2=u(7);
-%Ipv=u(1); I0=u(2); Rs=u(3); Rsh=u(4); a=u(5);
+try
+    I_modelo =fzero(@(I) u(1)-u(2)*(exp((V_mesh+u(4)*I)/(Vt*u(6)))-1)-u(3)*(exp((V_mesh+u(4)*I)/(Vt*u(7)))-1)-(V_mesh+u(4)*I)/u(5)-I, 0);
+catch
+    disp('error while fzero')
+    I_modelo = 1e10;
+end 
 
-I_modelo =fzero(@(I) u(1)-u(2)*(exp((V_mesh+u(4)*I)/(Vt*u(6)))-1)-u(3)*(exp((V_mesh+u(4)*I)/(Vt*u(7)))-1)-(V_mesh+u(4)*I)/u(5)-I, 0);
 end
 
 function error = RECT(u, V_mesh, I_exp)
