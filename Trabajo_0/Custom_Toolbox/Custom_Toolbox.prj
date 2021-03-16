@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="3012336815" file="C:\Users\danie\OneDrive - Universidad Politécnica de Madrid\Custom_Toolbox\Custom_Toolbox.prj" location="C:\Users\danie\OneDrive - Universidad Politécnica de Madrid\Custom_Toolbox" name="Custom_Toolbox" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="3212089683" file="C:\Users\danie\OneDrive - Universidad Politécnica de Madrid\Custom_Toolbox\Custom_Toolbox.prj" location="C:\Users\danie\OneDrive - Universidad Politécnica de Madrid\Custom_Toolbox" name="Custom_Toolbox" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>Custom_Toolbox</param.appname>
     <param.authnamewatermark>Daniel del Río Velilla</param.authnamewatermark>
     <param.email>daniel_drv@hotmail.es</param.email>
@@ -9,7 +9,7 @@
 
 - table2latex.m reads a Table type variable in matlab and generates a .tex with caption and label.</param.description>
     <param.screenshot>${PROJECT_ROOT}\Tiempo.png</param.screenshot>
-    <param.version>1.6</param.version>
+    <param.version>1.8</param.version>
     <param.output>${PROJECT_ROOT}\Custom_Toolbox.mltbx</param.output>
     <param.products.name />
     <param.products.id />

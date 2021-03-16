@@ -87,7 +87,7 @@ for s = 1:8
         hold on
         plot(V_mess, I_mess, '-', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
         plot(V_mess, I_Das_analytic, '-.', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Das')
-        scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracterististicos')
+        scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos característicos')
         axis([0, V_mess(end), 0, I_mess(1)*1.05])
         hold off
         box on; grid on

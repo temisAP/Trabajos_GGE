@@ -27,6 +27,7 @@ Vmp = xlsread('IV_curves.xlsx', string(sheet(s)), 'B3');
 Voc = xlsread('IV_curves.xlsx', string(sheet(s)), 'B4');
 betha = xlsread('IV_curves.xlsx', string(sheet(s)), 'B5'); % Imp/Isc
 alpha = xlsread('IV_curves.xlsx', string(sheet(s)), 'B6'); % Vmp/Voc
+
 %% Modelo analítico 2R2D
 
 

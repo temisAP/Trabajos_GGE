@@ -84,10 +84,20 @@ h = figure();
     box on
     grid on
     xlabel('$I_{sp}$ [m/s]','Interpreter','latex')
-    ylabel('$M_0$ [kg]','Interpreter','latex')
+    ylabel({'$M_0$';'[kg]'},'Interpreter','latex')
     title('\textbf{MASA INICIAL vs } \boldmath{$I_{sp}$}',...
         'Interpreter','latex', 'FontSize', 14)
-    Save_as_PDF(h, 'Figuras/Mo', 90)
+    Save_as_PDF(h, 'Figuras/Mo_Horizontal','horizontal')
+    
+h = figure();
+    plot(Isp, Mo, 'LineWidth', 1.5)
+    box on
+    grid on
+    xlabel('$I_{sp}$ [m/s]','Interpreter','latex')
+    ylabel({'$M_0$';'[kg]'},'Interpreter','latex')
+    title('\textbf{MASA INICIAL vs } \boldmath{$I_{sp}$}',...
+        'Interpreter','latex', 'FontSize', 14)
+    Save_as_PDF(h, 'Figuras/Mo_Vertical','vertical')
     
     
     
