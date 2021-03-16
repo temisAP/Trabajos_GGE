@@ -31,7 +31,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 load('data.mat');
 
 
-for s = 4 
+for s = 1:8 
     
     % Carga de valores experimentales
     V_mess = data{s,1};
@@ -55,7 +55,7 @@ for s = 4
 %             'DisplayName', ["Datos fabricante"])
 %         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
 %         box on; grid on
-%         legend('Interpreter', 'Latex', 'location', 'Best')
+%         legend('Interpreter', 'Latex', 'location', 'SouthWest')
 %         xlabel('$V$ [V]','Interpreter','latex');
 %         ylabel({'$I$';'[A]'},'Interpreter','latex');
 %         Save_as_PDF(h_, ['Figuras/valores_exp_', sheet{s}],'horizontal');
@@ -65,8 +65,14 @@ for s = 4
 
     v_mess = V_mess/Voc;
     i_mess = I_mess/Isc;
-
-    beta0 = [1 1];
+    
+    if (s == 1 | s == 6)
+        beta0 = [9 1];
+    elseif (s == 4)
+        beta0 = [30 2];
+    else
+        beta0 = [1 1];
+    end
 
     for i = 1:5
         Kalmarkar_fun = @(p,v) 1-(1-p(1))*v - p(1)*v.^p(2);
@@ -91,31 +97,31 @@ for s = 4
 %             ["Karmalkar \& Haneefa num\'erico"])
 %         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
 %         box on; grid on
-%         legend('Interpreter', 'Latex', 'location', 'Best')
+%         legend('Interpreter', 'Latex', 'location', 'SouthWest')
 %         xlabel('$V$ [V]','Interpreter','latex');
 %         ylabel({'$I$';'[A]'},'Interpreter','latex');
 %         Save_as_PDF(h_, ['Figuras/1_Nu_KyH_', sheet{s}],'horizontal');
 %         hold off
-%     
-%     save_filename = 'numeric.xlsx';
-%     save_sheet = 'KyH';
-%     
-%     % Name
-%     pos = strjoin({'A',num2str(s+1)},'');
-%     A = cellstr(sheet{s});
-%     xlswrite(save_filename,A,save_sheet,pos);
-%     % m
-%     pos = strjoin({'B',num2str(s+1)},'');
-%     A = round(m(i),3,'significant');
-%     xlswrite(save_filename,A,save_sheet,pos);
-%     % gamma
-%     pos = strjoin({'C',num2str(s+1)},'');
-%     A = round(gamma(i),3,'significant');
-%     xlswrite(save_filename,A,save_sheet,pos);
-%     % Error_K
-%     pos = strjoin({'D',num2str(s+1)},'');
-%     A = round(Error_K(i),3,'significant');
-%     xlswrite(save_filename,A,save_sheet,pos);
+    
+    save_filename = 'numeric.xlsx';
+    save_sheet = 'KyH';
+    
+    % Name
+    pos = strjoin({'A',num2str(s+1)},'');
+    A = cellstr(sheet{s});
+    xlswrite(save_filename,A,save_sheet,pos);
+    % m
+    pos = strjoin({'B',num2str(s+1)},'');
+    A = round(m(i),3,'significant');
+    xlswrite(save_filename,A,save_sheet,pos);
+    % gamma
+    pos = strjoin({'C',num2str(s+1)},'');
+    A = round(gamma(i),3,'significant');
+    xlswrite(save_filename,A,save_sheet,pos);
+    % Error_K
+    pos = strjoin({'D',num2str(s+1)},'');
+    A = round(Error_K(i),3,'significant');
+    xlswrite(save_filename,A,save_sheet,pos);
 
 
     %% Das numérico
@@ -145,31 +151,31 @@ for s = 4
 %             ["Das num\'erico"])
 %         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
 %         box on; grid on
-%         legend('Interpreter', 'Latex', 'location', 'Best')
+%         legend('Interpreter', 'Latex', 'location', 'SouthWest')
 %         xlabel('$V$ [V]','Interpreter','latex');
 %         ylabel({'$I$';'[A]'},'Interpreter','latex');
 %         Save_as_PDF(h_, ['Figuras/1_Nu_Das_', sheet{s}],'horizontal');
 %         hold off
-%         
-%     save_filename = 'numeric.xlsx';
-%     save_sheet = 'Das';
-%     
-%     % Name
-%     pos = strjoin({'A',num2str(s+1)},'');
-%     A = cellstr(sheet{s});
-%     xlswrite(save_filename,A,save_sheet,pos);
-%     % k_Das
-%     pos = strjoin({'B',num2str(s+1)},'');
-%     A = round(k(i),3,'significant');
-%     xlswrite(save_filename,A,save_sheet,pos);
-%     % h
-%     pos = strjoin({'C',num2str(s+1)},'');
-%     A = round(h(i),3,'significant');
-%     xlswrite(save_filename,A,save_sheet,pos);
-%     % Error_D
-%     pos = strjoin({'D',num2str(s+1)},'');
-%     A = round(Error_D(i),3,'significant');
-%     xlswrite(save_filename,A,save_sheet,pos);
+        
+    save_filename = 'numeric.xlsx';
+    save_sheet = 'Das';
+    
+    % Name
+    pos = strjoin({'A',num2str(s+1)},'');
+    A = cellstr(sheet{s});
+    xlswrite(save_filename,A,save_sheet,pos);
+    % k_Das
+    pos = strjoin({'B',num2str(s+1)},'');
+    A = round(k(i),3,'significant');
+    xlswrite(save_filename,A,save_sheet,pos);
+    % h
+    pos = strjoin({'C',num2str(s+1)},'');
+    A = round(h(i),3,'significant');
+    xlswrite(save_filename,A,save_sheet,pos);
+    % Error_D
+    pos = strjoin({'D',num2str(s+1)},'');
+    A = round(Error_D(i),3,'significant');
+    xlswrite(save_filename,A,save_sheet,pos);
 
     %% Pindado & Cubas numérico
 
@@ -208,31 +214,31 @@ for s = 4
 %             ["Pindado \& Cubas num\'erico"])
 %         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
 %         box on; grid on
-%         legend('Interpreter', 'Latex', 'location', 'Best')
+%         legend('Interpreter', 'Latex', 'location', 'SouthWest')
 %         xlabel('$V$ [V]','Interpreter','latex');
 %         ylabel({'$I$';'[A]'},'Interpreter','latex');
 %         Save_as_PDF(h_, ['Figuras/1_Nu_PyC_', sheet{s}],'horizontal');
 %         hold off
-%         
-%     save_filename = 'numeric.xlsx';
-%     save_sheet = 'PyC';
-%     
-%     % Name
-%     pos = strjoin({'A',num2str(s+1)},'');
-%     A = cellstr(sheet{s});
-%     xlswrite(save_filename,A,save_sheet,pos);
-%     % phi
-%     pos = strjoin({'B',num2str(s+1)},'');
-%     A = round(phi(i),3,'significant');
-%     xlswrite(save_filename,A,save_sheet,pos);
-%     % Error_PC
-%     pos = strjoin({'C',num2str(s+1)},'');
-%     A = round(Error_PC(i),3,'significant');
-%     xlswrite(save_filename,A,save_sheet,pos);
+        
+    save_filename = 'numeric.xlsx';
+    save_sheet = 'PyC';
+    
+    % Name
+    pos = strjoin({'A',num2str(s+1)},'');
+    A = cellstr(sheet{s});
+    xlswrite(save_filename,A,save_sheet,pos);
+    % phi
+    pos = strjoin({'B',num2str(s+1)},'');
+    A = round(phi(i),3,'significant');
+    xlswrite(save_filename,A,save_sheet,pos);
+    % Error_PC
+    pos = strjoin({'C',num2str(s+1)},'');
+    A = round(Error_PC(i),3,'significant');
+    xlswrite(save_filename,A,save_sheet,pos);
 
     %% Plot final
 
-    h_ = figure(5);
+    h_ = figure(s);
         hold on
         % Plotear solo ciertos puntos
         if (s == 4 | s == 7)
@@ -250,16 +256,11 @@ for s = 4
             ["Pindado \& Cubas num\'erico"])
         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
         box on; grid on
-        legend('Interpreter', 'Latex', 'location', 'Best')
+        legend('Interpreter', 'Latex', 'location', 'SouthWest')
         xlabel('$V$ [V]','Interpreter','latex');
         ylabel({'$I$';'[A]'},'Interpreter','latex');
         Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal');
         hold off
-   
-        
-%     if (s ~= 8)
-%         close all;
-%     end
 
 end
 
