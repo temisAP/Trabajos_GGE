@@ -18,22 +18,23 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 
 
 %% Bucle para cada hoja
-s=3;
-% % for s = 1:8
-%     
-%     clear V_mess I_mess Isc Imp Vmp Voc betha alpha
-%     
-%     % Carga de valores experimentales
-%     V_mess = xlsread(read_filename, sheet{s}, 'A21:A1202');
-%     I_mess = xlsread(read_filename, sheet{s}, 'B21:B1202');
-%     Isc = xlsread(read_filename, sheet{s}, 'B1');
-%     Imp = xlsread(read_filename, sheet{s}, 'B2');
-%     Vmp = xlsread(read_filename, sheet{s}, 'B3');
-%     Voc = xlsread(read_filename, sheet{s}, 'B4');
-%     V_mess = V_mess';
-%     I_mess = I_mess';
+
+ for s = 1:8
+     
+    clear V_mess I_mess Isc Imp Vmp Voc betha alpha
+    
+    % Carga de valores experimentales
+    V_mess = xlsread(read_filename, sheet{s}, 'A21:A1202');
+    I_mess = xlsread(read_filename, sheet{s}, 'B21:B1202');
+    Isc = xlsread(read_filename, sheet{s}, 'B1');
+    Imp = xlsread(read_filename, sheet{s}, 'B2');
+    Vmp = xlsread(read_filename, sheet{s}, 'B3');
+    Voc = xlsread(read_filename, sheet{s}, 'B4');
+    V_mess = V_mess';
+    I_mess = I_mess';
     n = [1,3,3,3,36,54,15]; % Pindado 2016 %Numero de células para cada fabricante
     T = [33,28,28,28,45,25,20];
+    a = [1.48, 1.01, 1.07,0.9,1.25,1,1.15];
 
 
 
@@ -48,41 +49,51 @@ T = 273.15+T(s); %K
 
 Vt = n(s)*kB*T/qe;  % n número de células
 
-%Son los datos del paper de   Pindado 2015 con un primer ajuste, que leugo
-%los guarde y los cargue para comprobar que las ecuaciones en si estaban
-%bien. Si descomentan esta parte se ve que va bien para esos datos.
-% load('I_modelo.mat','I_modelo');
-% I_mess=I_modelo;
-% load('V_mess.mat','V_mess');
-% Pot = I_mess.*V_mess;
-%  
-% maximum = max(Pot);
-% [x,index]=find(Pot==maximum);
-% Imp = I_mess(index);
-% Vmp =  V_mess(index);
-% Isc = I_mess(1);
-% Voc = V_mess(64); %aprox
+
+% Parameter Calculations
+ 
+[Ipv,I0,Rs,Rsh] = param_1D_2R_Lap(Isc,Voc,Imp,Vmp,a(s));
+umin = [Ipv,I0,Rs,Rsh,a(s)];
 
 
-[Rsh0, Rs0] = pendiente_2D2R(I_mess, V_mess);
+% plot results
 
-a2=2;
-[Ipv,I01,I02,Rs,Rsh,a1] = param_2D2R(Isc,Voc,Imp,Vmp,a2,Rsh0, Rs0);
-umin = [Ipv,I01,I02,Rs,Rsh,a1,a2];
+ I_modelo = zeros(size(V_mess,2),1)';
+ for i=1:size(V_mess,2)
+    I_modelo(i) = Panel_Current(umin,V_mess(i));
+ end
 
+u_search = zeros(size(umin,2),1)';
+eps=0.001;
+ for i=1:size(umin,2)
+  u_search(i) = (1+eps)*umin(i);
+ end
+%  %% Parte numerica
+ 
+ [umin2,fval]=fminsearch(@(u)RECT(umin,V_mess,I_mess),[u_search(1),u_search(2),u_search(3),u_search(4),u_search(5)]);
+ 
+% Results: parameters of equivalent circuit
 
+% Ipv2=umin2(1)
+% I02=umin2(2)
+% Rs2=umin2(3)
+% Rsh2=umin2(4) 
+% a2=umin2(5)
 
+% plot results
 
-I_modelo2 = zeros(size(V_mess,2),1)';
-     for i=1:size(V_mess,2)
-        I_modelo2(i) = Panel_Current_2D2R(umin,V_mess(i));
-     end
-%  error = (sum((I_modelo - I_mess).^2))^0.5;
-    %% Figuras
-    h_ = figure(1);
+ I_modelo2 = zeros(size(V_mess,2),1)';
+ for i=1:size(V_mess,2)
+    I_modelo2(i) = Panel_Current(umin2,V_mess(i));
+end
+ 
+ 
+     %% Figuras
+    h_ = figure(s);
         hold on
         plot(V_mess, I_mess, '-', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
-        plot(V_mess, I_modelo2, '-.', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '2D2R')
+        plot(V_mess, I_modelo, '-.', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '1D2R Analítico')
+        plot(V_mess, I_modelo2, '-o', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '1D2R Numérico')
         scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracteristicos')
         hold off
 %         axis([0, V_mess(end), 0, I_mess(1)*1.05])
@@ -131,4 +142,4 @@ I_modelo2 = zeros(size(V_mess,2),1)';
 %     xlswrite(save_filename,A,save_sheet,pos);
 %     
 
-% end
+ end
