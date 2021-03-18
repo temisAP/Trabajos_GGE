@@ -16,12 +16,12 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
 % 7 ---> SPVSX5
 % 8 ---> PSC
 
-% Digitalizadas por nosotros
-% 9 ---> CTJ30
-% 10 --> ATJ
+% Digitalizadas por nosostro
+% 9 ---> PSC
+% 8 ---> PSC
 
 % % Carga de valores experimentales y datos del fabricante
-% for s = 1:10
+% for s = 1:8
 %     data{s,1} = xlsread('IV_curves.xlsx', sheet{s}, 'A21:A1202');
 %     data{s,2} = xlsread('IV_curves.xlsx', sheet{s}, 'B21:B1202');
 %     data{s,3} = xlsread('IV_curves.xlsx', sheet{s}, 'B1');
@@ -35,7 +35,8 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
 % Cargar datos de archivo .mat
 load('data.mat');
 
-for s = 9
+
+for s = 1:8 
     
     % Carga de valores experimentales
     V_mess = data{s,1};
@@ -74,8 +75,6 @@ for s = 9
         beta0 = [9 1];
     elseif (s == 4)
         beta0 = [30 2];
-    elseif (s == 9)
-        beta0 = [1 1];
     else
         beta0 = [1 1];
     end
