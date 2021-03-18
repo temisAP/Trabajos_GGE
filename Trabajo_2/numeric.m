@@ -5,6 +5,7 @@ clc;
 % Nombre de las hojas del archivo excel
 sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
          'PSC', 'CTJ30', 'ATJ'};
+sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
 
 % Selección de hoja (s)
 % 1 ---> RTC France
@@ -30,6 +31,13 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
 %     data{s,6} = xlsread('IV_curves.xlsx', sheet{s}, 'B4');
 %     data{s,7} = xlsread('IV_curves.xlsx', sheet{s}, 'B5');
 %     data{s,8} = xlsread('IV_curves.xlsx', sheet{s}, 'B6');
+% end
+
+% for s = 1:4
+%     data_DHV{s,1} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'A5:A25');
+%     data_DHV{s,2} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'B5:B25');
+%     data_DHV{s,3} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'A2');
+%     data_DHV{s,4} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'B2');
 % end
 
 % Cargar datos de archivo .mat
@@ -278,9 +286,42 @@ clc;
 % Carga de valores experimentales y datos del fabricante
 sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
 
-for s = 1:2
-    data_DHV{s,1} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'A5:A25');
-    data_DHV{s,2} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'B5:B25');
-end
+% for s = 1:4
+%     data_DHV{s,1} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'A5:A25');
+%     data_DHV{s,2} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'B5:B25');
+%     data_DHV{s,3} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'A2');
+%     data_DHV{s,4} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'B2');
+% end
 
+load('data_DHV');
+
+for s = 1:4
+    
+    % Carga de valores experimentales
+    V_mess = data_DHV{s,1};
+    I_mess = data_DHV{s,2};
+    
+    h_ = figure(s);
+        hold on
+        % Plotear solo ciertos puntos
+        if (s == 4 | s == 7)
+            plot(V_mess(1:10:end)', I_mess(1:10:end)', '-o', 'LineWidth', 1,...
+            'Color', 'k','DisplayName', ["Valores experimentales"])
+        else
+            plot(V_mess, I_mess, '-o', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+                ["Valores experimentales"])
+        end
+        plot(V_mess, I_Ksol, '-', 'LineWidth', 1, 'Color', 'r','DisplayName', ...
+            ["Karmalkar \& Haneefa num\'erico"])
+        plot(V_mess, I_Dsol, '-', 'LineWidth', 1, 'Color', 'b','DisplayName', ...
+            ["Das num\'erico"])
+        plot(V_mess, I_PCsol, '-', 'LineWidth', 1, 'Color', 'g','DisplayName', ...
+            ["Pindado \& Cubas num\'erico"])
+        axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
+        box on; grid on
+        legend('Interpreter', 'Latex', 'location', 'SouthWest')
+        xlabel('$V$ [V]','Interpreter','latex');
+        ylabel({'$I$';'[A]'},'Interpreter','latex');
+        %Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal');
+        hold off
 
