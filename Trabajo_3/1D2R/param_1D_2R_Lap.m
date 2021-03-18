@@ -1,4 +1,4 @@
- function [Ipv,I0,Rs,Rsh] = param_1D_2R_L(Isc,Voc,Imp,Vmp,a)
+ function [Ipv,I0,Rs,Rsh] = param_1D_2R_Lap(Isc,Voc,Imp,Vmp,a)
  global Vt
 
     A=-(2*Vmp-Voc)/(a*Vt)+(Vmp*Isc-Voc*Imp)/(Vmp*Isc+Voc*(Imp-Isc))
@@ -16,7 +16,7 @@
     Rsh=(Vmp-Imp*Rs)*(Vmp-Rs*(Isc-Imp)-a*Vt)/((Vmp-Imp*Rs)*(Isc-Imp)-a*Vt*Imp);
     Ipv=(Rsh+Rs)/Rsh*Isc;
     I0=((Rsh+Rs)/Rsh*Isc-Voc/Rsh)/(exp((Voc)/(a*Vt)));
-
+ end
     
 
 

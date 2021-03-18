@@ -54,20 +54,24 @@ for s = 1:8
         I0 = xlswrite(init_filename,save_sheet,pos);
         % Rs
         pos = strjoin({'D',num2str(s+1)},'');
-        Rs = xlswrite(init_filename,save_sheet,pos);
+        A = round(Rs,3,'significant');
+        xlswrite(init_filename,A,save_sheet,pos);
         % Rsh
         pos = strjoin({'E',num2str(s+1)},'');
-        Rsh = xlswrite(init_filename,save_sheet,pos);
+        A = round(Rsh,3,'significant');
+        xlswrite(init_filename,A,save_sheet,pos);
         % a
         pos = strjoin({'F',num2str(s+1)},'');
-        a = xlswrite(init_filename,save_sheet,pos);
+        A = round(a,3,'significant');
+        xlswrite(save_filename,A,save_sheet,pos);
+        xlsread(read_filename, sheet{s}, 'A21:A1202');
     
     V_mess = V_mess';
     I_mess = I_mess';
 
     % Minimize Least squares
     try
-        [umin,fval]=fminsearch(@(u)RECT(u,V_mess,I_mess),[Ipv,I0,I0,Rs,Rsh,a,a]);
+        [umin,fval]=fminsearch(@(u)RECT(u,V_mess,I_mess),[1,1e-8,1e-8,1,10,1,1]);
     catch
         disp('error while fminsearch')
         umin = zeros(7,1);

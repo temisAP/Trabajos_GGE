@@ -70,11 +70,11 @@ for s = 1:8
     
     % Results: parameters of equivalent circuit
     
-    Ipv2=umin2(1);
-    I02=umin2(2);
-    Rs2=umin2(3);
-    Rsh2=umin2(4);
-    a2=umin2(5);
+    % Ipv2=umin2(1)
+    % I02=umin2(2)
+    % Rs2=umin2(3)
+    % Rsh2=umin2(4)
+    % a2=umin2(5)
     
     % plot results
     
@@ -126,7 +126,7 @@ for s = 1:8
     xlswrite(save_filename,A,save_sheet,pos);
     % a
     pos = strjoin({'F',num2str(s+1)},'');
-    A = round(a(s),3,'significant');
+    A = round(a,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
     
     save_sheet = 'Numerico';
@@ -137,23 +137,23 @@ for s = 1:8
     xlswrite(save_filename,A,save_sheet,pos);
     % Ipv
     pos = strjoin({'B',num2str(s+1)},'');
-    A = round(Ipv2,3,'significant');
+    A = round(Ipv,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
     % I0
     pos = strjoin({'C',num2str(s+1)},'');
-    A = round(I02,3,'significant');
+    A = round(I0,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
     % Rs
     pos = strjoin({'D',num2str(s+1)},'');
-    A = round(Rs2,3,'significant');
+    A = round(Rs,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
     % Rsh
     pos = strjoin({'E',num2str(s+1)},'');
-    A = round(Rsh2,3,'significant');
+    A = round(Rsh,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
     % a
     pos = strjoin({'F',num2str(s+1)},'');
-    A = round(a2,3,'significant');
+    A = round(a,3,'significant');
     xlswrite(save_filename,A,save_sheet,pos);
         
     
