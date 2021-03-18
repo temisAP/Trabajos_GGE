@@ -16,12 +16,12 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
 % 7 ---> SPVSX5
 % 8 ---> PSC
 
-% Digitalizadas por nosostro
-% 9 ---> PSC
-% 8 ---> PSC
+% Digitalizadas por nosotros
+% 9 ---> CTJ30
+% 10 --> ATJ
 
 % % Carga de valores experimentales y datos del fabricante
-% for s = 1:8
+% for s = 1:10
 %     data{s,1} = xlsread('IV_curves.xlsx', sheet{s}, 'A21:A1202');
 %     data{s,2} = xlsread('IV_curves.xlsx', sheet{s}, 'B21:B1202');
 %     data{s,3} = xlsread('IV_curves.xlsx', sheet{s}, 'B1');
@@ -35,8 +35,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
 % Cargar datos de archivo .mat
 load('data.mat');
 
-
-for s = 1:8 
+for s = 1:10
     
     % Carga de valores experimentales
     V_mess = data{s,1};
@@ -75,6 +74,8 @@ for s = 1:8
         beta0 = [9 1];
     elseif (s == 4)
         beta0 = [30 2];
+    elseif (s == 9)
+        beta0 = [1.5 1.5];
     else
         beta0 = [1 1];
     end
@@ -268,4 +269,19 @@ for s = 1:8
         hold off
 
 end
+
+%% DHV
+
+% Carga de valores experimentales y datos del fabricante
+for s = 1:10
+    data_DHV{s,1} = xlsread('curvas_DHV.xlsx', sheet{s}, 'A21:A1202');
+    data_DHV{s,2} = xlsread('curvas_DHV.xlsx', sheet{s}, 'B21:B1202');
+    data{s,3} = xlsread('curvas_DHV.xlsx', sheet{s}, 'B1');
+    data{s,4} = xlsread('curvas_DHV.xlsx', sheet{s}, 'B2');
+    data{s,5} = xlsread('curvas_DHV.xlsx', sheet{s}, 'B3');
+    data{s,6} = xlsread('curvas_DHV.xlsx', sheet{s}, 'B4');
+    data{s,7} = xlsread('curvas_DHV.xlsx', sheet{s}, 'B5');
+    data{s,8} = xlsread('curvas_DHV.xlsx', sheet{s}, 'B6');
+end
+
 

@@ -35,7 +35,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
 % Cargar datos de archivo .mat
 load('data.mat');
 
-for s = 9
+for s = 1:10
     
     % Carga de valores experimentales
     V_mess = data{s,1};
@@ -75,7 +75,7 @@ for s = 9
     elseif (s == 4)
         beta0 = [30 2];
     elseif (s == 9)
-        beta0 = [1 1];
+        beta0 = [1.5 1.5];
     else
         beta0 = [1 1];
     end
@@ -269,4 +269,18 @@ for s = 9
         hold off
 
 end
+
+%% DHV
+clear all;
+close all;
+clc;
+
+% Carga de valores experimentales y datos del fabricante
+sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
+
+for s = 1:2
+    data_DHV{s,1} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'A5:A25');
+    data_DHV{s,2} = xlsread('curvas_DHV.xlsx', sheet_DHV{s}, 'B5:B25');
+end
+
 
