@@ -295,28 +295,17 @@ sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
 
 load('data_DHV');
 
-for s = 1:4
+for s = 1
     
     % Carga de valores experimentales
     V_mess = data_DHV{s,1};
     I_mess = data_DHV{s,2};
+    P_mess = V_mess.*I_mess;
     
     h_ = figure(s);
         hold on
-        % Plotear solo ciertos puntos
-        if (s == 4 | s == 7)
-            plot(V_mess(1:10:end)', I_mess(1:10:end)', '-o', 'LineWidth', 1,...
-            'Color', 'k','DisplayName', ["Valores experimentales"])
-        else
-            plot(V_mess, I_mess, '-o', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
-                ["Valores experimentales"])
-        end
-        plot(V_mess, I_Ksol, '-', 'LineWidth', 1, 'Color', 'r','DisplayName', ...
-            ["Karmalkar \& Haneefa num\'erico"])
-        plot(V_mess, I_Dsol, '-', 'LineWidth', 1, 'Color', 'b','DisplayName', ...
-            ["Das num\'erico"])
-        plot(V_mess, I_PCsol, '-', 'LineWidth', 1, 'Color', 'g','DisplayName', ...
-            ["Pindado \& Cubas num\'erico"])
+        plot(V_mess, I_mess, '-', 'LineWidth', 1, 'Color', 'g','DisplayName', ...
+            ["data"])
         axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
         box on; grid on
         legend('Interpreter', 'Latex', 'location', 'SouthWest')
@@ -324,4 +313,36 @@ for s = 1:4
         ylabel({'$I$';'[A]'},'Interpreter','latex');
         %Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal');
         hold off
+end
 
+
+posx = V_mess(V_mess >= 8 &  V_mess <= 10.5);
+
+[fit1, bondad] = fit(posx, P_mess(7:18), 'poly4');
+coeff = coeffvalues(fit1);
+
+x = linspace(8, 10.5, 100);
+
+for i = 1:100
+    P(i) = coeff(1)*x(i)^4 + coeff(2)*x(i)^3 + coeff(3)*x(i)^2 + coeff(4)*x(i) + coeff(5);
+end
+
+[P_mp, pos_max] = max(P);
+V_mp = x(pos_max);
+pos_mp = 15;
+I_mp = I_mess(pos_mp);
+
+
+[fit2, bondad2] = fit(V_mess((end-5):end), I_mess((end-5):end), 'poly2');
+coeff2 = coeffvalues(fit2);
+
+x2 = linspace(V_mess(end-5), V_mess(end), 100);
+
+% for i =1:100
+%     I(i) = coeff2(1)*x(i)^2 + coeff2(2)*x(i) + coeff(3);
+% end
+V_oc = roots(coeff2');
+
+[fit3, bondad3] = fit(V_mess(1:5), I_mess(1:5), 'poly1');
+coeff3 = coeffvalues(fit3);
+Isc = coeff3(2);
