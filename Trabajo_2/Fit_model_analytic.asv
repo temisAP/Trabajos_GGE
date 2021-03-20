@@ -38,7 +38,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
 % Cargar datos de archivo .mat
 load('data.mat');
 
-for s = 1:10
+for s = 3 
     
     % Carga de valores experimentales
     V_mess = data{s,1};
@@ -56,8 +56,8 @@ for s = 1:10
 
     K = (1-betha-alpha)/(2*betha-1);
     aux = -(1/alpha)^(1/K)*(1/K)*log(alpha);
-    %m = real((lambertw(-1,aux)/log(alpha))+(1/K)+1);
-    m = real((lambert(aux)/log(alpha))+(1/K)+1);
+    m = real((lambertw(-1,aux)/log(alpha))+(1/K)+1);
+    %m = real((lambert(aux)/log(alpha))+(1/K)+1);
     gamma = (2*betha-1)/((m-1)*alpha^m);
 
     I_Karmalkar_analytic = (1-(1-gamma)*(V_mess/Voc)-gamma*(V_mess/Voc).^m)*Isc;
@@ -82,7 +82,7 @@ for s = 1:10
     %% Das' model
 
     aux2 = betha*log(alpha);
-    k_Das = lambert(aux2)/log(alpha);
+    k_Das = lambertw(-1,aux2)/log(alpha);
     h = (1/alpha)*((1/betha)-1/k_Das-1);
 
     I_Das_analytic = ((1-(V_mess./Voc).^k_Das)./(1+h.*(V_mess./Voc))).*Isc;
@@ -121,12 +121,12 @@ for s = 1:10
         % Plot de valores experimentales, Karmalkar y Das analytic
     h_ = figure(2);
         hold on
-        scatter(V_mess, I_mess, 'o', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
+        plot(V_mess, I_mess, 'o', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
         plot(V_mess, I_Karmalkar_analytic, '-', 'LineWidth', 1, 'Color', 'r', 'DisplayName', 'Karmalkar Analytic')
         plot(V_mess, I_Das_analytic, '-', 'LineWidth', 1, 'Color', 'b', 'DisplayName', 'Das')
         plot(V_mess, I_PC_analytic, '-', 'LineWidth', 1, 'Color', 'g','DisplayName', ...
             ["Pindado \& Cubas num\'erico"])
-        %scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracteristicos')
+        scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracteristicos')
         axis([0, V_mess(end), 0, I_mess(1)*1.05])
         hold off
         box on; grid on
