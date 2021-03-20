@@ -19,7 +19,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 
 %% Bucle para cada hoja
 
-for s = 1:8
+for s = 3:3
     
     clear V_mess I_mess Isc Imp Vmp Voc betha alpha
     
@@ -63,9 +63,11 @@ for s = 1:8
     for i=1:size(umin,2)
         u_search(i) = (1+eps)*umin(i);
     end
+  error_analitico = (sum((I_modelo - I_mess).^2))^0.5;
+  error2_analitico = (((I_modelo - I_mess).^2)).^0.5;
     
     %% Parte numerica
-    
+%     
     [umin2,fval]=fminsearch(@(u)RECT(umin,V_mess,I_mess),[u_search(1),u_search(2),u_search(3),u_search(4),u_search(5)]);
     
     % Results: parameters of equivalent circuit
@@ -99,62 +101,69 @@ for s = 1:8
     legend('Interpreter', 'Latex', 'location', 'SouthWest')
     %         Save_as_PDF(h_, ['Figures/2D2R', sheet{s}], 'horizontal');
     %
+    h_ = figure(5);
+
+        plot(V_mess,error2_analitico, '-', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
+        box on; grid on
+        xlabel('$V$ [V]','Interpreter','latex')
+        ylabel({'$Error$'},'Interpreter','latex')
+        legend('Interpreter', 'Latex', 'location', 'SouthWest')
     %% Exportar resultados
     
-    save_filename = 'Fit_model_1D2R.xlsx';
-    save_sheet = 'Analitico';
-    
-    % Name
-    pos = strjoin({'A',num2str(s+1)},'');
-    A = cellstr(sheet{s});
-    xlswrite(save_filename,A,save_sheet,pos);
-    % Ipv
-    pos = strjoin({'B',num2str(s+1)},'');
-    A = round(Ipv,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % I0
-    pos = strjoin({'C',num2str(s+1)},'');
-    A = round(I0,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % Rs
-    pos = strjoin({'D',num2str(s+1)},'');
-    A = round(Rs,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % Rsh
-    pos = strjoin({'E',num2str(s+1)},'');
-    A = round(Rsh,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % a
-    pos = strjoin({'F',num2str(s+1)},'');
-    A = round(a(s),3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    
-    save_sheet = 'Numerico';
-    
-    % Name
-    pos = strjoin({'A',num2str(s+1)},'');
-    A = cellstr(sheet{s});
-    xlswrite(save_filename,A,save_sheet,pos);
-    % Ipv
-    pos = strjoin({'B',num2str(s+1)},'');
-    A = round(Ipv2,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % I0
-    pos = strjoin({'C',num2str(s+1)},'');
-    A = round(I02,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % Rs
-    pos = strjoin({'D',num2str(s+1)},'');
-    A = round(Rs2,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % Rsh
-    pos = strjoin({'E',num2str(s+1)},'');
-    A = round(Rsh2,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % a
-    pos = strjoin({'F',num2str(s+1)},'');
-    A = round(a2,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-        
+%     save_filename = 'Fit_model_1D2R.xlsx';
+%     save_sheet = 'Analitico';
+%     
+%     % Name
+%     pos = strjoin({'A',num2str(s+1)},'');
+%     A = cellstr(sheet{s});
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % Ipv
+%     pos = strjoin({'B',num2str(s+1)},'');
+%     A = round(Ipv,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % I0
+%     pos = strjoin({'C',num2str(s+1)},'');
+%     A = round(I0,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % Rs
+%     pos = strjoin({'D',num2str(s+1)},'');
+%     A = round(Rs,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % Rsh
+%     pos = strjoin({'E',num2str(s+1)},'');
+%     A = round(Rsh,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % a
+%     pos = strjoin({'F',num2str(s+1)},'');
+%     A = round(a(s),3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     
+%     save_sheet = 'Numerico';
+%     
+%     % Name
+%     pos = strjoin({'A',num2str(s+1)},'');
+%     A = cellstr(sheet{s});
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % Ipv
+%     pos = strjoin({'B',num2str(s+1)},'');
+%     A = round(Ipv2,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % I0
+%     pos = strjoin({'C',num2str(s+1)},'');
+%     A = round(I02,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % Rs
+%     pos = strjoin({'D',num2str(s+1)},'');
+%     A = round(Rs2,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % Rsh
+%     pos = strjoin({'E',num2str(s+1)},'');
+%     A = round(Rsh2,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % a
+%     pos = strjoin({'F',num2str(s+1)},'');
+%     A = round(a2,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%         
     
 end
