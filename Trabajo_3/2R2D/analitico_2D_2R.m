@@ -19,7 +19,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 
 
 %% Bucle para cada hoja
-s=3;
+s=4;
 % % for s = 1:8
 
   %cargar las pendientes
