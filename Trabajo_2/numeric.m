@@ -4,8 +4,8 @@ clc;
 
 % Nombre de las hojas del archivo excel
 sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
-         'PSC', 'CTJ30', 'ATJ'};
-sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
+         'PSC', 'CTJ30', 'ATJ', '4S1P'};
+% sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
 
 % Selección de hoja (s)
 % 1 ---> RTC France
@@ -20,9 +20,10 @@ sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
 % Digitalizadas por nosotros
 % 9 ---> CTJ30
 % 10 --> ATJ
+% 11 --> 4S1P
 
 % % Carga de valores experimentales y datos del fabricante
-% for s = 1:10
+% for s = 1:11
 %     data{s,1} = xlsread('IV_curves.xlsx', sheet{s}, 'A21:A1202');
 %     data{s,2} = xlsread('IV_curves.xlsx', sheet{s}, 'B21:B1202');
 %     data{s,3} = xlsread('IV_curves.xlsx', sheet{s}, 'B1');
@@ -279,9 +280,6 @@ for s = 1:10
 end
 
 %% DHV
-clear all;
-close all;
-clc;
 
 % Carga de valores experimentales y datos del fabricante
 sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
