@@ -38,7 +38,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
 % Cargar datos de archivo .mat
 load('data.mat');
 
-for s = 1:10
+for s = 1:11
     
     % Carga de valores experimentales
     V_mess = data{s,1};
@@ -62,21 +62,21 @@ for s = 1:10
 
     I_Karmalkar_analytic = (1-(1-gamma)*(V_mess/Voc)-gamma*(V_mess/Voc).^m)*Isc;
     
-    save_filename = 'Fit_model_analytic.xlsx';
-    save_sheet = 'KyH';
-    
-    % Name
-    pos = strjoin({'A',num2str(s+1)},'');
-    A = cellstr(sheet{s});
-    xlswrite(save_filename,A,save_sheet,pos);
-    % m
-    pos = strjoin({'B',num2str(s+1)},'');
-    A = round(m,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % gamma
-    pos = strjoin({'C',num2str(s+1)},'');
-    A = round(gamma,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
+%     save_filename = 'Fit_model_analytic.xlsx';
+%     save_sheet = 'KyH';
+%     
+%     % Name
+%     pos = strjoin({'A',num2str(s+1)},'');
+%     A = cellstr(sheet{s});
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % m
+%     pos = strjoin({'B',num2str(s+1)},'');
+%     A = round(m,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % gamma
+%     pos = strjoin({'C',num2str(s+1)},'');
+%     A = round(gamma,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
 
 
     %% Das' model
@@ -87,21 +87,21 @@ for s = 1:10
 
     I_Das_analytic = ((1-(V_mess./Voc).^k_Das)./(1+h.*(V_mess./Voc))).*Isc;
         
-    save_filename = 'Fit_model_analytic.xlsx';
-    save_sheet = 'Das';
-    
-    % Name
-    pos = strjoin({'A',num2str(s+1)},'');
-    A = cellstr(sheet{s});
-    xlswrite(save_filename,A,save_sheet,pos);
-    % k_Das
-    pos = strjoin({'B',num2str(s+1)},'');
-    A = round(k_Das,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
-    % h
-    pos = strjoin({'C',num2str(s+1)},'');
-    A = round(h,3,'significant');
-    xlswrite(save_filename,A,save_sheet,pos);
+%     save_filename = 'Fit_model_analytic.xlsx';
+%     save_sheet = 'Das';
+%     
+%     % Name
+%     pos = strjoin({'A',num2str(s+1)},'');
+%     A = cellstr(sheet{s});
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % k_Das
+%     pos = strjoin({'B',num2str(s+1)},'');
+%     A = round(k_Das,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % h
+%     pos = strjoin({'C',num2str(s+1)},'');
+%     A = round(h,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
     
     %% Pindado  & Cubas
     
@@ -113,19 +113,44 @@ for s = 1:10
     
     I_tramo1 = Isc*(1-(1-Imp/Isc)*(V_mess_tramo1/Vmp).^(Imp/(Isc-Imp)));
     eta = (Isc/Imp)*(Isc/(Isc-Imp))*((Voc-Vmp)/Voc);
-    I_tramo2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^eta);
+    eta_2 = (log(Vmp*Imp-V_mess(end-3)*I_mess(end-3))-log(Vmp*Imp))/...
+            (log(V_mess(end-3)-Vmp)-log(Voc-Vmp))
+    I_tramo2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^eta_2);
     
     I_PC_analytic = [I_tramo1' I_tramo2'];
+    
+%     save_filename = 'Fit_model_analytic.xlsx';
+%     save_sheet = 'PyC';
+%     
+%     % Name
+%     pos = strjoin({'A',num2str(s+1)},'');
+%     A = cellstr(sheet{s});
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % eta
+%     pos = strjoin({'B',num2str(s+1)},'');
+%     A = round(eta,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
+%     % eta2
+%     pos = strjoin({'C',num2str(s+1)},'');
+%     A = round(eta_2,3,'significant');
+%     xlswrite(save_filename,A,save_sheet,pos);
     
     %% Figura final
         % Plot de valores experimentales, Karmalkar y Das analytic
     h_ = figure(2);
         hold on
-        scatter(V_mess, I_mess, 'o', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Experimental')
-        plot(V_mess, I_Karmalkar_analytic, '-', 'LineWidth', 1, 'Color', 'r', 'DisplayName', 'Karmalkar Analytic')
-        plot(V_mess, I_Das_analytic, '-', 'LineWidth', 1, 'Color', 'b', 'DisplayName', 'Das')
+        % Plotear solo ciertos puntos
+        if (s == 4 | s == 7)
+            plot(V_mess(1:10:end)', I_mess(1:10:end)', '-o', 'LineWidth', 1,...
+            'Color', 'k','DisplayName', ["Valores experimentales"])
+        else
+            plot(V_mess, I_mess, '-o', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+                ["Valores experimentales"])
+        end
+        plot(V_mess, I_Karmalkar_analytic, '-', 'LineWidth', 1, 'Color', 'r', 'DisplayName', "Karmalkar \& Haneefa anal\'itico")
+        plot(V_mess, I_Das_analytic, '-', 'LineWidth', 1, 'Color', 'b', 'DisplayName', "Das anal\'itico")
         plot(V_mess, I_PC_analytic, '-', 'LineWidth', 1, 'Color', 'g','DisplayName', ...
-            ["Pindado \& Cubas num\'erico"])
+            ["Pindado \& Cubas anal\'itico"])
         %scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracteristicos')
         axis([0, V_mess(end), 0, I_mess(1)*1.05])
         hold off
@@ -133,7 +158,7 @@ for s = 1:10
         xlabel('$V$ [V]','Interpreter','latex')
         ylabel({'$I$';'[A]'},'Interpreter','latex')
         legend('Interpreter', 'Latex', 'location', 'SouthWest')
-        Save_as_PDF(h_, ['Figuras/1_An_', sheet{s}], 'horizontal');
+        Save_as_PDF(h_, ['Figuras/1_An2_', sheet{s}], 'horizontal');
         
         
     close all
