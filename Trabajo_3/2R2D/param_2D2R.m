@@ -5,8 +5,8 @@ function [Ipv,I01,I02,Rs,Rsh,a1] = param_2D2R(Isc,Voc,Imp,Vmp,a2,Rsh0, Rs0)
     
     global Vt
      
-      Rs_guess = 0.09; %s=3,s =1, s =4;
-%     Rs_guess = 0.2; %s =2
+       Rs_guess = 0.09; %s=3,s =1, s =4;
+%      Rs_guess = 0.2; %s =2
       
 
      Rs = fzero(@(Rs) log((Rsh0*(Isc-Imp)-Vmp-a2*Vt*((Rsh0-Vmp/Imp)/(Vmp/Imp-Rs)))/((Rsh0*Isc-Voc)-a2*Vt*((Rsh0-Rs0)/(Rs0-Rs)))) ...

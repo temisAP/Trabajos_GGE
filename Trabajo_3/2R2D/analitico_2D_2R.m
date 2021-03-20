@@ -21,6 +21,14 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 %% Bucle para cada hoja
 s=3;
 % % for s = 1:8
+
+  %cargar las pendientes
+      %Valores de I V obtenido de forma numerica
+    
+  load('I4.mat','I_modelo');
+  I_numerico=I_modelo;
+  load('V4.mat','V_mess');
+  V_numerico = V_mess;
 %     
     clear V_mess I_mess Isc Imp Vmp Voc betha alpha
     
@@ -35,12 +43,7 @@ s=3;
     I_mess = I_mess';
     
     
-    %Valores de I V obtenido de forma numerica
-    
-  load('I3.mat','I_modelo');
-  I_numerico=I_modelo;
-  load('V3.mat','V_mess');
-  V_numerico = V_mess;
+
 %%     
     n = [1,3,3,3,36,54,15]; % Pindado 2016 %Numero de células para cada fabricante
     T = [33,28,28,28,45,25,20];
