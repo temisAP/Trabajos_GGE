@@ -1,5 +1,5 @@
 
-function  [Rsh0, Rs0] = pendiente_2D2R(I_mess, V_mess)
+function  [Rsh0, Rs0] = pendiente_2D2R(I_mess, V_mess,s)
 
 % Rsh0 
     %{ 
@@ -35,7 +35,7 @@ function  [Rsh0, Rs0] = pendiente_2D2R(I_mess, V_mess)
     
     if s==1
         Rsh0 = 45.2093;
-        Rs0 = 0.09;
+        Rs0 = Rs0;
     elseif s==2
         Rsh0 = 227.152;
         Rs0 = 0.3015;
@@ -66,6 +66,7 @@ function  [Rsh0, Rs0] = pendiente_2D2R(I_mess, V_mess)
     elseif s == 11
         Rsh0 = Rsh0;
         Rs0 = Rs0;
+    end
  
     
     
