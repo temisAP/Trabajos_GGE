@@ -97,14 +97,13 @@ for s = 1:length(sheet)
 
         mdl_K = fitnlm(v_mess, i_mess, Kalmarkar_fun, beta0);
 
-        gamma(i) = table2array(mdl_K.Coefficients(1,1));
-        m(i) = table2array(mdl_K.Coefficients(2,1));
-        Error_K(i) = mdl_K.RMSE;
-
-        beta0 =[gamma(i) m(i)];
-
+        gamma(s,i) = table2array(mdl_K.Coefficients(1,1));
+        m(s,i) = table2array(mdl_K.Coefficients(2,1));
+        Error_K(s,i) = mdl_K.RMSE;
+        beta0 =[gamma(s,i) m(s,i)];
     end
-
+    En_K(s,:) = round(Error_K(s,:)/Isc,4)*100;
+    
     I_Ksol = (1-(1-gamma(end))*v_mess - gamma(end)*v_mess.^m(end))*Isc;
 
 %     h_ = figure(2);
@@ -151,13 +150,12 @@ for s = 1:length(sheet)
 
         mdl_D = fitnlm(v_mess, i_mess, Das_fun, beta0);
 
-        k(i) = table2array(mdl_D.Coefficients(1,1));
-        h(i) = table2array(mdl_D.Coefficients(2,1));
-        Error_D(i) = mdl_D.RMSE;
-
-        beta0 =[k(i) h(i)];
-
+        k(s,i) = table2array(mdl_D.Coefficients(1,1));
+        h(s,i) = table2array(mdl_D.Coefficients(2,1));
+        Error_D(s, i) = mdl_D.RMSE;
+        beta0 =[k(s,i) h(s,i)];
     end
+    En_D(s,:) = round(Error_D(s,:)/Isc,4)*100;
 
     I_Dsol = (1-v_mess.^k(end))./(1+h(end)*v_mess)*Isc;
 
@@ -211,13 +209,13 @@ for s = 1:length(sheet)
 
         mdl_PC = fitnlm(V_mess_tramo2, I_mess_tramo2, PC_fun, beta0);
 
-        phi(i) = table2array(mdl_PC.Coefficients(1,1));
-        Error_PC(i) = mdl_PC.RMSE;
-
-        beta0 = phi(i);
+        phi(s,i) = table2array(mdl_PC.Coefficients(1,1));
+        Error_PC(s,i) = mdl_PC.RMSE;
+        beta0 = phi(s,i);
 
     end
-
+    En_PC(s,:) = round(Error_PC(s,:)/Isc,4)*100;
+    
     I_tramo1 = Isc*(1-(1-Imp/Isc)*(V_mess_tramo1/Vmp).^(Imp/(Isc-Imp)));
     I_tramo2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^phi(end));
 
