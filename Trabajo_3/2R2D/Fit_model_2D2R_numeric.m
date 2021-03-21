@@ -20,8 +20,8 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 
 
 % %% Bucle para cada hoja
- for s = 5:5
-%   s = 2;  
+ for s = 6:6
+ 
     clear V_mess I_mess Isc Imp Vmp Voc betha alpha u
 
     % Carga de valores experimentales
@@ -68,6 +68,10 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
     I0 = [3.2e-7,3.49e-15,2.78e-15,9.55e-18,1.28e-6,4.03e-10,1.48e-14];
     Ipv = [7.61e-1,5.24e-1,4.63e-1,5.20e-1,1.03,8.23,5.03e-1];
     a2 =2;
+    
+    u_ini = [Ipv(s),I0(s),I0(s),Rs(s),Rsh(s),a(s)];
+    u_sup = u_ini * 1.5;
+    u_inf = u_ini * 0.5;
 
 
     global Vt
@@ -79,8 +83,22 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 
     % Minimize Least squares
 %       options = optimset('MaxFunEvals',1000*7, 'MaxIter',500*7);
+
+
+    metodo = 'gamultiobj';
+    switch metodo
+        case 'fmincon'
+            options= optimoptions('fmincon','Algorithm','interior-point');
+            [umin,fval,exitflag,output] = fmincon(@(u)RECT(u,V_mess,I_mess),u_ini,[],[],[],[],u_inf,u_sup,options);
+        case 'gamultiobj'
+            options = optimoptions('gamultiobj','InitialPopulationMatrix', u_ini);
+            [umin,fval,exitflag,output] = gamultiobj(@(u)RECT(u,V_mess,I_mess),length(u_sup),[],[],[],[],u_inf,u_sup,options);
+        case 'fminsearch'     
+           [umin,fval,exitflag,output]=fminsearch(@(u)RECT(u,V_mess,I_mess),u_ini);
+    end
+
     try
-        [umin,fval,exitflag,output]=fminsearch(@(u)RECT(u,V_mess,I_mess),[Ipv(s),I0(s),I0(s),Rs(s),Rsh(s),a(s)]);
+        
     catch
         disp('error while fminsearch')
         umin = zeros(7,1);
