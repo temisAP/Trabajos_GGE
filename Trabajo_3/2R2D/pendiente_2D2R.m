@@ -35,7 +35,7 @@ function  [Rsh0, Rs0] = pendiente_2D2R(I_mess, V_mess,s)
     
     if s==1
         Rsh0 = 45.2093;
-        Rs0 = 0.09;
+        Rs0 = Rs0;
     elseif s==2
         Rsh0 = 227.152;
         Rs0 = 0.3015;
