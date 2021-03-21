@@ -13,7 +13,7 @@ global Vt
     %}
     Rs_guess = 0.09;
         
-    metodo = 'particleswarm';
+    metodo = 'fminsearch';
     lb = 0;                 %Valor minimo de Rs
     ub = 5;                 %Valor maximo de Rs, (para no acotar poner [])
     switch metodo
@@ -29,7 +29,7 @@ global Vt
             options = optimoptions('particleswarm','InitialSwarmMatrix', Rs_guess);
             Rs = particleswarm(@(R)Rs41(R,Rs0,Rsh0,Isc,Imp,Voc,Vmp,a2,Vt),1,lb,ub,options);
         case 'fminsearch'     
-           Rs =fminsearch(@(R)Rs41(R,Rs0,Rsh0,Isc,Imp,Voc,Vmp,a2,Vt),1,[],[],[],[],lb,ub);
+           Rs =fminsearch(@(R)Rs41(R,Rs0,Rsh0,Isc,Imp,Voc,Vmp,a2,Vt),Rs_guess);
     end
         
 % Paso 4 

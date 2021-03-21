@@ -3,7 +3,7 @@ clear all
 clc
 %%
 % Nombre de las hojas del archivo excel
-read_filename = 'IV_curves.xlsx';
+read_filename = '../IV_curves.xlsx';
 sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PSC'};
 
 % Selección de hoja (s)

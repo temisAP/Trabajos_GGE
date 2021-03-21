@@ -5,7 +5,7 @@ clc
 format long
 %%
 % Nombre de las hojas del archivo excel
-read_filename = '../IV_curves.xlsx';
+read_filename = 'IV_curves.xlsx';
 sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PSC'};
 
 % Selección de hoja (s)
@@ -76,7 +76,9 @@ for s = 2:7
     
     % Hallar el valor de la pendiente en el origen
     [Rsh0, Rs0] = pendiente_2D2R(I_numerico, V_numerico);
-        
+    
+    if s==
+    
     save('wksp.mat')
     
     R_guess = [Rsh0 Rs0];
