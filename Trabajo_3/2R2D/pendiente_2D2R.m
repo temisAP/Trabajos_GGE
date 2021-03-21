@@ -1,5 +1,5 @@
 
-function  [Rsh0, Rs0] = pendiente_2D2R(I_mess, V_mess)
+function  [Rsh0, Rs0] = pendiente_2D2R(I_mess, V_mess,s)
 
 % Rsh0 
     %{ 
@@ -32,6 +32,44 @@ function  [Rsh0, Rs0] = pendiente_2D2R(I_mess, V_mess)
     % Rs0 = 0.2479; %19 marzo  dani filtro s=3
     % Rs0 = 0.2011;%19 marzo  dani filtro s=3
     % Rs0 = 0.24;%19 marzo  dani filtro s=3
+    
+    if s==1
+        Rsh0 = 45.2093;
+        Rs0 = Rs0;
+    elseif s==2
+        Rsh0 = 227.152;
+        Rs0 = 0.3015;
+    elseif s == 3
+        Rsh0 = 343.6159;
+        Rs0 = 0.2576;
+    elseif s == 4
+        Rsh0 = 4783.0;
+        Rs0 = 0.1735 ;
+    elseif s == 5
+        Rsh0 = Rsh0;
+        Rs0 = Rs0;
+    elseif s == 6
+        Rsh0 = Rsh0;
+        Rs0 = Rs0;
+    elseif s == 7
+        Rsh0 = Rsh0;
+        Rs0 = Rs0;
+    elseif s == 8
+        Rsh0 = Rsh0;
+        Rs0 = Rs0;
+    elseif s == 9
+        Rsh0 = Rsh0;
+        Rs0 = Rs0;
+    elseif s == 10
+        Rsh0 = Rsh0;
+        Rs0 = Rs0;
+    elseif s == 11
+        Rsh0 = Rsh0;
+        Rs0 = Rs0;
+    end
+ 
+    
+    
 end
 
 
