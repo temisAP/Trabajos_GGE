@@ -5,7 +5,7 @@ clc
 format long
 %%
 % Nombre de las hojas del archivo excel
-read_filename = 'IV_curves.xlsx';
+read_filename = '../IV_curves.xlsx';
 sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PSC'};
 
 % Selección de hoja (s)
@@ -17,10 +17,13 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 % 6 ---> KC200GT2
 % 7 ---> SPVSX5
 % 8 ---> PSC
+% 9 ---> CTJ30
+% 10 --> ATJ
+% 11 --> 4S1P
 
 
 %% Bucle para cada hoja
-for s = 2:7
+for s = 7:7
     
     %Carga valores de I V obtenidos de forma numerica
     
@@ -43,7 +46,7 @@ for s = 2:7
     I_mess = I_mess';
         
     %% Número de celdas y temperaturas
-    n = [1,3,3,3,36,54,15]; % Pindado 2016 %Numero de células para cada fabricante
+    n = [1,3,3,3,36,54,15,54,3,3]; % Pindado 2016 %Numero de células para cada fabricante
     T = [33,28,28,28,45,25,20]; % En grados
     
     kB = 1.380649e-23; %J K-1
@@ -75,10 +78,8 @@ for s = 2:7
     %% Metodo analítico
     
     % Hallar el valor de la pendiente en el origen
-    [Rsh0, Rs0] = pendiente_2D2R(I_numerico, V_numerico);
-    
-    if s==
-    
+    [Rsh0, Rs0] = pendiente_2D2R(I_numerico, V_numerico,s);
+        
     save('wksp.mat')
     
     R_guess = [Rsh0 Rs0];
@@ -90,13 +91,13 @@ for s = 2:7
         case 'fzero'
             error = fzero(@(Rsh0,Rs0) analytic2d2r,R_guess);
         case 'fmincon'
-            options= optimoptions('fmincon','Algorithm','interior-point');
-            error = fmincon(@(Rsh0,Rs0) analytic2d2r,2,[],[],[],[],lb,ub,options);
+            options= optimoptions('fmincon','Algorithm','interior-point','FunctionTolerance',1e-8);
+            error = fmincon(@(Rsh0,Rs0) analytic2d2r,2,[],[],[],[],lb,ub,[],options);
         case 'gamultiobj'
-            options = optimoptions('gamultiobj','InitialPopulationMatrix', R_guess);
+            options = optimoptions('gamultiobj','InitialPopulationMatrix', R_guess,'FunctionTolerance',1e-8);
             error = gamultiobj(@(Rsh0,Rs0) analytic2d2r,2,[],[],[],[],lb,ub,options);
         case 'particleswarm'
-            options = optimoptions('particleswarm','InitialSwarmMatrix', R_guess);
+            options = optimoptions('particleswarm','InitialSwarmMatrix', R_guess,'FunctionTolerance',1e-8);
             error = particleswarm(@(Rsh0,Rs0) analytic2d2r,2,lb,ub,options);
         case 'fminsearch'     
            error =fminsearch(@(Rsh0,Rs0) analytic2d2r,R_guess);
