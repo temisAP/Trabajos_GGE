@@ -62,6 +62,8 @@ for s = 1:11
 
     I_Karmalkar_analytic = (1-(1-gamma)*(V_mess/Voc)-gamma*(V_mess/Voc).^m)*Isc;
     
+    rmse(1,s) = RMSE(Isc, I_mess, I_Karmalkar_analytic, length(I_Karmalkar_analytic));
+    
     save_filename = 'Fit_model_analytic.xlsx';
     save_sheet = 'KyH';
     
@@ -86,7 +88,9 @@ for s = 1:11
     h = (1/alpha)*((1/betha)-1/k_Das-1);
 
     I_Das_analytic = ((1-(V_mess./Voc).^k_Das)./(1+h.*(V_mess./Voc))).*Isc;
-        
+    
+    rmse(2,s) = RMSE(Isc, I_mess, I_Das_analytic, length(I_Das_analytic));
+    
     save_filename = 'Fit_model_analytic.xlsx';
     save_sheet = 'Das';
     
@@ -113,11 +117,13 @@ for s = 1:11
     
     I_tramo1 = Isc*(1-(1-Imp/Isc)*(V_mess_tramo1/Vmp).^(Imp/(Isc-Imp)));
     eta = (Isc/Imp)*(Isc/(Isc-Imp))*((Voc-Vmp)/Voc);
-    eta_2 = (log(Vmp*Imp-V_mess(end-3)*I_mess(end-3))-log(Vmp*Imp))/...
+    eta_2(s) = (log(Vmp*Imp-V_mess(end-3)*I_mess(end-3))-log(Vmp*Imp))/...
             (log(V_mess(end-3)-Vmp)-log(Voc-Vmp));
     I_tramo2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^eta);
     
     I_PC_analytic = [I_tramo1' I_tramo2'];
+    
+    rmse(3,s) = RMSE(Isc, I_mess, I_PC_analytic, length(I_PC_analytic));
     
     save_filename = 'Fit_model_analytic.xlsx';
     save_sheet = 'PyC';
