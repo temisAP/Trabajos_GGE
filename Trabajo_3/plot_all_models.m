@@ -73,7 +73,7 @@ for s=1:7
     I(:,2) = I_modelo(:);
     E(:,2) = error2(:);
     
-    rmse = RMSE(Isc, I_mess, I(:,1), length(I(:,2)));
+    rmse = RMSE(Isc, I_mess, I(:,2), length(I(:,2)));
     
     % Error
     pos = strjoin({'B',num2str(s+1)},'');
@@ -97,7 +97,7 @@ for s=1:7
     I(:,3) = I_modelo2(:);
     E(:,3) = error2(:);
     
-    rmse = RMSE(Isc, I_mess, I(:,1), length(I(:,3)));
+    rmse = RMSE(Isc, I_mess, I(:,3), length(I(:,3)));
     
     % Error
     pos = strjoin({'C',num2str(s+1)},'');
@@ -121,7 +121,7 @@ for s=1:7
     I(:,4) = I_modelo2(:);
     E(:,4) = error2(:);
     
-    rmse = RMSE(Isc, I_mess, I(:,1), length(I(:,4)));
+    rmse = RMSE(Isc, I_mess, I(:,4), length(I(:,4)));
     
     % Error
     pos = strjoin({'D',num2str(s+1)},'');
@@ -195,7 +195,7 @@ end
 
 function [Ipv,I01,I02,Rs,Rsh,a1,a2] = read_2d2r(filename,sheet,s)
 
-% try
+try
     % Ipv
     pos = strjoin({'B',num2str(s+1)},'');
     Ipv = xlsread(filename,sheet,pos);
@@ -217,14 +217,14 @@ function [Ipv,I01,I02,Rs,Rsh,a1,a2] = read_2d2r(filename,sheet,s)
     % a2
     pos = strjoin({'H',num2str(s+1)},'');
     a2 = xlsread(filename,sheet,pos);
-% catch
-%     disp('No data')
-%     Ipv = 0;
-%     I01 = 0;
-%     I02 = 0;
-%     Rs =0;
-%     Rsh = 0;
-%     a1 = 0;
-%     a2 = 0;
-% end
+catch
+    disp('No data')
+    Ipv = 0;
+    I01 = 0;
+    I02 = 0;
+    Rs =0;
+    Rsh = 0;
+    a1 = 0;
+    a2 = 0;
+end
 end

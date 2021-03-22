@@ -172,12 +172,14 @@ for s = 1:11
     
     %% Exportar resultados
     
-    save = 'n';
+    save = 'y';
     if save == 'y'
         
         save_filename = 'Fit_model_2D2R.xlsx';
         save_sheet = 'Analitico';
         
+        sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PSC','CTJ30','ATJ','4S1P'};
+
         % Name
         pos = strjoin({'A',num2str(s+1)},'');
         A = cellstr(sheet{s});
