@@ -12,15 +12,13 @@ try
     load('Data/numerico_2D2R.mat')
 catch
     return
-        % read_filename='IV_curves.xlsx';
-        % read_sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PSC','CTJ30','ATJ','4S1P'};
 end
 
 save_error = 0;
 save_filename = 'errores.xlsx';
 
 
-for s = 1:length(Cells)
+for s = 11%1:length(Cells)
     %% Experimentales
     
     clear V_mess I_mess Isc Imp Vmp Voc betha alpha I E
