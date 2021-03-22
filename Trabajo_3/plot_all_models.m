@@ -20,7 +20,7 @@ save_error = 0;
 save_filename = 'errores.xlsx';
 
 
-for s=1:7
+for s = 1:length(Cells)
     %% Experimentales
     
     clear V_mess I_mess Isc Imp Vmp Voc betha alpha I E
@@ -152,11 +152,17 @@ for s=1:7
     % Modelos 
     h_ = figure();
     hold on   
-    plot(V_mess, I_mess, 'o', 'LineWidth', 1, 'Color', 'k','DisplayName', 'Experimental')
-    plot(V_mess, I(:,1), '-', 'LineWidth', 1.5, 'Color', gray, 'DisplayName', '1D2R Analitico')
-    plot(V_mess, I(:,2), '-.', 'LineWidth', 1.5, 'Color', gray, 'DisplayName', '1D2R Numerico')
-    plot(V_mess, I(:,3), ':', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '2D2R Analitico')
-    plot(V_mess, I(:,4), '--', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '2D2R Numerico')
+%     plot(V_mess, I_mess, 'o', 'LineWidth', 1, 'Color', 'k','DisplayName', 'Experimental')
+%     plot(V_mess, I(:,1), '-', 'LineWidth', 1.5, 'Color', gray, 'DisplayName', '1D2R Analitico')
+%     plot(V_mess, I(:,2), '-.', 'LineWidth', 1.5, 'Color', gray, 'DisplayName', '1D2R Numerico')
+%     plot(V_mess, I(:,3), ':', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '2D2R Analitico')
+%     plot(V_mess, I(:,4), '--', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '2D2R Numerico')
+%     scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracteristicos')
+    plot(V_mess, I_mess, '-', 'LineWidth', 1, 'Color', 'k','DisplayName', 'Experimental')
+    plot(V_mess, I(:,1), '-', 'LineWidth', 1.5, 'Color', [0, 0.4470, 0.7410], 'DisplayName', '1D2R Analitico')
+    plot(V_mess, I(:,2), '-', 'LineWidth', 1.5, 'Color', [0.8500, 0.3250, 0.0980], 'DisplayName', '1D2R Numerico')
+    plot(V_mess, I(:,3), '-', 'LineWidth', 1.5, 'Color', [0.4660, 0.6740, 0.1880], 'DisplayName', '2D2R Analitico')
+    plot(V_mess, I(:,4), '-', 'LineWidth', 1.5, 'Color', [0.75, 0, 0.75], 'DisplayName', '2D2R Numerico')
     scatter([0 Vmp Voc], [Isc Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracteristicos')
     hold off
     axis([0, V_mess(end)*1.1, 0, I_mess(1)*1.1])
@@ -170,10 +176,14 @@ for s=1:7
     
     h_ = figure();
     hold on
-    plot(V_mess, E(:,1), '-', 'LineWidth', 1.5, 'Color', gray, 'DisplayName', '1D2R Analitico')
-    plot(V_mess, E(:,2), '-.', 'LineWidth', 1.5, 'Color', gray, 'DisplayName', '1D2R Numerico')
-    plot(V_mess, E(:,3), ':', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '2D2R Analitico')
-    plot(V_mess, E(:,4), '--', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '2D2R Numerico')
+%     plot(V_mess, E(:,1), '-', 'LineWidth', 1.5, 'Color', gray, 'DisplayName', '1D2R Analitico')
+%     plot(V_mess, E(:,2), '-.', 'LineWidth', 1.5, 'Color', gray, 'DisplayName', '1D2R Numerico')
+%     plot(V_mess, E(:,3), ':', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '2D2R Analitico')
+%     plot(V_mess, E(:,4), '--', 'LineWidth', 1.5, 'Color', 'k', 'DisplayName', '2D2R Numerico')
+    plot(V_mess, E(:,1), '-', 'LineWidth', 1.5, 'Color', [0, 0.4470, 0.7410], 'DisplayName', '1D2R Analitico')
+    plot(V_mess, E(:,2), '-', 'LineWidth', 1.5, 'Color', [0.8500, 0.3250, 0.0980], 'DisplayName', '1D2R Numerico')
+    plot(V_mess, E(:,3), '-', 'LineWidth', 1.5, 'Color', [0.4660, 0.6740, 0.1880], 'DisplayName', '2D2R Analitico')
+    plot(V_mess, E(:,4), '-', 'LineWidth', 1.5, 'Color', [0.75, 0, 0.75], 'DisplayName', '2D2R Numerico')
     hold off
     axis([0, V_mess(end)*1, 0, max(max(E))*1])
     box on; grid on
@@ -181,6 +191,6 @@ for s=1:7
     ylabel({'$I-I_{exp}$';'[A]'},'Interpreter','latex');
     legend('Interpreter', 'Latex', 'location', 'NorthWest')
     Save_as_PDF(h_, ['Figuras/Error_', Cells(s).Name],'horizontal', 7.5, 10);
-
+s
     
 end
