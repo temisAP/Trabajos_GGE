@@ -144,6 +144,8 @@ for s = 1:11
     error = (sum((I_modelo2 - I_mess).^2))^0.5;
     error2 = (((I_modelo2 - I_mess).^2)).^0.5;
     
+    rmse = RMSE(Isc, I_mess, I_modelo2, length(I_modelo2));
+    
     %% Figuras
     
     % Ajuste
@@ -170,45 +172,49 @@ for s = 1:11
     
     %% Exportar resultados
     
-%     save = 'n';
-%     if save == 'y'
-%         
-%         save_filename = 'Fit_model_2D2R.xlsx';
-%         save_sheet = 'Hoja1';
-%         
-%         % Name
-%         pos = strjoin({'A',num2str(s+1)},'');
-%         A = cellstr(sheet{s});
-%         xlswrite(save_filename,A,save_sheet,pos);
-%         % Ipv
-%         pos = strjoin({'B',num2str(s+1)},'');
-%         A = round(Ipv,3,'significant');
-%         xlswrite(save_filename,A,save_sheet,pos);
-%         % I01
-%         pos = strjoin({'C',num2str(s+1)},'');
-%         A = round(I01,3,'significant');
-%         xlswrite(save_filename,A,save_sheet,pos);
-%         % I02
-%         pos = strjoin({'D',num2str(s+1)},'');
-%         A = round(I02,3,'significant');
-%         xlswrite(save_filename,A,save_sheet,pos);
-%         % Rs
-%         pos = strjoin({'E',num2str(s+1)},'');
-%         A = round(Rs,3,'significant');
-%         xlswrite(save_filename,A,save_sheet,pos);
-%         % Rsh
-%         pos = strjoin({'F',num2str(s+1)},'');
-%         A = round(Rsh,3,'significant');
-%         xlswrite(save_filename,A,save_sheet,pos);
-%         % a1
-%         pos = strjoin({'G',num2str(s+1)},'');
-%         A = round(a1,3,'significant');
-%         xlswrite(save_filename,A,save_sheet,pos);
-%         % a2
-%         pos = strjoin({'H',num2str(s+1)},'');
-%         A = round(a2,3,'significant');
-%         xlswrite(save_filename,A,save_sheet,pos);
+    save = 'n';
+    if save == 'y'
         
-%     end
+        save_filename = 'Fit_model_2D2R.xlsx';
+        save_sheet = 'Analitico';
+        
+        % Name
+        pos = strjoin({'A',num2str(s+1)},'');
+        A = cellstr(sheet{s});
+        xlswrite(save_filename,A,save_sheet,pos);
+        % Ipv
+        pos = strjoin({'B',num2str(s+1)},'');
+        A = round(Ipv,3,'significant');
+        xlswrite(save_filename,A,save_sheet,pos);
+        % I01
+        pos = strjoin({'C',num2str(s+1)},'');
+        A = round(I01,3,'significant');
+        xlswrite(save_filename,A,save_sheet,pos);
+        % I02
+        pos = strjoin({'D',num2str(s+1)},'');
+        A = round(I02,3,'significant');
+        xlswrite(save_filename,A,save_sheet,pos);
+        % Rs
+        pos = strjoin({'E',num2str(s+1)},'');
+        A = round(Rs,3,'significant');
+        xlswrite(save_filename,A,save_sheet,pos);
+        % Rsh
+        pos = strjoin({'F',num2str(s+1)},'');
+        A = round(Rsh,3,'significant');
+        xlswrite(save_filename,A,save_sheet,pos);
+        % a1
+        pos = strjoin({'G',num2str(s+1)},'');
+        A = round(a1,3,'significant');
+        xlswrite(save_filename,A,save_sheet,pos);
+        % a2
+        pos = strjoin({'H',num2str(s+1)},'');
+        A = round(a2,3,'significant');
+        xlswrite(save_filename,A,save_sheet,pos);     
+        % Error
+        pos = strjoin({'I',num2str(s+1)},'');
+        A = round(rmse,3,'significant');
+        xlswrite(save_filename,A,save_sheet,pos);
+        
+    end
     
 end
