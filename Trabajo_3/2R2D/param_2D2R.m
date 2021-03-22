@@ -1,19 +1,11 @@
-function [Ipv,I01,I02,Rs,Rsh,a1] = param_2D2R(Isc,Voc,Imp,Vmp,a2,Rsh0, Rs0)
+function [Ipv,I01,I02,Rs,Rsh,a1] = param_2D2R(Isc,Voc,Imp,Vmp,a2,Rsh0, Rs0,Rs_guess,metodo)
 
 global Vt
 % Paso 1: se asume que a2 =2
     a2=a2;
-% Paso2: despejar Rs
-    %{
-    Valores iniciales
-    Para s=1,3,4 : Rs_guess = 0.09
-    Para s=2     : Rs_guess = 0.2
-    Para s=3     : Rs=0.0802 (segun paper)
-    Para s=5,6,7 : Rs_guess = 0.09 (no he probado otro pero este va)
-    %}
-    Rs_guess = 0.09;
+
         
-    metodo = 'fminsearch';
+%     metodo = 'fminsearch';
     lb = 0;                 %Valor minimo de Rs
     ub = 5;                 %Valor maximo de Rs, (para no acotar poner [])
     switch metodo
