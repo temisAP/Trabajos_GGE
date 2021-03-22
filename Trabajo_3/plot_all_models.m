@@ -1,22 +1,21 @@
 close all
-sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PSC','CTJ30','ATJ','4S1P'};
+read_sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PSC','CTJ30','ATJ','4S1P'};
 read_filename='IV_curves.xlsx';
 save_filename = 'errores.xlsx';
 
 
 for s=1:7
-    s
     %% Experimentales
     
     clear V_mess I_mess Isc Imp Vmp Voc betha alpha I E
     
     % Carga de valores experimentales
-    V_mess = xlsread(read_filename, sheet{s}, 'A21:A1202');
-    I_mess = xlsread(read_filename, sheet{s}, 'B21:B1202');
-    Isc = xlsread(read_filename, sheet{s}, 'B1');
-    Imp = xlsread(read_filename, sheet{s}, 'B2');
-    Vmp = xlsread(read_filename, sheet{s}, 'B3');
-    Voc = xlsread(read_filename, sheet{s}, 'B4');
+    V_mess = xlsread(read_filename, read_sheet{s}, 'A21:A1202');
+    I_mess = xlsread(read_filename, read_sheet{s}, 'B21:B1202');
+    Isc = xlsread(read_filename, read_sheet{s}, 'B1');
+    Imp = xlsread(read_filename, read_sheet{s}, 'B2');
+    Vmp = xlsread(read_filename, read_sheet{s}, 'B3');
+    Voc = xlsread(read_filename, read_sheet{s}, 'B4');
     V_mess = V_mess';
     I_mess = I_mess';
     
