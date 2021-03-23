@@ -332,7 +332,6 @@ f = figure(12);
      ylim([0 14]);
      legend(sheet, 'Interpreter', 'Latex', 'location', 'Eastoutside');   
 
-    
     Save_as_PDF(f, ['Figuras/1_Nu_barplot'],'horizontal',-17.5,0);
 
 %% DHV

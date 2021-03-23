@@ -226,7 +226,7 @@ save('Data/RMSE_3', 'rmse')
 for s = 1:11
     RMSE(s,:) = [rmse(s).an1D2R, rmse(s).num1D2R, rmse(s).an2D2R, rmse(s).num2D2R];
 end
-modelos = {"A-1D2R", "N-1D2R", "A-2D2R", "N-2D2R"};
+modelos = {"Anal\'itico", 'Das', 'Pindado $\&$ Cubas', "Numerico"};
 
 f = figure(12);
     h_ = bar(RMSE','FaceColor','flat');
@@ -236,32 +236,7 @@ f = figure(12);
     end
      set(gca,'xticklabel',modelos,'TickLabelInterpreter','latex');
      ylabel({'$\xi$';'[$\%$]'},'Interpreter','latex');
-     ylim([0 7.5]);
-     legend(rmse.Name, 'Interpreter', 'Latex', 'location', 'Eastoutside');   
+     ylim([0 14]);
+     legend(sheet, 'Interpreter', 'Latex', 'location', 'Eastoutside');   
 
-    Save_as_PDF(f, ['Figuras/Barplot'],'horizontal',-15,0);
-    
-    
-    
-%% CURVA CON PUNTOS CARACTERISTICOS
-close all
-
-h = figure();
-    subplot(2,1,1);
-    hold on
-    plot(Cells(2).V_mess, Cells(2).I_mess, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', 'Curva $I-V$')
-    scatter([0 Cells(2).Vmp Cells(2).Voc], [Cells(2).Isc Cells(2).Imp 0], 50, 'k', 'filled','o', 'DisplayName', 'Puntos caracteristicos')
-    legend('Interpreter', 'Latex', 'location', 'SouthWest')
-    xlabel('$V$ [V]','Interpreter','latex')
-    ylabel({'$I$';'[A]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figuras/Presentacion'],'horizontal');
-    
-    box on
-    subplot(2,1,2); 
-    plot(Cells(2).V_mess, Cells(2).I_mess.*Cells(2).V_mess, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', 'Curva $P-V$')
-    legend('Interpreter', 'Latex', 'location', 'South')
-    xlabel('$V$ [V]','Interpreter','latex')
-    ylabel({'$P$';'[W]'},'Interpreter','latex');
-    box on
-    Save_as_PDF(h, ['Figuras/Presentacion'],'horizontal');
-    
+    %Save_as_PDF(f, ['Figuras/1_Nu_barplot'],'horizontal',-17.5,0);
