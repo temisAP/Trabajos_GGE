@@ -20,7 +20,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5', 'PS
 
 load('../data.mat');
 % %% Bucle para cada hoja
-for s = 1:2
+for s = length(sheet)
     
     clear V_mess I_mess Isc Imp Vmp Voc betha alpha u
     %
@@ -107,6 +107,12 @@ for s = 1:2
     %       options = optimset('MaxFunEvals',1000*7, 'MaxIter',500*7);
     %
     %     u_ini = [1, 1e-6, 1e-6, 1, 10, 1,2];
+    
+    if s == 8
+        u_ini = [5, 1e-6, 1e-6, 1, 1, 1,2];
+    else
+    end
+    
     metodo = 'fminsearch';
     switch metodo
         case 'fmincon'

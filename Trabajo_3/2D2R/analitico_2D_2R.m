@@ -23,8 +23,8 @@ format long
 load('../data.mat');
 
 %% Bucle para cada hoja
-for s = 1:11
-    
+for s = 8%1:11
+s    
     %Carga valores de I V obtenidos de forma numerica
     
     load(strjoin({'Pendientes/I',num2str(s),'.mat'},''),'I_modelo');
@@ -89,7 +89,7 @@ for s = 1:11
     a2 = a2(s);
 
     %% Metodo analítico optimizando las pendientes
-    
+%{    
 %     % Hallar el valor de la pendiente en el origen
 %     [Rsh0, Rs0] = pendiente_2D2R(I_numerico, V_numerico,s);
 %         
@@ -117,7 +117,7 @@ for s = 1:11
 %     end
 %     
 %     load('wksp.mat');
-
+%}
 
 %% Método analitico
 

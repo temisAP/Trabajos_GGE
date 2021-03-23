@@ -7,8 +7,11 @@ close all
 try
     load('Data/Cells_Data.mat')
     load('Data/analitico_1D2R.mat')
+    load('Data/analitico1D2R.mat')
     load('Data/numerico_1D2R.mat')
+    load('Data/numerico1D2R.mat')
     load('Data/analitico_2D2R.mat')
+    load('Data/analitico2D2R.mat')
     load('Data/numerico_2D2R.mat')
 catch
     return
@@ -18,7 +21,7 @@ save_error = 0;
 save_filename = 'errores.xlsx';
 
 
-for s = 11%1:length(Cells)
+for s = 1:length(Cells)
     %% Experimentales
     
     clear V_mess I_mess Isc Imp Vmp Voc betha alpha I E
@@ -45,15 +48,15 @@ for s = 11%1:length(Cells)
     
     
     %% Modelo 1D2R analitico
-    umin = [analitico_1D2R(s).Ipv, analitico_1D2R(s).I0, ...
-            analitico_1D2R(s).Rs, analitico_1D2R(s).Rsh, ...
-            analitico_1D2R(s).a];
-    
-    I_modelo = zeros(size(V_mess,2),1)';
-    for i=1:size(V_mess,2)
-        I_modelo(i) = Panel_Current(umin,V_mess(i));
-    end
-    
+%     umin = [analitico_1D2R(s).Ipv, analitico_1D2R(s).I0, ...
+%             analitico_1D2R(s).Rs, analitico_1D2R(s).Rsh, ...
+%             analitico_1D2R(s).a];
+%     
+%     I_modelo = zeros(size(V_mess,2),1)';
+%     for i=1:size(V_mess,2)
+%         I_modelo(i) = Panel_Current(umin,V_mess(i));
+%     end
+    I_modelo = Datos_analitico_1D2R(s).I_modelo2;
     error = (sum((I_modelo - I_mess).^2))^0.5;
     error2 = (((I_modelo - I_mess).^2)).^0.5;
        
@@ -70,15 +73,15 @@ for s = 11%1:length(Cells)
     end
     
     %% Modelo 1D2R numerico
-    umin = [numerico_1D2R(s).Ipv, numerico_1D2R(s).I0, ...
-            numerico_1D2R(s).Rs, numerico_1D2R(s).Rsh, ...
-            numerico_1D2R(s).a];
-    
-    I_modelo = zeros(size(V_mess,2),1)';
-    for i=1:size(V_mess,2)
-        I_modelo(i) = Panel_Current(umin,V_mess(i));
-    end
-   
+%     umin = [numerico_1D2R(s).Ipv, numerico_1D2R(s).I0, ...
+%             numerico_1D2R(s).Rs, numerico_1D2R(s).Rsh, ...
+%             numerico_1D2R(s).a];
+%     
+%     I_modelo = zeros(size(V_mess,2),1)';
+%     for i=1:size(V_mess,2)
+%         I_modelo(i) = Panel_Current(umin,V_mess(i));
+%     end
+    I_modelo = Datos_numericos_1D2R(s).I_modelo2;
     error = (sum((I_modelo - I_mess).^2))^0.5;
     error2 = (((I_modelo - I_mess).^2)).^0.5;
     
@@ -96,14 +99,18 @@ for s = 11%1:length(Cells)
     
     %% Modelo 2D2R analitico
 
-    umin = [analitico_2D2R(s).Ipv, analitico_2D2R(s).I01, analitico_2D2R(s).I02,...
-     analitico_2D2R(s).Rs, analitico_2D2R(s).Rsh, analitico_2D2R(s).a1,...
-     analitico_2D2R(s).a2];
-    
-    I_modelo2 = zeros(size(V_mess,2),1)';
-    for i=1:size(V_mess,2)
-        I_modelo2(i) = Panel_Current_2D2R(umin,V_mess(i));
-    end
+%     umin = [analitico_2D2R(s).Ipv, analitico_2D2R(s).I01, analitico_2D2R(s).I02,...
+%      analitico_2D2R(s).Rs, analitico_2D2R(s).Rsh, analitico_2D2R(s).a1,...
+%      analitico_2D2R(s).a2];
+%     
+%     I_modelo2 = zeros(size(V_mess,2),1)';
+%     for i=1:size(V_mess,2)
+%         I_modelo2(i) = Panel_Current_2D2R(umin,V_mess(i));
+%     end
+%     if s == 8
+%         load('Data/I_2D2R_A_8.mat');
+%     end
+    I_modelo2 = Datos_analitico_2D2R(s).I_modelo2;
     error = (sum((I_modelo2 - I_mess).^2))^0.5;
     error2 = (((I_modelo2 - I_mess).^2)).^0.5;
     
@@ -146,6 +153,8 @@ for s = 11%1:length(Cells)
     
     %% PLOTS
        
+
+
     gray = [1,1,1]*0.65;
     % Modelos 
     h_ = figure();
@@ -187,8 +196,13 @@ for s = 11%1:length(Cells)
     box on; grid on
     xlabel('$V$ [V]','Interpreter','latex')
     ylabel({'$I-I_{exp}$';'[A]'},'Interpreter','latex');
-    legend('Interpreter', 'Latex', 'location', 'NorthWest')
+    if s == 10
+        legend('Interpreter', 'Latex', 'location', 'West')
+    else
+        legend('Interpreter', 'Latex', 'location', 'NorthWest')
+    end
+    
     Save_as_PDF(h_, ['Figuras/Error_', Cells(s).Name],'horizontal', 7.5, 10);
-s
+
     
 end
