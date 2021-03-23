@@ -3,7 +3,7 @@ clear all
 clc
 close all
 
-plot_final = 2;
+plot_final = 1;
 
 % % Nombre de las hojas del archivo excel
 % read_filename = 'IV_curves.xlsx';
@@ -122,7 +122,8 @@ for s = 1:11
     eta_2(s) = (log(Vmp*Imp-V_mess(end-3)*I_mess(end-3))-log(Vmp*Imp))/...
             (log(V_mess(end-3)-Vmp)-log(Voc-Vmp));
     I_tramo2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^eta);
-    
+    I_tramo2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^eta);
+
     I_PC_analytic = [I_tramo1' I_tramo2'];
     
     rmse(3,s) = RMSE(Isc, I_mess, I_PC_analytic, length(I_PC_analytic));
@@ -155,7 +156,7 @@ for s = 1:11
                 plot(V_mess(1:10:end)', I_mess(1:10:end)', 'o', 'LineWidth', 1,...
                 'Color', 'k','DisplayName', ["Valores experimentales"])
             else
-                plot(V_mess, I_mess, '-o', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+                plot(V_mess, I_mess, 'o', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
                     ["Valores experimentales"])
             end
 %             plot(V_mess, I_Karmalkar_analytic, '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980], 'DisplayName', "Karmalkar \& Haneefa anal\'itico")
@@ -193,7 +194,7 @@ for s = 1:11
                     ["Pindado \& Cubas num\'erico"])
                 axis([0, V_mess(end), ...
                     min(min([I_Karmalkar_analytic - I_mess, I_Das_analytic - I_mess,(I_PC_analytic - I_mess')'])),...
-                    max(max([I_Karmalkar_analytic - I_mess, I_Das_analytic - I_mess,(I_PC_analytic - I_mess')']))])
+                    max(max([I_Karmalkar_analytic - I_mess, I_Das_analytic - I_mess,(I_PC_analytic - I_mess')'])) ])
                 box on; grid on
                 legend('Interpreter', 'Latex', 'location', 'SouthWest')
                 xlabel('$V$ [V]','Interpreter','latex');

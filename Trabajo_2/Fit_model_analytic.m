@@ -40,6 +40,7 @@ sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
 % Cargar datos de archivo .mat
 load('data.mat');
 
+%%
 for s = 1:11
     
     % Carga de valores experimentales
@@ -119,14 +120,29 @@ for s = 1:11
     
     I_tramo1 = Isc*(1-(1-Imp/Isc)*(V_mess_tramo1/Vmp).^(Imp/(Isc-Imp)));
     eta = (Isc/Imp)*(Isc/(Isc-Imp))*((Voc-Vmp)/Voc);
-    eta_2(s) = (log(Vmp*Imp-V_mess(end-3)*I_mess(end-3))-log(Vmp*Imp))/...
-            (log(V_mess(end-3)-Vmp)-log(Voc-Vmp));
     I_tramo2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^eta);
     
+    eta_2(s) = (log(Vmp*Imp-V_mess(end-3)*I_mess(end-3))-log(Vmp*Imp))/...
+            (log(V_mess(end-3)-Vmp)-log(Voc-Vmp));
+        
+    if s == 4
+        eta_2(s) = (log(Vmp*Imp-V_mess(end-70)*I_mess(end-70))-log(Vmp*Imp))/...
+            (log(V_mess(end-70)-Vmp)-log(Voc-Vmp));
+    elseif s == 7
+        eta_2(s) = (log(Vmp*Imp-V_mess(end-50)*I_mess(end-50))-log(Vmp*Imp))/...
+            (log(V_mess(end-50)-Vmp)-log(Voc-Vmp));
+    elseif s == 9
+        eta_2(s) = (log(Vmp*Imp-V_mess(end-15)*I_mess(end-15))-log(Vmp*Imp))/...
+            (log(V_mess(end-15)-Vmp)-log(Voc-Vmp));
+    end
+        
+    I_tramo2_2 = Imp*(Vmp./V_mess_tramo2).*(1-((V_mess_tramo2-Vmp)/(Voc-Vmp)).^eta_2(s));
+
     I_PC_analytic = [I_tramo1' I_tramo2'];
+    I_PC_analytic_2 = [I_tramo1' I_tramo2_2'];
     
     rmse(3,s) = RMSE(Isc, I_mess, I_PC_analytic, length(I_PC_analytic));
-    
+    rmse(4,s) = RMSE(Isc, I_mess, I_PC_analytic_2, length(I_PC_analytic_2));
     save_filename = 'Fit_model_analytic.xlsx';
     save_sheet = 'PyC';
     
