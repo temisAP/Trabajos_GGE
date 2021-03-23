@@ -318,28 +318,33 @@ for s = 1:length(sheet)
 end
 
 %%
+clc
+close all
+
 RMSE = [En_K(:,end), En_D(:,end), En_PC(:,end)];
 modelos = {'Karmalkar $\&$ Haneefa', 'Das', 'Pindado $\&$ Cubas'};
 
-figure(12);
-    hold on
-    bar(RMSE','FaceColor','flat');
-%     h_ = bar(RMSE','FaceColor','flat');
-    set(gca,'xticklabel',modelos,'TickLabelInterpreter','latex');
-    ylabel({'$\xi$';'[\%]'},'Interpreter','latex');
-    legend(sheet, 'Interpreter', 'Latex', 'location', 'NorthEast')%'Eastoutside');
-    
-    cmap = colormap(jet);
-    
+f = figure(12);
+    h_ = bar(RMSE','FaceColor','flat');
+    cmap = colormap(jet);     
     for k = 1:size(RMSE,1)
-        bar(RMSE','FaceColor','flat');.FaceColor = cmap(23*k,:);
+        h_(k).FaceColor = cmap(23*k,:);
     end
+     set(gca,'xticklabel',modelos,'TickLabelInterpreter','latex');
+     set(get(gca,'ylabel'),'rotation',0)
+     ylabel({'$\xi$';'[$\%$]'},'Interpreter','latex');
+     ax = axis();
+     ylh = get(gca,'ylabel');
+        ylh.Position(1) = -(0.)*( ax(2) - ax(1) );
+        ylh.Position(2) = 0.8*( ax(4) - ax(3) ) + ax(3);
+     legend(sheet, 'Interpreter', 'Latex', 'location', 'Eastoutside');
+%     
+
     
-    Save_as_PDF(figure(12), ['Figuras/1_Nu_barplot'],'horizontal');
-    hold off
+    Save_as_PDF(f, ['Figuras/1_Nu_barplot'],'-');
 
 %% DHV
-
+%{
 % % Carga de valores experimentales y datos del fabricante
 % sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
 % 
@@ -403,3 +408,60 @@ figure(12);
 % [fit3, bondad3] = fit(V_mess(1:5), I_mess(1:5), 'poly1');
 % coeff3 = coeffvalues(fit3);
 % Isc = coeff3(2);
+%}
+
+
+
+
+function [] = Save_as_PDF(h, path, y_label_horientation, y_lab, y_pdf)
+
+    % This function saves a figure to PDF format
+    % Made by: Daniel del Rio Velilla
+    
+    % Check number of in parameters
+    n = nargin;                                                             
+    switch n  
+        case 3
+            y_lab = 0;
+            y_pdf = 0;
+            
+        case 4
+            y_pdf = y_lab;
+            
+        otherwise
+    end
+    
+    % Set labels format
+    set(gca,'TickLabelInterpreter','latex');
+    set(gca,'FontSize',10.5);
+    set(gca,'LabelFontSizeMultiplier',1.35);
+    set(gca,'TitleFontSizeMultiplier',1.25);
+    
+    % Choose the axis position
+    if strcmp(y_label_horientation,'horizontal')
+        
+        % Get axis size
+        ax = axis();
+        
+        % Move x label
+        xlh = get(gca,'xlabel');
+        xlh.Position(1) = 0.9*( ax(2) - ax(1) ) + ax(1);  
+        
+        % Rotate y label
+        set(get(gca,'ylabel'),'rotation',0)
+        
+        % Move y label
+        ylh = get(gca,'ylabel');
+        ylh.Position(1) = -(0.11 + y_lab/100)*( ax(2) - ax(1) );
+        ylh.Position(2) = 0.8*( ax(4) - ax(3) ) + ax(3);
+        
+        
+    end
+    
+    % save figure as PDF
+    set(h,'Units','Inches');
+    pos = get(h,'Position');
+    set(h,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3)+y_pdf/10, pos(4)])
+    print(h, path,'-dpdf','-r0','-painters')
+
+end

@@ -323,20 +323,20 @@ modelos = {'Karmalkar $\&$ Haneefa', 'Das', 'Pindado $\&$ Cubas'};
 
 f = figure(12);
     h_ = bar(RMSE','FaceColor','flat');
-    set(gca,'xticklabel',modelos,'TickLabelInterpreter','latex');
-    ylabel({'$\xi$';'[$\%$]'},'Interpreter','latex');
-    legend(sheet, 'Interpreter', 'Latex', 'location', 'Eastoutside');
-    
-    cmap = colormap(jet);
-    
+    cmap = colormap(jet);     
     for k = 1:size(RMSE,1)
         h_(k).FaceColor = cmap(23*k,:);
     end
+     set(gca,'xticklabel',modelos,'TickLabelInterpreter','latex');
+     ylabel({'$\xi$';'[$\%$]'},'Interpreter','latex');
+     legend(sheet, 'Interpreter', 'Latex', 'location', 'Eastoutside');
+%     
+
     
-    %Save_as_PDF(f, ['Figuras/1_Nu_barplot'],'horizontal',0,10);
+    Save_as_PDF(f, ['Figuras/1_Nu_barplot'],'horizontal',-17.5,0);
 
 %% DHV
-
+%{
 % % Carga de valores experimentales y datos del fabricante
 % sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
 % 
@@ -400,3 +400,4 @@ f = figure(12);
 % [fit3, bondad3] = fit(V_mess(1:5), I_mess(1:5), 'poly1');
 % coeff3 = coeffvalues(fit3);
 % Isc = coeff3(2);
+%}
