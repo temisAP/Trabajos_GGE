@@ -190,7 +190,7 @@ for s = 1:11
             xlabel('$V$ [V]','Interpreter','latex')
             ylabel({'$I$';'[A]'},'Interpreter','latex')
             legend('Interpreter', 'Latex', 'location', 'SouthWest')
-            Save_as_PDF(h_, ['Figuras/1_An_', sheet{s}], 'horizontal');
+%             Save_as_PDF(h_, ['Figuras/1_An_', sheet{s}], 'horizontal');
         
         case 2
            h_ = figure(s);
@@ -214,7 +214,7 @@ for s = 1:11
                 legend('Interpreter', 'Latex', 'location', 'SouthWest')
                 xlabel('$V$ [V]','Interpreter','latex');
                 ylabel({'$I-I_{exp}$';'[A]'},'Interpreter','latex');
-                Save_as_PDF(h_, ['Figuras/1_An_dif_', sheet{s}],'horizontal', 7.5, 10);
+%                 Save_as_PDF(h_, ['Figuras/1_An_dif_', sheet{s}],'horizontal', 7.5, 10);
                 hold off
                 disp(sheet{s})
         otherwise
@@ -223,3 +223,20 @@ for s = 1:11
     end
 close all            
 end
+
+%%
+modelos = {'K $\&$ H', 'Das', 'P $\&$ C', 'P $\&$ C*'};
+
+f = figure(12);
+    h_ = bar(rmse,'FaceColor','flat');
+    set(gca,'xticklabel',modelos,'TickLabelInterpreter','latex');
+    ylabel({'$\xi$';'[$\%$]'},'Interpreter','latex');
+    legend(sheet, 'Interpreter', 'Latex', 'location', 'Eastoutside');
+    
+    cmap = colormap(jet);
+    
+    for k = 1:size(rmse,2)
+        h_(k).FaceColor = cmap(23*k,:);
+    end
+    
+    Save_as_PDF(f, ['Figuras/1_An_barplot'],'horizontal',0,10);
