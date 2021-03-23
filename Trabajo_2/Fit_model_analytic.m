@@ -239,4 +239,6 @@ f = figure(12);
         h_(k).FaceColor = cmap(23*k,:);
     end
     
-    Save_as_PDF(f, ['Figuras/1_An_barplot'],'horizontal',0,10);
+    Save_as_PDF(f, ['Figuras/1_An_barplot'],'horizontal',-12.5,0);
+    
+    
