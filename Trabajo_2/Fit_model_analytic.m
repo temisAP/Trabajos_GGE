@@ -3,7 +3,7 @@ clear all
 clc
 close all
 
-plot_final = 1;
+plot_final = 2;
 
 % % Nombre de las hojas del archivo excel
 % read_filename = 'IV_curves.xlsx';
@@ -193,6 +193,10 @@ for s = 1:11
 %             Save_as_PDF(h_, ['Figuras/1_An_', sheet{s}], 'horizontal');
         
         case 2
+            Ek = abs(I_Karmalkar_analytic - I_mess);
+            Ed = abs(I_Das_analytic - I_mess);
+            Ep = abs(I_PC_analytic - I_mess')'; 
+           
            h_ = figure(s);
                 hold on
 %                 plot(V_mess, I_Karmalkar_analytic - I_mess, '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980],'DisplayName', ...
@@ -201,20 +205,18 @@ for s = 1:11
 %                     ["Das num\'erico"])
 %                 plot(V_mess, I_PC_analytic - I_mess', '-', 'LineWidth', 2, 'Color', [0.3010, 0.7450, 0.9330],'DisplayName', ...
 %                     ["Pindado \& Cubas num\'erico"])
-                plot(V_mess, I_Karmalkar_analytic - I_mess, '-', 'LineWidth', 2, 'Color', [0, 0.4470, 0.7410],'DisplayName', ...
+                plot(V_mess, Ek, '-', 'LineWidth', 2, 'Color', [0, 0.4470, 0.7410],'DisplayName', ...
                     ["Karmalkar \& Haneefa num\'erico"])
-                plot(V_mess, I_Das_analytic - I_mess, '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980],'DisplayName', ...
+                plot(V_mess, Ed, '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980],'DisplayName', ...
                     ["Das num\'erico"])
-                plot(V_mess, I_PC_analytic - I_mess', '-', 'LineWidth', 2, 'Color', [0.4660, 0.6740, 0.1880],'DisplayName', ...
+                plot(V_mess, Ep, '-', 'LineWidth', 2, 'Color', [0.4660, 0.6740, 0.1880],'DisplayName', ...
                     ["Pindado \& Cubas num\'erico"])
-                axis([0, V_mess(end), ...
-                    min(min([I_Karmalkar_analytic - I_mess, I_Das_analytic - I_mess,(I_PC_analytic - I_mess')'])),...
-                    max(max([I_Karmalkar_analytic - I_mess, I_Das_analytic - I_mess,(I_PC_analytic - I_mess')'])) ])
+                axis([0, V_mess(end), 0, max(max([Ek, Ed, Ep]))])
                 box on; grid on
-                legend('Interpreter', 'Latex', 'location', 'SouthWest')
+                legend('Interpreter', 'Latex', 'location', 'NorthWest')
                 xlabel('$V$ [V]','Interpreter','latex');
                 ylabel({'$I-I_{exp}$';'[A]'},'Interpreter','latex');
-%                 Save_as_PDF(h_, ['Figuras/1_An_dif_', sheet{s}],'horizontal', 7.5, 10);
+                Save_as_PDF(h_, ['Figuras/1_An_dif_', sheet{s}],'horizontal', 7.5, 10);
                 hold off
                 disp(sheet{s})
         otherwise

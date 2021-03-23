@@ -6,7 +6,7 @@ clc;
 sheet = {'RTC France', 'TNJ', 'ZTJ', '3G30C','PWP201', 'KC200GT2', 'SPVSX5',...
          'PSC', 'CTJ30', 'ATJ', '4S1P'};
 
-plot_final = 2;
+plot_final = 1;
 
 % sheet_DHV = {'4S1P', '4S4P', '7S1P', '8S5P'};
 
@@ -284,13 +284,10 @@ for s = 1:length(sheet)
                 legend('Interpreter', 'Latex', 'location', 'SouthWest')
                 xlabel('$V$ [V]','Interpreter','latex');
                 ylabel({'$I$';'[A]'},'Interpreter','latex');
-                Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal',1);
+                %Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal',1);
                 hold off
                 
         case 2
-            Ek = abs(I_Ksol - I_mess);
-            Ed = abs(I_Dsol - I_mess);
-            Ep = abs(I_PCsol - I_mess')';
             h_ = figure(s);
                 hold on
 %                 plot(V_mess, I_Ksol - I_mess, '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980],'DisplayName', ...
@@ -299,18 +296,18 @@ for s = 1:length(sheet)
 %                     ["Das num\'erico"])
 %                 plot(V_mess, I_PCsol - I_mess', '-', 'LineWidth', 2, 'Color', [0.3010, 0.7450, 0.9330],'DisplayName', ...
 %                     ["Pindado \& Cubas num\'erico"])
-                plot(V_mess, Ek, '-', 'LineWidth', 2, 'Color', [0, 0.4470, 0.7410],'DisplayName', ...
+                plot(V_mess, abs(I_Ksol - I_mess), '-', 'LineWidth', 2, 'Color', [0, 0.4470, 0.7410],'DisplayName', ...
                     ["Karmalkar \& Haneefa num\'erico"])
-                plot(V_mess, Ed, '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980],'DisplayName', ...
+                plot(V_mess, abs(I_Dsol - I_mess), '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980],'DisplayName', ...
                     ["Das num\'erico"])
-                plot(V_mess, Ep, '-', 'LineWidth', 2, 'Color', [0.4660, 0.6740, 0.1880],'DisplayName', ...
+                plot(V_mess, abs(I_PCsol - I_mess')', '-', 'LineWidth', 2, 'Color', [0.4660, 0.6740, 0.1880],'DisplayName', ...
                     ["Pindado \& Cubas num\'erico"])
-                axis([0, V_mess(end), 0, max(max([Ek, Ed, Ep]))])
+                axis([0, V_mess(end), min(min([I_Ksol - I_mess, I_Dsol - I_mess, (I_PCsol - I_mess')'])), max(max([I_Ksol - I_mess, I_Dsol - I_mess, (I_PCsol - I_mess')']))])
                 box on; grid on
-                legend('Interpreter', 'Latex', 'location', 'NorthWest')
+                legend('Interpreter', 'Latex', 'location', 'SouthWest')
                 xlabel('$V$ [V]','Interpreter','latex');
                 ylabel({'$I-I_{exp}$';'[A]'},'Interpreter','latex');
-                Save_as_PDF(h_, ['Figuras/1_Nu_dif_', sheet{s}],'horizontal', 7.5, 10);
+                %Save_as_PDF(h_, ['Figuras/1_Nu_dif_', sheet{s}],'horizontal', 7.5, 10);
                 hold off
                 
         otherwise
@@ -403,3 +400,70 @@ f = figure(12);
 % coeff3 = coeffvalues(fit3);
 % Isc = coeff3(2);
 %}
+
+
+
+
+
+
+
+
+
+
+function [] = Save_as_PDF(h, path, y_label_horientation, y_lab, y_pdf)
+
+    % This function saves a figure to PDF format
+    % Made by: Daniel del Rio Velilla
+    
+    % Check number of in parameters
+    n = nargin;                                                             
+    switch n  
+        case 3
+            y_lab = 0;
+            y_pdf = 0;
+            
+        case 4
+            y_pdf = y_lab;
+            
+        otherwise
+    end
+    
+    % Set labels format
+    set(gca,'TickLabelInterpreter','latex');
+    set(gca,'FontSize',10.5);
+    set(gca,'LabelFontSizeMultiplier',1.35);
+    set(gca,'TitleFontSizeMultiplier',1.25);
+    
+    % Choose the axis position
+    if strcmp(y_label_horientation,'horizontal')
+        
+        % Get axis size
+        ax = axis();
+        
+        % Move x label
+        xlh = get(gca,'xlabel');
+        xlh.Position(1) = 0.9*( ax(2) - ax(1) ) + ax(1);  
+        
+        % Rotate y label
+        set(get(gca,'ylabel'),'rotation',0)
+        % Number of characters
+        label = get(gca,'ylabel');
+        for i = 1:length(label.String)
+            ylab_size(i) = length(label.String{i});
+        end
+        
+        % Move y label
+        ylh = get(gca,'ylabel');
+        ylh.Position(1) = -(0.11 + y_lab/100)*( ax(2) - ax(1) );
+        ylh.Position(2) = 0.8*( ax(4) - ax(3) ) + ax(3);
+        
+        
+    end
+
+    % save figure as PDF
+    set(h,'Units','Inches');
+    pos = get(h,'Position');
+    set(h,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3)+y_pdf/10, pos(4)])
+    print(h, path,'-dpdf','-r0','-painters')
+
+end
