@@ -321,19 +321,22 @@ end
 RMSE = [En_K(:,end), En_D(:,end), En_PC(:,end)];
 modelos = {'Karmalkar $\&$ Haneefa', 'Das', 'Pindado $\&$ Cubas'};
 
-f = figure(12);
-    h_ = bar(RMSE','FaceColor','flat');
+figure(12);
+    hold on
+    bar(RMSE','FaceColor','flat');
+%     h_ = bar(RMSE','FaceColor','flat');
     set(gca,'xticklabel',modelos,'TickLabelInterpreter','latex');
-    ylabel({'$\xi$';'[$\%$]'},'Interpreter','latex');
-    legend(sheet, 'Interpreter', 'Latex', 'location', 'Eastoutside');
+    ylabel({'$\xi$';'[\%]'},'Interpreter','latex');
+    legend(sheet, 'Interpreter', 'Latex', 'location', 'NorthEast')%'Eastoutside');
     
     cmap = colormap(jet);
     
     for k = 1:size(RMSE,1)
-        h_(k).FaceColor = cmap(23*k,:);
+        bar(RMSE','FaceColor','flat');.FaceColor = cmap(23*k,:);
     end
     
-    %Save_as_PDF(f, ['Figuras/1_Nu_barplot'],'horizontal',0,10);
+    Save_as_PDF(figure(12), ['Figuras/1_Nu_barplot'],'horizontal');
+    hold off
 
 %% DHV
 
