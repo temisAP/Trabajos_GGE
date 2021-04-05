@@ -6,17 +6,20 @@ classdef solar_cell
         T;
         V0 = 4.2; %V
         V_cell;
+        Kelly_cosine_Limit
     end
     %% Métodos
     methods
          % Constructor (se llama como la clase)
-        function obj = solar_cell(T)
+        function obj = solar_cell(T, Kelly_cosine_Limit)
             
             kB = 1.380649e-23; %J K-1
             qe = 1.6e-19; %C
 
             obj.T = T;
             obj.Vt = kB*T/qe;
+            
+            obj.Kelly_cosine_Limit = Kelly_cosine_Limit;    % Degrees
         end
         % El resto de funciones tienen que llevar el obj como argumento o 
         % hacerlas estáticas (eso útlimo no sé muy bien como va)
@@ -24,5 +27,17 @@ classdef solar_cell
             obj.V_cell = G * obj.V0; %Como si el voltaje fuese proporcional a la irradiancia por ejemplo 
             I = obj.V_cellS/R;
         end
+        
+        function kcos = Kelly_cos(obj,theta)
+            limit = obj.Kelly_cosine_Limit;
+            
+            cte = 90/limit;
+            kcos = zeros(size(theta));
+            kcos(theta >= 0 & theta < limit) = cos(theta(theta >= 0 & theta < limit)*cte);
+
+        end
+        
+        
+        
     end
 end

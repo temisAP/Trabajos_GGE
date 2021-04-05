@@ -1,4 +1,5 @@
-classdef solar_panel < solar_cell %Este < significa que hereda métodos y funciones de la otra clase
+classdef solar_panel < solar_cell   % Este < significa que hereda métodos y funciones de la otra clase
+    
     %% Atributos
     properties
         I=0;
@@ -9,12 +10,15 @@ classdef solar_panel < solar_cell %Este < significa que hereda métodos y funcio
         R;
         cell_array; 
     end
+    
     %% Métodos
     methods
         % Constructor 
-        function obj = solar_panel(cell_array) %cell_array es un objeto que entra como argumento
+        function obj = solar_panel(cell_array, N_serie, N_paralelo) % cell_array es un objeto que entra como argumento
             obj.cell_array = cell_array; % Viva el overloading
-            obj.N_serie, obj.N_paralelo = size(cell_array);            
+            obj.N_serie = N_serie;  
+            obj.N_paralelo = N_paralelo;
+            
         end 
         % Correinte para G,T y R dados
         function [I,V] = current(G,T,R)
