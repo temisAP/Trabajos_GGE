@@ -1,0 +1,24 @@
+classdef solar_panel < solar_cell %Este < significa que hereda métodos y funciones de la otra clase
+    %% Atributos
+    properties
+        I=0;
+        V=0;
+        N_serie;
+        N_paralelo;
+        G;
+        R;
+        cell_array; 
+    end
+    %% Métodos
+    methods
+        function obj = solar_panel(cell_array) %cell_array es un objeto que entra como argumento
+            obj.cell_array = cell_array; % Viva el overloading
+            obj.N_serie, obj.N_paralelo = size(cell_array);            
+        end 
+        function [I,V] = current(G,T)
+            obj.cell_array(:).T =
+            for i = 1:N_serie
+                obj.I = obj.I + cell_array.current(G
+    end
+
+end
