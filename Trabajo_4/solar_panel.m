@@ -1,4 +1,4 @@
-classdef solar_panel < solar_cell   % Este < significa que hereda métodos y funciones de la otra clase
+classdef solar_panel < Satelite   % Este < significa que hereda métodos y funciones de la otra clase
     
     %% Atributos
     properties
