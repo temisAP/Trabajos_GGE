@@ -4,7 +4,8 @@ classdef Satelite < handle
     properties
         solar_panel;    %El panel solar del satélite (objeto)   -> I
         enviroment;     %El entorno del satélite (objeto)       -> theta, T
-        R;
+        T;
+        theta;
     end
     
     %% Métodos
@@ -16,10 +17,11 @@ classdef Satelite < handle
             obj.R = R;
         end
         
-        function I = get_current(obj,time,phi)
+        function I = get_current(time,phi)
             for t = 1:length(time)
-                [T, theta] = obj.enviroment.get_enviroment(time(t),phi);
-                I(t) = obj.solar_panel.current(T,theta,obj.R);  
+                tiempo = time(t);
+                obj.enviromentget_enviroment();
+                I = obj.
             end
         end
         

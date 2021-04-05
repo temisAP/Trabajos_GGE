@@ -1,4 +1,4 @@
-classdef solar_panel   % Este < significa que hereda métodos y funciones de la otra clase
+classdef solar_panel < handle  % Este < significa que hereda métodos y funciones de la otra clase
     
     %% Atributos
     properties
@@ -12,7 +12,7 @@ classdef solar_panel   % Este < significa que hereda métodos y funciones de la 
         N_paralelo;  
         Kelly_cosine_Limit;
         Modelo;         % El modelo que las representa (string)
-        Paramteros;     % Los parámetros del modelo
+        Parametros;     % Los parámetros del modelo
         % Del entorno
         G;              %Irradiancia
         T;              %Temperatura
@@ -20,54 +20,57 @@ classdef solar_panel   % Este < significa que hereda métodos y funciones de la 
 
     end
     %% Métodos
-    methods
+    methods (Access = public)
         
         % Constructor 
         function obj = solar_panel(N_serie, N_paralelo)
-            obj.N_serie = N_serie;  
-            obj.N_paralelo = N_paralelo;       
+            if nargin > 0
+                obj.N_serie = N_serie;  
+                obj.N_paralelo = N_paralelo;   
+            end
         end 
         
-        % Correinte para G,T y R dados
-        function [I,V] = current(G,T,R)
+        % Correinte para theta,T y R dados
+        function I = current(obj,theta,T,R)
             
             switch obj.Modelo
                 case 'KyH'
-                    kyh_current();
+                    I=0;
+                    %current_kyh();
                 case '1d2r'
-                    1d2r_current();
-            
+                    current_1d2r();
             end
-        
+            
+            I = 0;
+        end
+    end
+    methods (Access = public)
         % Coseno de kelly
         function kcos = Kelly_cos(obj,theta)
-            limit = obj.Kelly_cosine_Limit;
-            
+            limit = obj.Kelly_cosine_Limit;        
             cte = 90/limit;
             kcos = zeros(size(theta));
             kcos(theta >= 0 & theta < limit) = cos(theta(theta >= 0 & theta < limit)*cte);
         end
         
         % Corriente según modelo
-        function kyh_current(obj)
+        function current_kyh(obj)
             obj.I = 0;
             % poner aquí la expresión
             
         end
-        function I = 1d2r_current(obj)
+        function current_1d2r(obj)
             obj.I = 0;
             % poner aquí la expresión      
         end
         
         % Voltaje térmico
-        function Vt = voltaje_termico(T)
+        function voltaje_termico(obj,T)
            kB = 1.380649e-23; %J K-1
            qe = 1.6e-19; %C
                 
            obj.T = T;
            obj.Vt = kB*T/qe;
         end
-        
     end
-
 end

@@ -22,23 +22,20 @@ SP.Kelly_cosine_Limit = deg2rad(70);
 
 %Crear entorno
 Env = entorno();
-Env.w = 0.052; %rad/s
 Env.desfase_P = -pi/2;
-Env.desfase_T = Env.w*15;
-Env.T_max = 80;
-Env.T_min = 20;
+Env.desfase_T = 
+Env.T_max
+Env.T_min
+Env.w = 0.052; %rad/s
 
 % Crear satélite 
-Sat = Satelite(SP,Env,200);
+Sat = Satelite(SP);
 
 % Extraer la intensidad a lo largo del tiempo t
-phi = 30;
 t = linspace(0,200,1e4+1);
-I = Sat.get_current(t,phi);
+I = Sat.get_current(t);
 
 
-%% Hasta aquí va bien, solo hay que completar las funciones del panel para que saque la corriente
-%% Luego los plots y hemos terminado
 
 
 
