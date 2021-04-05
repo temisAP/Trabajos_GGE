@@ -2,9 +2,25 @@ clc;
 clear all;
 close all;
 
+%% Datos
+
+%% Primera parte
+% Sacar los parámetros de los modelos KyH y 1d2r (analíticos) para 
+% caracterizar los paneles.
+T = 20 + 273.15; %K
+
+%% Segunda parte 
+
+%Crear panel
+SP = solar_panel(6,3);
+Sat = Satelite(SP);
+
+SP.Modelo = 'KyH';
+SP.Parametros = [0.1, 1, 0.1, 10];
+
 
 t = linspace(0,200,1e4+1);
-w = 0.052;
+w = 0.052; %rad/s
 
 incidencia = Inclinacion_Sol_Panel_ft(w, t);
 

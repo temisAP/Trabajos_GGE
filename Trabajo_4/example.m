@@ -11,14 +11,14 @@ C = solar_cell(288.15, 75);
 N_serie = 6;
 N_paralelo = 3;
 
-% Cell_array = solar_cell.empty();
-% 
-% for i=1:N_serie
-%     Cell_array(i) = C; 
-% end
-% for j=1:N_paralelo-1
-%     Cell_array = cat(1,Cell_array, Cell_array);
-% end
+Cell_array = solar_cell.empty(N_serie,0);
+
+
+for j=1:N_paralelo
+   for i=1:N_serie
+        Cell_array(i,j) = C; 
+   end
+end
 
 
 %% Panel solar 

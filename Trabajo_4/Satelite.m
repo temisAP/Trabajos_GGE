@@ -1,23 +1,38 @@
-classdef Satelite < solar_panel
-    %UNTITLED3 Summary of this class goes here
-    %   Detailed explanation goes here
+classdef Satelite
     
+    %% Atributos
     properties
-        Property1
+        solar_panel; %El panel solar del satélite (objeto)
+        T;
+        theta;
     end
     
+    %% Métodos
     methods
-        function obj = untitled3(inputArg1,inputArg2)
-            %UNTITLED3 Construct an instance of this class
-            %   Detailed explanation goes here
-            obj.Property1 = inputArg1 + inputArg2;
+        % Constructor
+        function obj = Satelite(solar_panel)
+            obj.solar_panel = solar_panel;
         end
         
-        function outputArg = method1(obj,inputArg)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
-            outputArg = obj.Property1 + inputArg;
+        function incidencia = Inclinacion_Sol_Panel_ft(w, t)
+            
+            desfase = -pi/2;
+            [angulo, senal] = Normal_Sol_Panel(w, t, desfase);
+            
+            incidencia = senal.*Kelly_cos(angulo);
+            
         end
+        
+        function temp = Temperatura_Panel_ft(w, t, desfase_T, T_max, T_min)
+            
+            desfase_P = -pi/2;
+            [angulo, senal] = Normal_Sol_Panel(w, t, desfase_P-desfase_T);
+            
+            temp = (T_max+T_min)/2 + (T_max-T_min)/2*cos(angulo);
+            
+        end
+        
+        
     end
 end
 

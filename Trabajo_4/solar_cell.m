@@ -27,16 +27,7 @@ classdef solar_cell
             obj.V_cell = G * obj.V0; %Como si el voltaje fuese proporcional a la irradiancia por ejemplo 
             I = obj.V_cellS/R;
         end
-        
-        function kcos = Kelly_cos(obj,theta)
-            limit = obj.Kelly_cosine_Limit;
-            
-            cte = 90/limit;
-            kcos = zeros(size(theta));
-            kcos(theta >= 0 & theta < limit) = cos(theta(theta >= 0 & theta < limit)*cte);
-
-        end
-        
+              
         
         
     end
