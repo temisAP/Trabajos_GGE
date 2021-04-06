@@ -8,6 +8,8 @@ close all;
 % Sacar los parámetros de los modelos KyH y 1d2r (analíticos) para 
 % caracterizar los paneles.
 T = 20 + 273.15; %K
+%load('Cells_Data.mat');
+
 
 %% Segunda parte 
 
@@ -22,20 +24,23 @@ SP.Kelly_cosine_Limit = deg2rad(70);
 
 %Crear entorno
 Env = entorno();
-Env.desfase_P = -pi/2;
-Env.desfase_T = 
-Env.T_max
-Env.T_min
-Env.w = 0.052; %rad/s
+Env.w = 0.052;              %rad/s
+Env.desfase_P = -pi/2;      %rad
+Env.desfase_T = Env.w*15;   %rad
+Env.T_max = 80+273.15;      %K
+Env.T_min = 20+273.15;      %K
 
 % Crear satélite 
-Sat = Satelite(SP);
+Sat = Satelite(SP,Env,200);
 
 % Extraer la intensidad a lo largo del tiempo t
-t = linspace(0,200,1e4+1);
-I = Sat.get_current(t);
+phi = 30;
+t = linspace(0,200,1e2+1);
+I = Sat.get_current(t,phi);
 
 
+%% Hasta aquí va bien, solo hay que completar las funciones del panel para que saque la corriente
+%% Luego los plots y hemos terminado
 
 
 

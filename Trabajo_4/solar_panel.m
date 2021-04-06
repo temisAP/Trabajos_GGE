@@ -3,7 +3,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
     %% Atributos
     properties
         % Eléctricas
-        I=0;
+        I=1;
         V=0;
         R;
         Vt;
@@ -33,18 +33,39 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
         % Correinte para theta,T y R dados
         function I = current(obj,theta,T,R)
             
-            switch obj.Modelo
-                case 'KyH'
-                    I=0;
-                    %current_kyh();
-                case '1d2r'
-                    current_1d2r();
-            end
+            %Asignar la resistencia
+            obj.R = R;
             
-            I = 0;
+            %Obtener el voltaje térmico
+            voltaje_termico(obj,T);
+            
+            %Determinar la irradiancia
+            % Aquí habrá que meter algo con theta supongo
+            
+            fmincon(@(V) my_current(obj,V),10);
+            
+            I = obj.I;
         end
     end
-    methods (Access = public)
+    methods (Access = private)
+        % Corriente (para el optimizador)
+        function val = my_current(obj,V)
+            
+            % Intensidad correspondiente al modelo
+            switch obj.Modelo
+                case 'KyH'
+                    current_kyh(obj,V);
+                case '1d2r'
+                    current_1d2r(obj,V);
+            end
+            
+            % Intensidad correspondiente a la resistencia
+            I = V / obj.R; 
+             
+            % Tienen que coincidir
+            val = I-obj.I;
+        end
+        
         % Coseno de kelly
         function kcos = Kelly_cos(obj,theta)
             limit = obj.Kelly_cosine_Limit;        
@@ -54,14 +75,30 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
         end
         
         % Corriente según modelo
-        function current_kyh(obj)
-            obj.I = 0;
-            % poner aquí la expresión
+        function current_kyh(obj,V)
             
+            % Aquí hay que ajustar el modelo porque depende de la
+            % temperatura, así que habrá que meter como atributo el struct
+            % con los datos
+            
+            m = obj.Parametros(1);
+            gamma = obj.Parametros(2);
+            Voc = obj.Parametros(3);
+            Isc = obj.Parametros(4);
+            
+            obj.I = (1-(1-gamma)*(V/Voc)-gamma*(V/Voc).^m)*Isc;
+                
         end
-        function current_1d2r(obj)
-            obj.I = 0;
-            % poner aquí la expresión      
+        function current_1d2r(obj,V)
+            
+            % Aquí hay que ajustar el modelo porque depende de la
+            % temperatura, así que habrá que meter como atributo el struct
+            % con los datos
+            
+            u = obj.Parametros;        
+            
+            obj.I = fzero(@(I) u(1)-u(2)*(exp((V+u(3)*I)/(obj.Vt*u(5)))-1)-(V+u(3)*I)/u(4)-I, 0);   
+        
         end
         
         % Voltaje térmico
@@ -72,5 +109,6 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
            obj.T = T;
            obj.Vt = kB*T/qe;
         end
+        
     end
 end
