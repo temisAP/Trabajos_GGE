@@ -7,8 +7,18 @@ close all;
 %% Primera parte
 % Sacar los parámetros de los modelos KyH y 1d2r (analíticos) para 
 % caracterizar los paneles.
-T = 20 + 273.15; %K
+Tref = 20 + 273.15; %K
 %load('Cells_Data.mat');
+
+Isc = 0.5202;
+Imp = 0.5044;
+Vmp = 2.411;
+Voc = 2.7;
+
+KyH = struct();
+KyH.name = '1d2r';
+KyH.parameters = [Isc Imp Vmp Voc];
+KyH.Tref = Tref;
 
 
 %% Segunda parte 
@@ -18,8 +28,7 @@ N_paralelo = 3;
 
 %Crear panel
 SP = solar_panel(N_serie, N_paralelo);
-SP.Modelo = 'KyH';
-SP.Parametros = [0.1, 1, 0.1, 10];
+SP.Modelo = KyH;
 SP.Kelly_cosine_Limit = deg2rad(70);
 
 %Crear entorno

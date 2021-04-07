@@ -17,14 +17,10 @@ classdef Satelite < handle
         end
         
         function I = get_current(obj,time,phi)
-            for t = 1:length(time)
-                [T, theta] = obj.enviroment.get_enviroment(time(t),phi);
-                I(t) = obj.solar_panel.current(T,theta,obj.R);  
-            end
+            [T, theta] = obj.enviroment.get_enviroment(time,phi);
+            I = obj.solar_panel.current(T,theta,obj.R);
         end
-        
-        
-        
+
     end
 end
 

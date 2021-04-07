@@ -27,7 +27,7 @@ classdef entorno < handle
         function [T, theta] = get_enviroment(obj,t,phi)    
             
             obj.theta = acos(cos(obj.w*t + phi));      %rad
-            obj.T = (obj.T_max+obj.T_min)/2 + (obj.T_max-obj.T_min)/2*cos(obj.theta);
+            obj.T = (obj.T_max+obj.T_min)/2 + (obj.T_max-obj.T_min)/2*cos(obj.theta) ;
             
             if obj.theta > pi/2
                 obj.theta = 0;      %Esto ya lo pones tú bonito @DelRio
