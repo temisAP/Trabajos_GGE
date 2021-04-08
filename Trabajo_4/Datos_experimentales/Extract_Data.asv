@@ -76,25 +76,24 @@ valI = I_mess(posV);
 [fit4, bondad4] = fit(valV', valI', 'poly2');
 coeff4 = coeffvalues(fit4);
 roots = roots(coeff4');
-Voc = roots(1);
+V_oc = roots(1);
 
 %%
 
 Cells.Isc = Isc;
 Cells.Imp = Imp;
 Cells.Vmp = Vmp;
-Cells.Voc = Voc;
+Cells.Voc = V_oc;
 
-Voc_ref = 2667e-3;
+V_oc_ref = 2667e-3;
 Isc_ref = 506.0e-3;
 Vmp_ref = 2371e-3;
 Imp_ref = 487.0e-3;
 
-N_serie = ceil(Voc/Voc_ref);
-N_paralelo = ceil(Isc/Isc_ref);
+N_serie = float
 
-Cells.N_serie = N_serie;
-Cells.N_paralelo = N_paralelo;
-Cells.a = 1.5;
+Cells.N_serie = 0;
+Cells.N_paralelo = 0;
+Cells.a = 0;
 
 %save('Cells_Data.mat', 'Cells')
