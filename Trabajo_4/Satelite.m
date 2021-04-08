@@ -11,9 +11,11 @@ classdef Satelite < handle
     methods (Access = public)
         % Constructor
         function obj = Satelite(solar_panel,enviroment,R)
-            obj.solar_panel = solar_panel;
-            obj.enviroment = enviroment;
-            obj.R = R;
+            if nargin > 0
+                obj.solar_panel = solar_panel;
+                obj.enviroment = enviroment;
+                obj.R = R;
+            end
         end
         
         function I = get_current(obj,time,phi)

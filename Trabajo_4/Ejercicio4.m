@@ -65,8 +65,10 @@ I = Sat.get_current(t,phi);
 
 t = linspace(0,200,1e4+1);
 w = 0.052; %rad/s
+desfase_P = -pi/2;
+cos_limit = 75;
 
-incidencia = Inclinacion_Sol_Panel_ft(w, t);
+incidencia = Inclinacion_Sol_Panel_ft(w, t, desfase_P, cos_limit);
 
 
 % Temperatura
@@ -74,15 +76,13 @@ desfase_T = w*15;
 T_max = 80;
 T_min = -20;
 
-temp = Temperatura_Panel_ft(w, t, desfase_T, T_max, T_min);
+temp = Temperatura_Panel_ft(w, t, desfase_P, desfase_T, T_max, T_min);
 
 
 figure()
     hold on
     plot(rad2deg(w*t),incidencia)
     plot(rad2deg(w*t),temp)
-
-incidencia = Inclinacion_Sol_Panel_ft(w, t);
 
 figure()
     plot(rad2deg(w*t), incidencia)
@@ -91,18 +91,17 @@ figure()
 
 %% FUNCTIONS
 
-function incidencia = Inclinacion_Sol_Panel_ft(w, t)
+function incidencia = Inclinacion_Sol_Panel_ft(w, t, desfase_P, cos_limit)
 
-    desfase = -pi/2;
-    [angulo, senal] = Normal_Sol_Panel(w, t, desfase);
+    [angulo, senal] = Normal_Sol_Panel(w, t, desfase_P);
     
-    incidencia = senal.*Kelly_cos(angulo);
+    incidencia = senal.*Kelly_cos(angulo, cos_limit);
 
 end
 
-function temp = Temperatura_Panel_ft(w, t, desfase_T, T_max, T_min)
+function temp = Temperatura_Panel_ft(w, t, desfase_P, desfase_T, T_max, T_min)
 
-    desfase_P = -pi/2;
+
     [angulo, senal] = Normal_Sol_Panel(w, t, desfase_P-desfase_T);
 
     temp = (T_max+T_min)/2 + (T_max-T_min)/2*cos(angulo);
@@ -112,7 +111,7 @@ end
 
 function [angulo, senal] = Normal_Sol_Panel(w, t, desfase)
 
-    angulo = acos(cos(w*t(:) + desfase));      %rad
+    angulo = acos(cos(w*t + desfase));      %rad
     
     senal = ones(size(angulo));
     senal(angulo>pi/2) = 0;
@@ -120,10 +119,10 @@ function [angulo, senal] = Normal_Sol_Panel(w, t, desfase)
 end
 
 
-function kcos = Kelly_cos(theta)
+function kcos = Kelly_cos(theta, cos_limit)
 
-    cte = 90/75;
-    limit = deg2rad(75);
+    cte = 90/cos_limit;
+    limit = deg2rad(cos_limit);
     kcos = zeros(size(theta));
     
     kcos(theta >= 0 & theta < limit) = cos(theta(theta >= 0 & theta < limit)*cte);

@@ -1,45 +1,84 @@
 classdef entorno < handle
     %% Atributos
     properties
-        w;              %Velocidad angular
-        desfase_P = 0;
-        desfase_T = 0;
-        T_max;
-        T_min;
-        
+        % Atributos del entorno
+        T_max;          % K
+        T_min;          % K
+        Go;             % W/m^2
+
         % Atributos de "salida"
-        G;               %W/m^2
-        T;               %K
-        theta;           %rad
+        G;              % W/m^2
+        T;              % K
+        theta;          % rad        
     end
     
     %% Métodos
     methods
-        function obj = entorno(w,desfase_P,desfase_T,T_max,T_min)
+        function obj = entorno(Go, T_max, T_min)
             if nargin > 0
-                obj.w = w;  
-                obj.desfase_P = desfase_P; 
-                obj.desfase_T = desfase_T; 
+                obj.Go = Go;
                 obj.T_max = T_max;
                 obj.T_min = T_min;
             end
         end
-        % Ángulo de incidencia y temperatura en función del tiempo
-        function [T, G] = get_enviroment(obj,t,phi)    
+        
+        % Angulo de incidencia y temperatura en función del tiempo
+        function [theta, G, T] = simulacion(obj, t, w, cos_K_lim, desfase_P, desfase_T)    
             
-            obj.theta = acos(cos(obj.w*t + phi));      %rad
-            obj.T = (obj.T_max+obj.T_min)/2 + (obj.T_max-obj.T_min)/2*cos(obj.theta) ;
+            theta = w*t;
+            obj.theta = theta;
             
-            if obj.theta > pi/2
-                obj.theta = 0;      %Esto ya lo pones tú bonito @DelRio
-            end
-            
-            T = obj.T;
-            theta = obj.theta;
-            G = obj.G;
-                
+            G = 0;
+            T = 0;
+
+            G = obj.Go*obj.Inclinacion_Sol_Panel_ft(w, t, desfase_P, cos_K_lim);
+            obj.G = G;
+             
+            T = obj.Temperatura_Panel_ft(w, t, desfase_P, desfase_T, obj.T_max, obj.T_min);
+            obj.T = T;
+        end
+
+        
+        % Funciones que se usan para calcular la simulacion
+        % Coseno de Kelly
+        function kcos = Kelly_cos(obj, theta, cos_limit)
+
+            cte = 90/cos_limit;
+            limit = deg2rad(cos_limit);
+            kcos = zeros(size(theta));
+            kcos(theta >= 0 & theta < limit) = cos(theta(theta >= 0 & theta < limit)*cte);
+
         end
         
+        % Normal Sol-Panel
+        function [angulo, senal] = Normal_Sol_Panel(obj, w, t, desfase)
+
+            angulo = acos(cos(w*t + desfase));      %rad
+            senal = ones(size(angulo));
+            senal(angulo>pi/2) = 0;
+            
+        end
         
+        % Incidencia Panel
+        function incidencia = Inclinacion_Sol_Panel_ft(obj, w, t, desfase_P, cos_limit)
+            
+            [angulo, senal] = obj.Normal_Sol_Panel(w, t, desfase_P);
+            incidencia = senal.*obj.Kelly_cos(angulo, cos_limit);
+            
+        end
+
+        % Temperatura con desfase respecto panel
+        function temp = Temperatura_Panel_ft(obj, w, t, desfase_P, desfase_T, T_max, T_min)
+
+            [angulo, senal] = obj.Normal_Sol_Panel(w, t, desfase_P-desfase_T);
+            temp = (T_max+T_min)/2 + (T_max-T_min)/2*cos(angulo);
+
+        end
+
+
+
+
+        
+      
     end
 end

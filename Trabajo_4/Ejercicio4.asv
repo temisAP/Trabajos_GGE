@@ -7,14 +7,20 @@ close all;
 %% Primera parte
 
 Tref = 20 + 273.15; %K
-G_re
+Gref = 1367;        %W/m^2
 load('Datos_experimentales/Cells_Data.mat');
+
+alpha_Voc = -6e-3;
+alpha_Isc = 0.32e-3;
+alpha_Vmp = -6.1e-3;
+alpha_Imp = 0.28e-3;
 
 % KyH
 KyH = struct();
 KyH.name = 'KyH';
 KyH.parameters = [Cells.Isc Cells.Imp Cells.Vmp Cells.Voc];
 KyH.Tref = Tref;
+KyH.Gref = Gref;
 
 %1d2r
 m_1d2r = struct();
@@ -22,6 +28,7 @@ m_1d2r.name = '1d2r';
 m_1d2r.parameters = [Cells.Isc Cells.Imp Cells.Vmp Cells.Voc];
 m_1d2r.Tref = Tref;
 m_1d2r.a = 1.5;
+m_1d2r.Gref = Gref;
 
 %% Segunda parte 
 
@@ -32,6 +39,7 @@ N_paralelo = 6;
 SP = solar_panel(N_serie, N_paralelo);
 SP.Modelo = m_1d2r;
 SP.Kelly_cosine_Limit = deg2rad(70);
+SP.alpha = [alpha_Isc, alpha_Imp, alpha_Vmp, alpha_Voc]
 
 %Crear entorno
 Env = entorno();
@@ -57,8 +65,9 @@ I = Sat.get_current(t,phi);
 
 t = linspace(0,200,1e4+1);
 w = 0.052; %rad/s
+desfase_P = pi/2;
 
-incidencia = Inclinacion_Sol_Panel_ft(w, t);
+incidencia = Inclinacion_Sol_Panel_ft(w, t, desfase_P);
 
 
 % Temperatura
@@ -74,8 +83,6 @@ figure()
     plot(rad2deg(w*t),incidencia)
     plot(rad2deg(w*t),temp)
 
-incidencia = Inclinacion_Sol_Panel_ft(w, t);
-
 figure()
     plot(rad2deg(w*t), incidencia)
 
@@ -83,12 +90,11 @@ figure()
 
 %% FUNCTIONS
 
-function incidencia = Inclinacion_Sol_Panel_ft(w, t)
+function incidencia = Inclinacion_Sol_Panel_ft(w, t, desfase_P, limit)
 
-    desfase = -pi/2;
-    [angulo, senal] = Normal_Sol_Panel(w, t, desfase);
+    [angulo, senal] = Normal_Sol_Panel(w, t, desfase_P);
     
-    incidencia = senal.*Kelly_cos(angulo);
+    incidencia = senal.*Kelly_cos(angulo, limit);
 
 end
 
