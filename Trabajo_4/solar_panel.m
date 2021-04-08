@@ -7,6 +7,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
         V;
         R;
         Vt;
+        alpha;
         % De las células
         N_serie;
         N_paralelo;  
@@ -30,25 +31,35 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             end
         end 
         
-        % Correinte para theta,T y R dados
-        function I = current(obj,G,T,R)
-                     
+        % Corriente para theta,T y R dados
+        function I = current(obj,T,G,theta, R)
+                 
             %Asignar la resistencia
             obj.R = R;
             
             %Obtener el voltaje térmico
-            voltaje_termico(obj,T);
+            obj.voltaje_termico(T);
             
             %Modificar según la irradiancia y la temperatura (de
             %momento esto es un pistazo por mi parte)
             
             delta_T = T-obj.Modelo.Tref;
             
+            Gref = obj.Modelo.Gref;
+            a    = obj.Modelo.a;
+            Vt   = obj.Vt;
             
-            Isc = obj.Modelo.parameters(1) * ones(size(T));
-            Imp = obj.Modelo.parameters(2) * ones(size(T));
-            Vmp = obj.Modelo.parameters(3) * ones(size(T));
-            Voc = obj.Modelo.parameters(4) * ones(size(T));       
+            %Puntos característicos teniendo en cuenta la temperatura
+            %e irrandiancia
+            Isc = G/Gref.*(obj.Modelo.parameters(1)*ones(size(T)) + delta_T*obj.alpha(1));
+            Imp = G/Gref.*(obj.Modelo.parameters(2)*ones(size(T)) + delta_T*obj.alpha(2));
+            
+            check =  G/Gref;
+            
+            Vmp = obj.Modelo.parameters(3)*ones(size(T)) + delta_T.*obj.alpha(3);% + a*Vt.*log(G./Gref);
+            Voc = obj.Modelo.parameters(4)*ones(size(T)) + delta_T.*obj.alpha(4); %+ a*Vt.*log(G./Gref); 
+            
+            
             alpha = Vmp/Voc;
             beta = Imp/Isc;
             
@@ -60,7 +71,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             obj.parametros(6,:) = beta;
             
             % Obtener la intensiad para la resistencia dada
-            fmincon(@(V) my_current(obj,V),Vmp); 
+            fzero(@(V) my_current(obj,V),Vmp); 
             I = obj.I;
             
         end
@@ -89,12 +100,12 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
         function current_kyh(obj,V)
             
             % Puntos característicos 
-            Isc = obj.parametros(1);
-            Imp = obj.parametros(2);
-            Vmp = obj.parametros(3);
-            Voc = obj.parametros(4);    
-            alpha = obj.parametros(5);
-            beta =  obj.parametros(6);
+            Isc = obj.parametros(1,:);
+            Imp = obj.parametros(2,:);
+            Vmp = obj.parametros(3,:);
+            Voc = obj.parametros(4,:);    
+            alpha = obj.parametros(5,:);
+            beta =  obj.parametros(6,:);
   
             % Ajuste analítico 
             K = (1-beta-alpha)/(2*beta-1);

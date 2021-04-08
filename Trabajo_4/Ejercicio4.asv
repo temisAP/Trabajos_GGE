@@ -39,7 +39,7 @@ N_paralelo = Cells.N_paralelo;
 %Crear panel
 SP = solar_panel(N_serie, N_paralelo);
 SP.Modelo = KyH;
-SP.Kelly_cosine_Limit = 75;
+SP.Kelly_cosine_Limit = deg2rad(75);
 SP.alpha = [alpha_Isc, alpha_Imp, alpha_Vmp, alpha_Voc];
 
 %Crear entorno

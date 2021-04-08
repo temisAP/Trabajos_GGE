@@ -35,11 +35,6 @@ classdef entorno < handle
              
             T = obj.Temperatura_Panel_ft(w, t, desfase_P, desfase_T, obj.T_max, obj.T_min);
             obj.T = T;
-            
-            figure()
-                hold on
-                plot(T)
-                plot(G)
         end
 
         

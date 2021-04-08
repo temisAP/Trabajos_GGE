@@ -6,8 +6,8 @@ classdef Satelite < handle
         enviroment;     %El entorno del satélite (objeto)       -> theta, T
         R;
         w   % rad/s
-        desfase_P = -pi/2
-        desfase_T = -pi/2
+        desfase_P = 0
+        desfase_T = 0
     end
     
     %% Métodos
