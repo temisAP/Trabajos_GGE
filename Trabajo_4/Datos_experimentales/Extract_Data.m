@@ -23,16 +23,16 @@ I_mess = Cells(s).I_mess;
 P_mess = V_mess.*I_mess;
 
 % Plot V_I & V_P
-figure(1)
-hold on
-plot(V_mess, P_mess, 'LineWidth', 2)
-plot(V_mess, I_mess, 'LineWidth', 2)
-box on; grid on
-legend('Interpreter', 'Latex', 'location', 'SouthWest')
-xlabel('$V$ [V]','Interpreter','latex');
-ylabel({'$I$';'[A]'},'Interpreter','latex');
-%Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal',1);
-hold off
+% figure(1)
+% hold on
+% plot(V_mess, P_mess, 'LineWidth', 2)
+% plot(V_mess, I_mess, 'LineWidth', 2)
+% box on; grid on
+% legend('Interpreter', 'Latex', 'location', 'SouthWest')
+% xlabel('$V$ [V]','Interpreter','latex');
+% ylabel({'$I$';'[A]'},'Interpreter','latex');
+% %Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal',1);
+% hold off
 
 
 %% CÁLCULO PUNTO MÁXIMA POTENCIA
@@ -78,7 +78,7 @@ coeff4 = coeffvalues(fit4);
 roots = roots(coeff4');
 Voc = roots(1);
 
-%%
+%% Guardar en objecto cells
 
 Cells.Isc = Isc;
 Cells.Imp = Imp;
@@ -90,11 +90,14 @@ Isc_ref = 506.0e-3;
 Vmp_ref = 2371e-3;
 Imp_ref = 487.0e-3;
 
-N_serie = ceil(Voc/Voc_ref);
-N_paralelo = ceil(Isc/Isc_ref);
+Cells.Voc_ref = Voc_ref + (-6e-3)*(20-28);
+Cells.Isc_ref = Isc_ref + (0.32e-3)*(20-28);
+Cells.Vmp_ref = Vmp_ref + (-6.1e-3)*(20-28);
+Cells.Imp_ref = Imp_ref + (0.28e-3)*(20-28);
 
-Cells.N_serie = N_serie;
-Cells.N_paralelo = N_paralelo;
-Cells.a = 1.5;
+Cells.N_serie = floor(Cells.Voc/Cells.Voc_ref);
+Cells.N_paralelo = ceil(Cells.Isc/Cells.Isc_ref);
+
+Cells.a = 1.54;
 
 save('Cells_Data.mat', 'Cells')

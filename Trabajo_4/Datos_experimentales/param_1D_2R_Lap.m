@@ -1,9 +1,9 @@
  function [Ipv,I0,Rs,Rsh] = param_1D_2R_Lap(Isc,Voc,Imp,Vmp,a, Vt)
  
-    A=-(2*Vmp-Voc)/(a*Vt)+(Vmp*Isc-Voc*Imp)/(Vmp*Isc+Voc*(Imp-Isc))
-    B=-Vmp*(2*Imp-Isc)/(Vmp*Isc+Voc*(Imp-Isc))
-    C=a*Vt/Imp
-    D=(Vmp-Voc)/(a*Vt)
+    A=-(2*Vmp-Voc)/(a*Vt)+(Vmp*Isc-Voc*Imp)/(Vmp*Isc+Voc*(Imp-Isc));
+    B=-Vmp*(2*Imp-Isc)/(Vmp*Isc+Voc*(Imp-Isc));
+    C=a*Vt/Imp;
+    D=(Vmp-Voc)/(a*Vt);
     
     M1=0.3361;
     M2=-0.0042;
