@@ -11,7 +11,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
         N_serie;
         N_paralelo;  
         Kelly_cosine_Limit;
-        Modelo;                 % El modelo que las representa (name, parameters = [Isc Imp Vmp Voc], Tref)
+        Modelo;                 % El modelo que las representa (name, parameters = [Isc Imp Vmp Voc], Tref, Gref)
         % Del entorno
         G;              %Irradiancia
         T;              %Temperatura
@@ -41,6 +41,9 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             
             %Modificar según la irradiancia y la temperatura (de
             %momento esto es un pistazo por mi parte)
+            
+            delta_T = T-obj.Modelo.Tref;
+            
             
             Isc = obj.Modelo.parameters(1) * ones(size(T));
             Imp = obj.Modelo.parameters(2) * ones(size(T));
