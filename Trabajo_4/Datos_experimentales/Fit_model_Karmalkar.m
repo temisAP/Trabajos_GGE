@@ -31,7 +31,7 @@ hold on
 plot(V_mess, I_Karmalkar_analytic_exp, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
     ["Karmalkar \& Haneefa anal\'itico con puntos experimentales"])
 plot(V_mess, I_mess, '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-    ["Karmalkar \& Haneefa experimental"])
+    ["Puntos experimentales"])
 box on; grid on
 legend('Interpreter', 'Latex', 'location', 'NorthWest')
 xlabel('$V$ [V]','Interpreter','latex');
