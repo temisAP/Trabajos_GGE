@@ -80,9 +80,16 @@ V_oc = roots(1);
 
 %%
 
-Cells(s).Isc = Isc;
-Cells(s).Imp = I_mp;
-Cells(s).Vmp = V_mp;
-Cells(s).Voc = V_oc;
+Cells.Isc = Isc;
+Cells.Imp = I_mp;
+Cells.Vmp = V_mp;
+Cells.Voc = V_oc;
+
+V_oc_ref = 2667e-3;
+Isc_ref = 
+
+Cells.N_serie = 0;
+Cells.N_paralelo = 0;
+Cells.a = 0;
 
 %save('Cells_Data.mat', 'Cells')

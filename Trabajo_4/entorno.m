@@ -35,8 +35,7 @@ classdef entorno < handle
             
             T = obj.T;
             theta = obj.theta;
-            
-            
+                
         end
         
         

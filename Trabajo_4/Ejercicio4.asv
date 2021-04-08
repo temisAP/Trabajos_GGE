@@ -29,7 +29,7 @@ N_paralelo = 6;
 
 %Crear panel
 SP = solar_panel(N_serie, N_paralelo);
-SP.Modelo = m_1d2r;
+SP.Modelo = KyH;
 SP.Kelly_cosine_Limit = deg2rad(70);
 
 %Crear entorno

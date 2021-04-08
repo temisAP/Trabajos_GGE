@@ -117,7 +117,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             beta =  obj.parametros(6,:);
   
             % Ajuste analítico 
-            a = obj.Modelo.a * ones(size(obj.Vt));
+            a = 1.3 * ones(size(obj.Vt));
             Vt = obj.Vt;
             %%%
             A=-(2*Vmp-Voc)./(a.*Vt)+(Vmp.*Isc-Voc.*Imp)./(Vmp.*Isc+Voc.*(Imp-Isc));
@@ -139,9 +139,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             u = [Ipv;I0;Rs;Rsh;a];
                     
             % Intensidad
-            obj.I = fmincon(@(I) ...
-                sum(u(1,:)-u(2,:).*(exp((V+u(3,:).*I)./(obj.Vt .*u(5,:)))-1)-(V+u(3,:).*I)./u(4,:)-I)...
-                ,0.1);   
+            obj.I = fzero(@(I) sum(u(1,:)-u(2,:).*(exp((V+u(3,:).*I)./(obj.Vt .*u(5,:)))-1)-(V+u(3,:).*I)./u(4,:)-I),0);   
         
         end
         
