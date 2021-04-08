@@ -1,0 +1,42 @@
+%%%%%%%%%% K A R M A L K A R   &   H A N E E F A %%%%%%%%%%%%%
+clear all
+clc
+
+%% PUNTOS EXPERIMENTALES
+load('Cells_Data.mat');
+
+V_mess = Cells.V_mess;
+I_mess = Cells.I_mess;
+Vmp = Cells.Vmp;
+Imp = Cells.Imp;
+Isc = Cells.Isc; 
+Voc = Cells.Voc;
+
+betha = Imp/Isc;
+alpha = Vmp/Voc;
+
+K = (1-betha-alpha)/(2*betha-1);
+aux = -(1/alpha)^(1/K)*(1/K)*log(alpha);
+m = real((lambert(aux)/log(alpha))+(1/K)+1);
+gamma = (2*betha-1)/((m-1)*alpha^m);
+
+I_Karmalkar_analytic = (1-(1-gamma)*(V_mess/Voc)-gamma*(V_mess/Voc).^m)*Isc;
+
+h_ = figure();
+hold on
+plot(V_mess, I_Karmalkar_analytic, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    ["Karmalkar \& Haneefa anal\'itico"])
+plot(V_mess, I_mess, '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
+    ["Karmalkar \& Haneefa experimental"])
+box on; grid on
+legend('Interpreter', 'Latex', 'location', 'NorthWest')
+xlabel('$V$ [V]','Interpreter','latex');
+ylabel({'$I$';'[A]'},'Interpreter','latex');
+%                Save_as_PDF(h_, ['Figuras/1_An_dif_', sheet{s}],'horizontal', 7.5, 10);
+
+%% PUNTOS CARACTERISTICOS DATA SHEET
+
+Isc = 0.506;
+Imp = 0.487;
+Vmp = 2.411;
+Voc = 2.7;
