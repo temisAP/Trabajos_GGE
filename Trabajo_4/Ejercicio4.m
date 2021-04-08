@@ -10,6 +10,11 @@ Tref = 20 + 273.15; %K
 Gref = 1367;        %W/m^2
 load('Datos_experimentales/Cells_Data.mat');
 
+alpha_Voc = -6e-3;
+alpha_Isc = 0.32e-3;
+alpha_Vmp = -6.1e-3;
+alpha_Imp = 0.28e-3;
+
 % KyH
 KyH = struct();
 KyH.name = 'KyH';
@@ -34,6 +39,7 @@ N_paralelo = 6;
 SP = solar_panel(N_serie, N_paralelo);
 SP.Modelo = m_1d2r;
 SP.Kelly_cosine_Limit = deg2rad(70);
+SP.alpha = [alpha_Isc, alpha_Imp, alpha_Vmp, alpha_Voc]
 
 %Crear entorno
 Env = entorno();
