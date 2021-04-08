@@ -15,7 +15,6 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
         % Del entorno
         G;              %Irradiancia
         T;              %Temperatura
-        theta;          %Ángulo de incidencia
     end
     properties (Access = private)
         parametros; % [Isc Imp Vmp Voc alpha beta]
@@ -32,7 +31,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
         end 
         
         % Correinte para theta,T y R dados
-        function I = current(obj,theta,T,R)
+        function I = current(obj,G,T,R)
                      
             %Asignar la resistencia
             obj.R = R;

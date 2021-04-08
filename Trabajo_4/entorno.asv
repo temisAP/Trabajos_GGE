@@ -8,8 +8,8 @@ classdef entorno < handle
         T_min;
         
         % Atributos de "salida"
-        G;               %W/m^2
-        T;               %K
+        G;
+        T;          
         theta;           %rad
     end
     
@@ -36,7 +36,6 @@ classdef entorno < handle
             
             T = obj.T;
             theta = obj.theta;
-            G = obj.G;
                 
         end
         

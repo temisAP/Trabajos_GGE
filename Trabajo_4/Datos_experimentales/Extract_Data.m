@@ -97,4 +97,4 @@ Cells.N_serie = N_serie;
 Cells.N_paralelo = N_paralelo;
 Cells.a = 1.5;
 
-%save('Cells_Data.mat', 'Cells')
+save('Cells_Data.mat', 'Cells')

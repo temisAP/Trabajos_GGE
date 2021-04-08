@@ -7,6 +7,7 @@ close all;
 %% Primera parte
 
 Tref = 20 + 273.15; %K
+Gref = 1367;        %W/m^2
 load('Datos_experimentales/Cells_Data.mat');
 
 % KyH
@@ -14,6 +15,7 @@ KyH = struct();
 KyH.name = 'KyH';
 KyH.parameters = [Cells.Isc Cells.Imp Cells.Vmp Cells.Voc];
 KyH.Tref = Tref;
+KyH.Gref = Gref;
 
 %1d2r
 m_1d2r = struct();
@@ -21,6 +23,7 @@ m_1d2r.name = '1d2r';
 m_1d2r.parameters = [Cells.Isc Cells.Imp Cells.Vmp Cells.Voc];
 m_1d2r.Tref = Tref;
 m_1d2r.a = 1.5;
+m_1d2r.Gref = Gref;
 
 %% Segunda parte 
 

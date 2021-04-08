@@ -7,6 +7,7 @@ close all;
 %% Primera parte
 
 Tref = 20 + 273.15; %K
+G_re
 load('Datos_experimentales/Cells_Data.mat');
 
 % KyH
@@ -29,7 +30,7 @@ N_paralelo = 6;
 
 %Crear panel
 SP = solar_panel(N_serie, N_paralelo);
-SP.Modelo = KyH;
+SP.Modelo = m_1d2r;
 SP.Kelly_cosine_Limit = deg2rad(70);
 
 %Crear entorno
