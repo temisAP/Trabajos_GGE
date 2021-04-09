@@ -73,7 +73,7 @@ hold on
 
 
 
-t = linspace(0,200,1e4+1);
+t = linspace(0,200,1e3+1);
 w = 0.052; %rad/s
 desfase_P = -pi/2;
 cos_limit = 75;
@@ -96,6 +96,9 @@ figure()
 
 figure()
     plot(rad2deg(w*t), incidencia)
+    
+figure()
+    plot(t,I)
 
 
 

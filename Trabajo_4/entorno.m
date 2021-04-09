@@ -44,6 +44,7 @@ classdef entorno < handle
         function kcos = Kelly_cos(obj, theta, cos_limit)
 
             cte = 90/cos_limit;
+%             cte=1;
             limit = deg2rad(cos_limit);
             kcos = zeros(size(theta));
             kcos(theta >= 0 & theta < limit) = cos(theta(theta >= 0 & theta < limit)*cte);

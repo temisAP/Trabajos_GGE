@@ -89,8 +89,8 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             A_V0 = zeros(length(Vmp),length(Vmp));
             b_V0 = zeros(1,length(Vmp));
             
-            for i=1:length(Vmp)
-                if isinf(Vmp(i))
+            for i = 1:length(Vmp)
+                if  abs(Vmp(i)) > 1e3
                     Isc(i) = 0;
                     Imp(i) = 0;
                     Vmp(i) = 1;
@@ -101,6 +101,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
      
                     gamma(i) = 0;
                     m(i) = 0;
+                    I(i) = 0;
                 else      
                     alpha = Vmp(i)/Voc(i);
                     beta = Imp(i)/Isc(i);                 
@@ -110,19 +111,22 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
                     m(i) = real((lambert(obj,aux)./log(alpha))+(1./K)+1);
                     gamma(i) = (2*beta-1)./((m(i)-1).*alpha.^m(i));
                     V0(i) = Vmp(i)*0.5;
+                    
+                     
+                    r = obj.R/(Voc(i)/Isc(i));
+                    
+                    I(i) = (fzero(@(x) 1-(1-gamma(i)).*x*r-gamma(i).*(x*r).^m(i)-x, 1))*Isc(i);
+                    
                 end
+                
+                
             end
 
 
             % Intensidad 
-                        
-            obj.V = fmincon(@(V) ...
-                abs(sum((1-(1-gamma).*(V./Voc)-gamma.*(V./Voc).^m).*Isc - V / obj.R)),...
-                V0,[],[],A_V0,b_V0);
             
-            obj.I = obj.V / obj.R;
-            I = obj.I;
-                
+            obj.I = I;
+                 
         end
         
         % Corriente 1d2r
@@ -140,7 +144,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             
                    
             for i=1:length(Vmp)
-                if isinf(Vmp(i)) %i.e. cuando no hay irradiancia
+                if abs(Vmp(i)) > 1e3 %i.e. cuando no hay irradiancia
                     Isc(i) = 0;
                     Imp(i) = 0;
                     Vmp(i) = 1;
@@ -154,6 +158,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
                     Rs(i) = 0;
                     Rsh(i) = 1;
                     f(i) = 0;
+                    I(i) = 0;
                 else                   
                     % Ajuste analítico 
                     a = obj.Modelo.a;
@@ -177,18 +182,28 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
                     
                     f(i) = 1;
                     V0(i) = Vmp(i)*0.01;
+                    
+                    
+                    u = [Ipv(i);I0(i);Rs(i);Rsh(i);obj.Modelo.a];
+                    
+%                     V_sol(i) = fzero(@(V) (u(1)-u(2).*(exp((V+u(3).*V/obj.R)./(Vt .*u(5)))-1)-(V+u(3).*V/obj.R)./u(4)) - V / obj.R , Voc(i));
+                    
+                    I(i) = fzero(@(I) u(1)-u(2)*(exp((obj.R*I+u(3)*I)/(Vt*u(5)))-1)-(obj.R*I+u(3)*I)/u(4)-I, 0);
+                                  
+                    
+                    
                 end
             end
   
-            u = [Ipv;I0;Rs;Rsh;obj.Modelo.a*ones(size(obj.Vt))];
+%             u = [Ipv;I0;Rs;Rsh;obj.Modelo.a*ones(size(obj.Vt))];
                 
             % Intensidad
-            obj.V = fmincon(@(V) ...
-                abs(sum((u(1,:)-u(2,:).*(exp((V+u(3,:).*V/obj.R)./(obj.Vt .*u(5,:)))-1)-(V+u(3,:).*V/obj.R)./u(4,:)).*f- V / obj.R))...
-                ,V0,[],[],A_V0,b_V0);
-            
-            obj.I = obj.V / obj.R;
-            I = obj.I;
+%             obj.V = fmincon(@(V) ...
+%                 abs(sum((u(1,:)-u(2,:).*(exp((V+u(3,:).*V/obj.R)./(obj.Vt .*u(5,:)))-1)-(V+u(3,:).*V/obj.R)./u(4,:)).*f- V / obj.R))...
+%                 ,V0,[],[],A_V0,b_V0);
+%             
+%              obj.I = V_sol/ obj.R;
+            obj.I = I;
         
         end
         
