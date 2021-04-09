@@ -9,11 +9,11 @@ close all;
 Tref = 20 + 273.15; %K
 Gref = 1367;        %W/m^2
 load('Datos_experimentales/Cells_Data.mat');
-
-alpha_Voc = -6e-3;
-alpha_Isc = 0.32e-3;
-alpha_Vmp = -6.1e-3;
-alpha_Imp = 0.28e-3;
+% e-2 va como un tiro, SI O NO, SI O NO? ESTAMOS? VALE? ESTAMOS O NO?
+alpha_Voc = -6e-2;
+alpha_Isc = 0.32e-2;
+alpha_Vmp = -6.1e-2;
+alpha_Imp = 0.28e-2;
 
 % KyH
 KyH = struct();
@@ -37,14 +37,14 @@ m_1d2r.Gref = Gref;
 SP = solar_panel();
 SP.N_serie = Cells.N_serie;
 SP.N_paralelo = Cells.N_paralelo;
-SP.Modelo = m_1d2r;
+SP.Modelo = KyH;
 SP.Kelly_cosine_Limit = 75;
 SP.alpha = [alpha_Isc, alpha_Imp, alpha_Vmp, alpha_Voc];
 
 %Crear entorno
 Env = entorno();
 Env.T_max = 80+273.15;      %K
-Env.T_min = 20+273.15;      %K
+Env.T_min = -20+273.15;      %K
 Env.Go = Gref;            %W/m2
 
 % Crear satélite 
