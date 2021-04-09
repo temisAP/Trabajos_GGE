@@ -85,12 +85,19 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             Vmp = obj.parametros(3,:);
             Voc = obj.parametros(4,:);    
             
+            % Restricciones para la optimización
+            A_V0 = zeros(length(Vmp),length(Vmp));
+            b_V0 = zeros(1,length(Vmp));
+            
             for i=1:length(Vmp)
                 if isinf(Vmp(i))
                     Isc(i) = 0;
                     Imp(i) = 0;
                     Vmp(i) = 1;
                     Voc(i) = 1;
+                    
+                    V0(i) = 0;
+                    A_V0(i,i) = 1;
      
                     gamma(i) = 0;
                     m(i) = 0;
@@ -102,14 +109,16 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
                     aux = -(1./alpha).^(1./K).*(1./K).*log(alpha);
                     m(i) = real((lambert(obj,aux)./log(alpha))+(1./K)+1);
                     gamma(i) = (2*beta-1)./((m(i)-1).*alpha.^m(i));
+                    V0(i) = Vmp(i)*0.5;
                 end
             end
 
 
             % Intensidad 
-            
+                        
             obj.V = fmincon(@(V) ...
-                abs(sum((1-(1-gamma).*(V./Voc)-gamma.*(V./Voc).^m).*Isc - V / obj.R)), Vmp);
+                abs(sum((1-(1-gamma).*(V./Voc)-gamma.*(V./Voc).^m).*Isc - V / obj.R)),...
+                V0,[],[],A_V0,b_V0);
             
             obj.I = obj.V / obj.R;
             I = obj.I;
@@ -124,6 +133,11 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             Imp = obj.parametros(2,:);
             Vmp = obj.parametros(3,:);
             Voc = obj.parametros(4,:);   
+            
+            % Restricciones para la optimización
+            A_V0 = zeros(length(Vmp),length(Vmp));
+            b_V0 = zeros(1,length(Vmp));
+            
                    
             for i=1:length(Vmp)
                 if isinf(Vmp(i)) %i.e. cuando no hay irradiancia
@@ -131,6 +145,9 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
                     Imp(i) = 0;
                     Vmp(i) = 1;
                     Voc(i) = 1;
+                    
+                    A_V0(i,i) = 1;
+                    V0(i) = 0;
      
                     Ipv(i) = 0;
                     I0(i) = 0;
@@ -159,15 +176,16 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
                     I0(i)=((Rsh(i)+Rs(i))./Rsh(i).*Isc(i)-Voc(i)./Rsh(i))./(exp((Voc(i))./(a.*Vt)));
                     
                     f(i) = 1;
+                    V0(i) = Vmp(i)*0.01;
                 end
             end
   
             u = [Ipv;I0;Rs;Rsh;obj.Modelo.a*ones(size(obj.Vt))];
                 
             % Intensidad
-            obj.V = particleswarm(@(V) ...
+            obj.V = fmincon(@(V) ...
                 abs(sum((u(1,:)-u(2,:).*(exp((V+u(3,:).*V/obj.R)./(obj.Vt .*u(5,:)))-1)-(V+u(3,:).*V/obj.R)./u(4,:)).*f- V / obj.R))...
-                ,length(Vmp));
+                ,V0,[],[],A_V0,b_V0);
             
             obj.I = obj.V / obj.R;
             I = obj.I;
