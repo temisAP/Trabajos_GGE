@@ -1,5 +1,6 @@
 %%%%%%%%%% K A R M A L K A R   &   H A N E E F A %%%%%%%%%%%%%
 clear all
+close all
 clc
 
 load('Cells_Data.mat');
@@ -66,17 +67,17 @@ I_Karmalkar_analytic_datasheet = (1-(1-gamma)*(V_mess/Voc)-gamma*(V_mess/Voc).^m
 
 %x = linspace(0,21.336,length(I_Karmalkar_analytic_datasheet));
 
-h_ = figure();
+h_ = figure(1);
 hold on
-plot(V_mess, I_Karmalkar_analytic_exp, '-', 'LineWidth', 2, 'Color', 'r','DisplayName', ...
-    ["Karmalkar \& Haneefa anal\'itico con puntos experimentales"])
-plot(V_mess, I_Karmalkar_analytic_datasheet, '-', 'LineWidth', 2, 'Color', 'b','DisplayName', ...
+plot(V_mess, I_Karmalkar_analytic_exp, '-', 'LineWidth', 2, 'Color', [0, 0.4470, 0.7410],'DisplayName', ...
+    ["Karmalkar \& Haneefa anal\'itico con datos experimentales"])
+plot(V_mess, I_Karmalkar_analytic_datasheet, '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980],'DisplayName', ...
     ["Karmalkar \& Haneefa anal\'itico data sheet"])
 plot(V_mess, I_mess, '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
     ["Karmalkar \& Haneefa experimental"])
 box on; grid on
-legend('Interpreter', 'Latex', 'location', 'NorthWest')
+legend('Interpreter', 'Latex', 'location', 'SouthWest')
 xlabel('$V$ [V]','Interpreter','latex');
 ylabel({'$I$';'[A]'},'Interpreter','latex');
 ylim([0 0.6])
-%               Save_as_PDF(h_, ['Figuras/1_An_dif_', sheet{s}],'horizontal', 7.5, 10);
+%Save_as_PDF(h_, ['Figuras/KyH'],'horizontal');
