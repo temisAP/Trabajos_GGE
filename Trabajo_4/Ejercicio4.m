@@ -33,12 +33,11 @@ m_1d2r.Gref = Gref;
 
 %% Segunda parte 
 
-N_serie = Cells.N_serie;
-N_paralelo = Cells.N_paralelo;
-
 %Crear panel
-SP = solar_panel(N_serie, N_paralelo);
-SP.Modelo = KyH;
+SP = solar_panel();
+SP.N_serie = Cells.N_serie;
+SP.N_paralelo = Cells.N_paralelo;
+SP.Modelo = m_1d2r;
 SP.Kelly_cosine_Limit = 75;
 SP.alpha = [alpha_Isc, alpha_Imp, alpha_Vmp, alpha_Voc];
 
@@ -56,8 +55,17 @@ Sat.desfase_T = Sat.w*15;
 
 % Extraer la intensidad a lo largo del tiempo t
 phi = 30;
-t = linspace(0,100,1e3+1);
+t = linspace(0,200,1e3+1);
 I = Sat.get_current(t);
+
+figure()
+hold on
+    plot(t,I*1e3);
+    plot(t,Env.T);
+    plot(t,Env.G);
+    xlabel('t');
+    legend('I','T','G');
+    grid on, box on
 
 
 %% Hasta aquí va bien, solo hay que completar las funciones del panel para que saque la corriente

@@ -87,13 +87,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             
             for i=1:length(Vmp)
                 if isinf(Vmp(i))
-                    Isc(i) = 0;
-                    Imp(i) = 0;
-                    Vmp(i) = 1;
-                    Voc(i) = 1;
-     
-                    gamma(i) = 0;
-                    m(i) = 0;
+                    Isc
                 else      
                     alpha = Vmp(i)/Voc(i);
                     beta = Imp(i)/Isc(i);                 
@@ -101,7 +95,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
                     K = (1-beta-alpha)./(2*beta-1);
                     aux = -(1./alpha).^(1./K).*(1./K).*log(alpha);
                     m(i) = real((lambert(obj,aux)./log(alpha))+(1./K)+1);
-                    gamma(i) = (2*beta-1)./((m(i)-1).*alpha.^m(i));
+                    gamma(i) = (2*beta-1)./((m-1).*alpha.^m);
                 end
             end
 
@@ -123,51 +117,36 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             Isc = obj.parametros(1,:);
             Imp = obj.parametros(2,:);
             Vmp = obj.parametros(3,:);
-            Voc = obj.parametros(4,:);   
-                   
-            for i=1:length(Vmp)
-                if isinf(Vmp(i)) %i.e. cuando no hay irradiancia
-                    Isc(i) = 0;
-                    Imp(i) = 0;
-                    Vmp(i) = 1;
-                    Voc(i) = 1;
-     
-                    Ipv(i) = 0;
-                    I0(i) = 0;
-                    Rs(i) = 0;
-                    Rsh(i) = 1;
-                    f(i) = 0;
-                else                   
-                    % Ajuste analítico 
-                    a = obj.Modelo.a;
-                    Vt = obj.Vt(i);
-                    
-                    A=-(2*Vmp(i)-Voc(i))./(a.*Vt)+(Vmp(i).*Isc(i)-Voc(i).*Imp(i))./(Vmp(i).*Isc(i)+Voc(i).*(Imp(i)-Isc(i)));
-                    B=-Vmp(i).*(2*Imp(i)-Isc(i))./(Vmp(i).*Isc(i)+Voc(i).*(Imp(i)-Isc(i)));
-                    C=a.*Vt./Imp(i);
-                    D=(Vmp(i)-Voc(i))./(a.*Vt);
-                    %%%
-                    M1=0.3361;
-                    M2=-0.0042;
-                    M3=-0.0201;
-                    sigma = -1-log(-B)-A;
-                    Wn =-1-sigma -2/M1* (1-1./(1+M1*sqrt(sigma/2)./(1+M2*sigma.*exp(M3*sqrt(sigma)))) );
-                    %%%
-                    Rs(i)=C.*(Wn-(D+A));
-                    Rsh(i)=(Vmp(i)-Imp(i).*Rs(i)).*(Vmp(i)-Rs(i).*(Isc(i)-Imp(i))-a.*Vt)./((Vmp(i)-Imp(i).*Rs(i)).*(Isc(i)-Imp(i))-a.*Vt.*Imp(i));
-                    Ipv(i)=(Rsh(i)+Rs(i))./Rsh(i).*Isc(i);
-                    I0(i)=((Rsh(i)+Rs(i))./Rsh(i).*Isc(i)-Voc(i)./Rsh(i))./(exp((Voc(i))./(a.*Vt)));
-                    
-                    f(i) = 1;
-                end
-            end
+            Voc = obj.parametros(4,:);    
+            alpha = obj.parametros(5,:);
+            beta =  obj.parametros(6,:);
   
-            u = [Ipv;I0;Rs;Rsh;obj.Modelo.a*ones(size(obj.Vt))];
-                
+            % Ajuste analítico 
+            a = obj.Modelo.a * ones(size(obj.Vt));
+            Vt = obj.Vt;
+            %%%
+            A=-(2*Vmp-Voc)./(a.*Vt)+(Vmp.*Isc-Voc.*Imp)./(Vmp.*Isc+Voc.*(Imp-Isc));
+            B=-Vmp.*(2*Imp-Isc)./(Vmp.*Isc+Voc.*(Imp-Isc));
+            C=a.*Vt./Imp;
+            D=(Vmp-Voc)./(a.*Vt);
+            %%%
+            M1=0.3361;
+            M2=-0.0042;
+            M3=-0.0201;
+            sigma = -1-log(-B)-A;
+            Wn =-1-sigma -2/M1* (1-1./(1+M1*sqrt(sigma/2)./(1+M2*sigma.*exp(M3*sqrt(sigma)))) );
+            %%%
+            Rs=C.*(Wn-(D+A));
+            Rsh=(Vmp-Imp.*Rs).*(Vmp-Rs.*(Isc-Imp)-a.*Vt)./((Vmp-Imp.*Rs).*(Isc-Imp)-a.*Vt.*Imp);
+            Ipv=(Rsh+Rs)./Rsh.*Isc;
+            I0=((Rsh+Rs)./Rsh.*Isc-Voc./Rsh)./(exp((Voc)./(a.*Vt)));
+            %%%
+            u = [Ipv;I0;Rs;Rsh;a];
+                    
             % Intensidad
-            obj.V = particleswarm(@(V) ...
-                abs(sum((u(1,:)-u(2,:).*(exp((V+u(3,:).*V/obj.R)./(obj.Vt .*u(5,:)))-1)-(V+u(3,:).*V/obj.R)./u(4,:)).*f- V / obj.R))...
-                ,length(Vmp));
+            obj.V = fmincon(@(V) ...
+                abs(sum(u(1,:)-u(2,:).*(exp((V+u(3,:).*V/obj.R)./(obj.Vt .*u(5,:)))-1)-(V+u(3,:).*V/obj.R)./u(4,:)-V / obj.R))...
+                ,0.1);
             
             obj.I = obj.V / obj.R;
             I = obj.I;
