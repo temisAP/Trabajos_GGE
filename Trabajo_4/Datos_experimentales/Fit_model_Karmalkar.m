@@ -73,7 +73,7 @@ h_ = figure(1);
     xlabel('$V$ [V]','Interpreter','latex');
     ylabel({'$I$';'[A]'},'Interpreter','latex');
     ylim([0 0.6])
-    Save_as_PDF(h_, ['Figuras/KyH_datos'],'horizontal');
+    %Save_as_PDF(h_, ['Figuras/KyH_datos'],'horizontal');
     
 h_ = figure(2);
     hold on
@@ -87,7 +87,7 @@ h_ = figure(2);
     xlabel('$V$ [V]','Interpreter','latex');
     ylabel({'$I$';'[A]'},'Interpreter','latex');
     ylim([0 0.6])
-    Save_as_PDF(h_, ['Figuras/KyH_sheet'],'horizontal');
+    %Save_as_PDF(h_, ['Figuras/KyH_sheet'],'horizontal');
     
 h_ = figure(3);
     hold on
@@ -102,4 +102,4 @@ h_ = figure(3);
     xlabel('$V$ [V]','Interpreter','latex');
     ylabel({'$I$';'[A]'},'Interpreter','latex');
     ylim([0 0.6])
-    Save_as_PDF(h_, ['Figuras/KyH_ambos'],'horizontal');
+    %Save_as_PDF(h_, ['Figuras/KyH_ambos'],'horizontal');
