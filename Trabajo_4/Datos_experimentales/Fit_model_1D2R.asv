@@ -1,5 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% 1D2R %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear all
+close all
 clc
 
 load('Cells_Data.mat');
@@ -37,18 +38,6 @@ end
 N = size(I_mess,2);
 rmse = RMSE(Isc, I_mess, I_modelo_exp, N);
 
-% h_ = figure();
-% hold on
-% plot(V_mess, I_modelo, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-%     ["1D2R anal\'itico con puntos experimentales"])
-% plot(V_mess, I_mess, '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-%     ["Puntos experimentales"])
-% box on; grid on
-% legend('Interpreter', 'Latex', 'location', 'NorthWest')
-% xlabel('$V$ [V]','Interpreter','latex');
-% ylabel({'$I$';'[A]'},'Interpreter','latex');
-%                Save_as_PDF(h_, ['Figuras/1_An_dif_', sheet{s}],'horizontal', 7.5, 10);
-
 %% PUNTOS CARACTERISTICOS DATA SHEET CELULA
 
 % Datos
@@ -78,17 +67,17 @@ end
 N = size(I_mess,2);
 rmse = RMSE(Isc, I_mess, I_modelo_datasheet, N);
 
-h_ = figure();
+h_ = figure(1);
 hold on
-plot(V_mess, I_modelo_exp, '-', 'LineWidth', 2, 'Color', 'r','DisplayName', ...
-    ["1D2R anal\'itico con puntos experimentales"])
-plot(V_mess, I_modelo_datasheet, '-', 'LineWidth', 2, 'Color', 'b','DisplayName', ...
+plot(V_mess, I_modelo_exp, '-', 'LineWidth', 2, 'Color', [0, 0.4470, 0.7410],'DisplayName', ...
+    ["1D2R anal\'itico con datos experimentales"])
+plot(V_mess, I_modelo_datasheet, '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980],'DisplayName', ...
     ["1D2R anal\'itico data sheet"])
 plot(V_mess, I_mess, '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
     ["1D2R experimental"])
 box on; grid on
-legend('Interpreter', 'Latex', 'location', 'NorthWest')
+legend('Interpreter', 'Latex', 'location', 'SouthWest')
 xlabel('$V$ [V]','Interpreter','latex');
 ylabel({'$I$';'[A]'},'Interpreter','latex');
 ylim([0 0.6])
-%Save_as_PDF(h_, ['Figuras/1D2R', sheet{s}],'horizontal', 7.5, 10);
+%Save_as_PDF(h_, ['Figuras/1D2R'],'horizontal');

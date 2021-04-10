@@ -15,6 +15,9 @@ Imp = Cells.Imp;
 Isc = Cells.Isc;
 Voc = Cells.Voc;
 
+puntos_x_datos = [0, Vmp, Voc];
+puntos_y_datos = [Isc, Imp, 0];
+
 a = Cells.a; % 
 n = Cells.N_serie; % 
 
@@ -38,18 +41,6 @@ end
 N = size(I_mess,2);
 rmse = RMSE(Isc, I_mess, I_modelo_exp, N);
 
-% h_ = figure();
-% hold on
-% plot(V_mess, I_modelo, '-', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-%     ["1D2R anal\'itico con puntos experimentales"])
-% plot(V_mess, I_mess, '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-%     ["Puntos experimentales"])
-% box on; grid on
-% legend('Interpreter', 'Latex', 'location', 'NorthWest')
-% xlabel('$V$ [V]','Interpreter','latex');
-% ylabel({'$I$';'[A]'},'Interpreter','latex');
-%                Save_as_PDF(h_, ['Figuras/1_An_dif_', sheet{s}],'horizontal', 7.5, 10);
-
 %% PUNTOS CARACTERISTICOS DATA SHEET CELULA
 
 % Datos
@@ -63,6 +54,9 @@ Isc = Isc_ref * Cells.N_paralelo;
 Imp = Imp_ref * Cells.N_paralelo;
 Vmp = Vmp_ref * Cells.N_serie;
 Voc = Voc_ref * Cells.N_serie;
+
+puntos_x_sheet = [0, Vmp, Voc];
+puntos_y_sheet = [Isc, Imp, 0];
 
 % Parameter calculations
 
@@ -80,16 +74,44 @@ N = size(I_mess,2);
 rmse = RMSE(Isc, I_mess, I_modelo_datasheet, N);
 
 h_ = figure(1);
-hold on
-plot(V_mess, I_modelo_exp, '-', 'LineWidth', 2, 'Color', [0, 0.4470, 0.7410],'DisplayName', ...
-    ["1D2R anal\'itico con datos experimentales"])
-plot(V_mess, I_modelo_datasheet, '-', 'LineWidth', 2, 'Color', [0.8500, 0.3250, 0.0980],'DisplayName', ...
-    ["1D2R anal\'itico data sheet"])
-plot(V_mess, I_mess, '--', 'LineWidth', 2, 'Color', 'k','DisplayName', ...
-    ["1D2R experimental"])
-box on; grid on
-legend('Interpreter', 'Latex', 'location', 'SouthWest')
-xlabel('$V$ [V]','Interpreter','latex');
-ylabel({'$I$';'[A]'},'Interpreter','latex');
-ylim([0 0.6])
-%Save_as_PDF(h_, ['Figuras/1D2R'],'horizontal');
+    hold on 
+    plot(V_mess(1:25:end), I_mess(1:25:end), 'o', 'LineWidth', 0.5, 'MarkerSize', 5, 'Color', 'k','DisplayName', ...
+        ["Datos experimentales"])
+    plot(puntos_x_datos, puntos_y_datos, '^', 'Linewidth', 1,'Color', 'k', 'DisplayName', ["Puntos caracter\'isticos: datos experimentales"])
+    plot(V_mess, I_modelo_exp, '-', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+        ["Karmalkar \& Haneefa: datos experimentales"])
+    box on; grid on
+    legend('Interpreter', 'Latex', 'location', 'SouthWest')
+    xlabel('$V$ [V]','Interpreter','latex');
+    ylabel({'$I$';'[A]'},'Interpreter','latex');
+    ylim([0 0.6])
+    Save_as_PDF(h_, ['Figuras/1d2r_datos'],'horizontal');
+    
+h_ = figure(2);
+    hold on
+    plot(V_mess(1:25:end), I_mess(1:25:end), 'o', 'LineWidth', 0.5, 'MarkerSize', 5, 'Color', 'k','DisplayName', ...
+        ["Datos experimentales"])
+    plot(puntos_x_sheet, puntos_y_sheet, '^', 'Linewidth', 1, 'Color', 'k', 'DisplayName', ["Puntos caracter\'isticos: data sheet"])
+    plot(V_mess, I_modelo_datasheet, '-', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+        ["Karmalkar \& Haneefa: data sheet"])
+    box on; grid on
+    legend('Interpreter', 'Latex', 'location', 'SouthWest')
+    xlabel('$V$ [V]','Interpreter','latex');
+    ylabel({'$I$';'[A]'},'Interpreter','latex');
+    ylim([0 0.6])
+    Save_as_PDF(h_, ['Figuras/1d2r_sheet'],'horizontal');
+    
+h_ = figure(3);
+    hold on
+    plot(V_mess(1:25:end), I_mess(1:25:end), 'o', 'LineWidth', 0.5, 'MarkerSize', 5, 'Color', 'k','DisplayName', ...
+        ["Datos experimentales"])
+    plot(V_mess, I_modelo_exp, '--', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+        ["Karmalkar \& Haneefa: datos experimentales"])
+    plot(V_mess, I_modelo_datasheet, '-', 'LineWidth', 1, 'Color', 'k','DisplayName', ...
+        ["Karmalkar \& Haneefa: data sheet"])
+    box on; grid on
+    legend('Interpreter', 'Latex', 'location', 'SouthWest')
+    xlabel('$V$ [V]','Interpreter','latex');
+    ylabel({'$I$';'[A]'},'Interpreter','latex');
+    ylim([0 0.6])
+    Save_as_PDF(h_, ['Figuras/1d2r_ambos'],'horizontal');
