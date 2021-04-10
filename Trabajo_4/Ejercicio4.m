@@ -10,10 +10,10 @@ Tref = 20 + 273.15; %K
 Gref = 1367;        %W/m^2
 load('Datos_experimentales/Cells_Data.mat');
 % e-2 va como un tiro, SI O NO, SI O NO? ESTAMOS? VALE? ESTAMOS O NO?
-alpha_Voc = -6e-2;
-alpha_Isc = 0.32e-2;
-alpha_Vmp = -6.1e-2;
-alpha_Imp = 0.28e-2;
+alpha_Voc = -6e-3;
+alpha_Isc = 0.32e-3;
+alpha_Vmp = -6.1e-3;
+alpha_Imp = 0.28e-3;
 
 % KyH
 KyH = struct();
@@ -48,21 +48,22 @@ Env.T_min = -20+273.15;      %K
 Env.Go = Gref;            %W/m2
 
 % Crear satélite 
-Sat = Satelite(SP,Env,35);
+R = [35, 37.5, 42];
+Sat = Satelite(SP,Env,R(3));
 Sat.w = 0.052;
 Sat.desfase_P = -pi/2;
 Sat.desfase_T = Sat.w*15;
 
 % Extraer la intensidad a lo largo del tiempo t
 phi = 30;
-t = linspace(0,200,1e3+1);
+t = linspace(0,120,1e3+1);
 I = Sat.get_current(t);
 
 figure()
 hold on
-    plot(t,I*1e3);
-    plot(t,Env.T);
-    plot(t,Env.G);
+    plot(t,I/max(I));
+    plot(t,Env.T/max(Env.T));
+    plot(t,Env.G/max(Env.G));
     xlabel('t');
     legend('I','T','G');
     grid on, box on
@@ -73,7 +74,7 @@ hold on
 
 
 
-t = linspace(0,200,1e3+1);
+%t = linspace(0,200,1e3+1);
 w = 0.052; %rad/s
 desfase_P = -pi/2;
 cos_limit = 75;
@@ -99,6 +100,8 @@ figure()
     
 figure()
     plot(t,I)
+    xlabel('t [s]')
+    ylabel('I [A]')
 
 
 

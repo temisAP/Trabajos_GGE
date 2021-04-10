@@ -7,7 +7,7 @@ classdef Satelite < handle
         R;
         w   % rad/s
         desfase_P = -pi/2
-        desfase_T = -pi/2
+        desfase_T
     end
     
     %% Métodos

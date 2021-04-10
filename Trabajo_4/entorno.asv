@@ -28,24 +28,17 @@ classdef entorno < handle
             theta = w*t;
             obj.theta = theta;
 
-
             G = obj.Go*obj.Inclinacion_Sol_Panel_ft(w, t, desfase_P, cos_K_lim);
             obj.G = G;
             
-            T = obj.Temperatura_ft(w, t, desfase_T, obj.T_min, obj.T_max);
+%             T = obj.Temperatura_ft(w, t, desfase_T, obj.T_min, obj.T_max);
+%             obj.T = T;
+            
+            T = obj.Temperatura_Panel_ft(w, t, desfase_P, desfase_T, obj.T_max, obj.T_min);
             obj.T = T;
             
-%             T = obj.Temperatura_Panel_ft(w, t, desfase_P, desfase_T, obj.T_max, obj.T_min);
-%             obj.T = T;
+            T = 30
             
-%             G = obj.Go*cos( w*t );
-%             G( G<=0 ) = 0;
-%             obj.G = G;
-%             plot(G)
-%             size(G)
-%             T = 30+50*cos( w*( t-15 ) );
-%             obj.T = T;
-%             size(T)
         end
 
         
