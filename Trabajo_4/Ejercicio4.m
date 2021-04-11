@@ -37,7 +37,7 @@ m_1d2r.Gref = Gref;
 SP = solar_panel();
 SP.N_serie = Cells.N_serie;
 SP.N_paralelo = Cells.N_paralelo;
-SP.Modelo = KyH;
+SP.Modelo = m_1d2r;
 SP.Kelly_cosine_Limit = 75;
 SP.alpha = [alpha_Isc, alpha_Imp, alpha_Vmp, alpha_Voc];
 
@@ -70,27 +70,45 @@ hold on
     legend('I','T','G');
     grid on, box on
 
-%% Hasta aquí va bien, solo hay que completar las funciones del panel para que saque la corriente
-%% Luego los plots y hemos terminado
+%% Intensidad a lo largo del tiempo
 
 lines = {'-','--',':'};
 res = {'$35$', '$37,5$', '$42$'};
 h = figure();
     hold on
     for r = 1:3
-        plot(Sat.w*t, I(:,r), lines{r}, 'Color', 'k', 'LineWidth', 1.5, 'DisplayName', ...
+        plot(t, I(:,r), lines{r}, 'Color', 'k', 'LineWidth', 1.5, 'DisplayName', ...
             ['$R =$ ' res{r} ' $\Omega$'])
     end
     box on; grid on;
     legend('Interpreter', 'Latex')
-    axis([0, 2*pi, 0, max(max(I))])
-    xlabel('$\theta$ [rad]', 'Interpreter', 'Latex')
-    ylabel({'I'; '[A]'}, 'Interpreter', 'Latex')
-    %Save_as_PDF(h, 'Figuras/Intensidad_Resistencias_3', 'horizontal');
+    axis([0, max(t), 0, max(max(I))])
+    xlabel('$t$ [s]', 'Interpreter', 'Latex')
+    ylabel({'$I$'; '[A]'}, 'Interpreter', 'Latex')
+    Save_as_PDF(h, 'Figuras/Intensidad_Resistencias_3', 'horizontal');
 
+%% Potencia a lo largo del tiempo
+    
+lines = {'-','--',':'};
+res = {'$35$', '$37,5$', '$42$'};
+h = figure();
+    hold on
+    for r = 1:3
+        plot(t, I(:,r).^2 .* R(r), lines{r}, 'Color', 'k', 'LineWidth', 1.5, 'DisplayName', ...
+            ['$R =$ ' res{r} ' $\Omega$'])
+    end
+    box on; grid on;
+    legend('Interpreter', 'Latex')
+    axis([0, max(t), 0, max(max(I.^2 .* R))])
+    xlabel('$t$ [s]', 'Interpreter', 'Latex')
+    ylabel({'$P$'; '[W]'}, 'Interpreter', 'Latex')
+    Save_as_PDF(h, 'Figuras/Potencia_Resistencias_3', 'horizontal');
+
+return    
+    
 %% Efecto de la temperatura    
     
-T = [Env.T_min Tref Env.T_max]';
+T = flip([Env.T_min Tref Env.T_max]');
 G = [Gref Gref Gref]';
 V = linspace(0,20,100);
 
@@ -100,15 +118,15 @@ for v = 1:length(V)
     I(:,v) = val(:);
 end
 
-lgds = {"$I(T_{\mathrm{min}})$","$I(T_{ref})$","$I(T_{\mathrm{max}})$"};
-mrks = {'-','-','-'};
+lgds = flip({"$I(T_{\mathrm{min}})$","$I(T_{ref})$","$I(T_{\mathrm{max}})$"});
+mrks = {'-','--',':'};
 colr = {'#000000','#A9A9A9','#D3D3D3'};
 
 h = figure();
 hold on
     for i = 1:length(T)
         plot(V,I(i,:),...
-            mrks{i}, 'LineWidth', 2, 'Color', colr{i},...
+            mrks{i}, 'LineWidth', 1.5, 'Color','k',...
             'DisplayName', [lgds{i}]);
     end
     ylim([0 0.6]);
@@ -124,7 +142,7 @@ hold on
 %% Efecto de la irradiancia       
     
 T = [Tref Tref Tref]';
-G = [Gref*0.1 Gref*0.5 Gref]';
+G = flip([Gref*0.1 Gref*0.5 Gref]');
 
 clear I 
 for v = 1:length(V)
@@ -132,20 +150,20 @@ for v = 1:length(V)
     I(:,v) = val(:);
 end
 
-lgds = {"$I(0.1 \: G_{ref})$","$I(0.5 \: G_{ref})$","$I(G_{ref})$"};
-mrks = {'-','-','-'};
+lgds = flip({"$I(0.1 \: G_{ref})$","$I(0.5 \: G_{ref})$","$I(G_{ref})$"});
+mrks = {'-','--',':'};
 colr = {'#000000','#A9A9A9','#D3D3D3'};
 
 h = figure();
 hold on
     for i = 1:length(T)
         plot(V,I(i,:),...
-            mrks{i}, 'LineWidth', 2, 'Color', colr{i},...
+            mrks{i}, 'LineWidth', 1.5, 'Color', 'k',...
             'DisplayName', [lgds{i}]);
     end
     ylim([0 0.6]);
     xlim([0 20]);
-    legend('Interpreter', 'Latex','Location','Best');
+    legend('Interpreter', 'Latex','Location','west');
     grid on, box on
     xlabel('$V$ [V]','Interpreter','latex');
     ylabel({'$I$';'[A]'},'Interpreter','latex');
@@ -167,14 +185,14 @@ end
 I_r = V'*ones(size(R))./R;
 
 lgds = {"$I(T_{\mathrm{min}},G_{ref})$","$I(T_{\mathrm{max}},0.5\: G_{ref})$","$R = 35 \Omega$","$R = 37.5 \Omega$","$R = 42 \Omega$"};
-mrks = {'--','-.',':'};
+mrks = {'-','--','-.'};
 colr = {'#000000','#A9A9A9','#D3D3D3'};
 
 h = figure();
 hold on
     for i = 1:length(T)
         plot(V,I(i,:),...
-            '-', 'LineWidth', 2, 'Color', colr{i},...
+            mrks{i}, 'LineWidth', 2, 'Color', '#A9A9A9',...
             'DisplayName', [lgds{i}]);
     end
     for j =1:length(R)
