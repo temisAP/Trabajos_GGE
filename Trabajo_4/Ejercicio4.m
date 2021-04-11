@@ -107,9 +107,6 @@ h = figure();
     Save_as_PDF(h, 'Figuras/Potencia_Resistencias_3', 'horizontal');
 
 Pm = mean(P,1);
-
-   
-return    
     
 %% Efecto de la temperatura    
     
@@ -155,7 +152,7 @@ for v = 1:length(V)
     I(:,v) = val(:);
 end
 
-lgds = flip({"$I(0.1 \: G_{ref})$","$I(0.5 \: G_{ref})$","$I(G_{ref})$"});
+lgds = flip({"$I(0,1 \: G_{ref})$","$I(0,5 \: G_{ref})$","$I(G_{ref})$"});
 mrks = {'-','--',':'};
 colr = {'#000000','#A9A9A9','#D3D3D3'};
 
@@ -189,7 +186,7 @@ end
 % Intensidad para cada resistencia 
 I_r = V'*ones(size(R))./R;
 
-lgds = {"$I(T_{\mathrm{min}},G_{ref})$","$I(T_{\mathrm{max}},0.5\: G_{ref})$","$R = 35 \Omega$","$R = 37.5 \Omega$","$R = 42 \Omega$"};
+lgds = {"$I(T_{\mathrm{min}},G_{ref})$","$I(T_{\mathrm{max}},0,5\: G_{ref})$","$R = 35 \Omega$","$R = 37,5 \Omega$","$R = 42 \Omega$"};
 mrks = {'-','--','-.'};
 colr = {'#000000','#A9A9A9','#D3D3D3'};
 
