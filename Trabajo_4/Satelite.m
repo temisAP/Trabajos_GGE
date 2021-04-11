@@ -26,10 +26,9 @@ classdef Satelite < handle
             [theta, G, T] = obj.enviroment.simulacion(...
                             time, obj.w, obj.solar_panel.Kelly_cosine_Limit,...
                             obj.desfase_P, obj.desfase_T);
-                        
-
-                
-            I = obj.solar_panel.current(T, G, theta,obj.R);
+                                        
+            I = obj.solar_panel.current(T, G,obj.R);
+            
         end
         
         

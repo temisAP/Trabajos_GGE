@@ -32,7 +32,7 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
         end 
         
         % Corriente para theta,T y R dados
-        function I = current(obj,T,G,R)
+        function I = current(obj,T,G,theta,R)
                  
             %Asignar la resistencia
             obj.R = R;
@@ -73,17 +73,10 @@ classdef solar_panel < handle  % Este < significa que hereda métodos y funcione
             I = obj.I;
             
         end
- 
-        function I=current_V(obj,V,T,G)
-            a = 0;
-        end
     end
+    function I=c
     
     methods (Access = private)
-        
-        function enviroment_influence(obj)
-            a = 0;
-        end
                 
         % Corriente KyH
         function I = current_kyh(obj)
