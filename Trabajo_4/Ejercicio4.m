@@ -49,15 +49,19 @@ Env.Go = Gref;            %W/m2
 
 % Crear satélite 
 R = [35, 37.5, 42];
-Sat = Satelite(SP,Env,R(3));
-Sat.w = 0.052;
-Sat.desfase_P = -pi/2;
-Sat.desfase_T = Sat.w*15;
+t = linspace(0,120.83,1e3+1);
 
-% Extraer la intensidad a lo largo del tiempo t
-phi = 30;
-t = linspace(0,120,1e3+1);
-I = Sat.get_current(t);
+for r = 1:3
+    Sat = Satelite(SP,Env,R(r));
+    Sat.w = 0.052;
+    Sat.desfase_P = -pi/2;
+    Sat.desfase_T = Sat.w*15;
+
+    % Extraer la intensidad a lo largo del tiempo t
+    I(:,r) = Sat.get_current(t);
+end
+
+
 
 figure()
 hold on
@@ -72,7 +76,25 @@ hold on
 %% Hasta aquí va bien, solo hay que completar las funciones del panel para que saque la corriente
 %% Luego los plots y hemos terminado
 
+lines = {'-','--',':'};
+res = {'$35$', '$37,5$', '$42$'};
+h = figure();
+    hold on
+    for r = 1:3
+        plot(Sat.w*t, I(:,r), lines{r}, 'Color', 'k', 'LineWidth', 1.5, 'DisplayName', ...
+            ['$R =$ ' res{r} ' $\Omega$'])
+    end
+    box on; grid on;
+    legend('Interpreter', 'Latex')
+    axis([0, 2*pi, 0, max(max(I))])
+    xlabel('$\theta$ [rad]', 'Interpreter', 'Latex')
+    ylabel({'I'; '[A]'}, 'Interpreter', 'Latex')
+    Save_as_PDF(h, 'Figuras/Intensidad_Resistencias_3', 'horizontal');
 
+
+
+
+%{
 
 %t = linspace(0,200,1e3+1);
 w = 0.052; %rad/s
@@ -144,3 +166,6 @@ function kcos = Kelly_cos(theta, cos_limit)
     kcos(theta >= 0 & theta < limit) = cos(theta(theta >= 0 & theta < limit)*cte);
 
 end
+
+
+%}
