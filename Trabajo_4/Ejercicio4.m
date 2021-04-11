@@ -37,7 +37,7 @@ m_1d2r.Gref = Gref;
 SP = solar_panel();
 SP.N_serie = Cells.N_serie;
 SP.N_paralelo = Cells.N_paralelo;
-SP.Modelo = m_1d2r;
+SP.Modelo = KyH;% m_1d2r;
 SP.Kelly_cosine_Limit = 75;
 SP.alpha = [alpha_Isc, alpha_Imp, alpha_Vmp, alpha_Voc];
 
@@ -94,7 +94,9 @@ res = {'$35$', '$37,5$', '$42$'};
 h = figure();
     hold on
     for r = 1:3
-        plot(t, I(:,r).^2 .* R(r), lines{r}, 'Color', 'k', 'LineWidth', 1.5, 'DisplayName', ...
+        P(:,r) = I(:,r).^2 .* R(r);
+        P(isnan(P)) = 0;
+        plot(t,P(:,r), lines{r}, 'Color', 'k', 'LineWidth', 1.5, 'DisplayName', ...
             ['$R =$ ' res{r} ' $\Omega$'])
     end
     box on; grid on;
@@ -104,6 +106,9 @@ h = figure();
     ylabel({'$P$'; '[W]'}, 'Interpreter', 'Latex')
     Save_as_PDF(h, 'Figuras/Potencia_Resistencias_3', 'horizontal');
 
+Pm = mean(P,1);
+
+   
 return    
     
 %% Efecto de la temperatura    
@@ -208,82 +213,3 @@ hold on
     ylabel({'$I$';'[A]'},'Interpreter','latex');
     Save_as_PDF(h, ['Figuras/Cargas'],'horizontal');
    
-    
-
-%% Otras cosas
-    
-%{
-
-%t = linspace(0,200,1e3+1);
-w = 0.052; %rad/s
-desfase_P = -pi/2;
-cos_limit = 75;
-
-incidencia = Inclinacion_Sol_Panel_ft(w, t, desfase_P, cos_limit);
-
-
-% Temperatura
-desfase_T = w*15;
-T_max = 80;
-T_min = -20;
-
-temp = Temperatura_Panel_ft(w, t, desfase_P, desfase_T, T_max, T_min);
-
-
-figure()
-    hold on
-    plot(rad2deg(w*t),incidencia)
-    plot(rad2deg(w*t),temp)
-
-figure()
-    plot(rad2deg(w*t), incidencia)
-    
-figure()
-    plot(t,I)
-    xlabel('t [s]')
-    ylabel('I [A]')
-
-
-
-%% FUNCTIONS
-
-function incidencia = Inclinacion_Sol_Panel_ft(w, t, desfase_P, cos_limit)
-
-    [angulo, senal] = Normal_Sol_Panel(w, t, desfase_P);
-    
-    incidencia = senal.*Kelly_cos(angulo, cos_limit);
-
-end
-
-function temp = Temperatura_Panel_ft(w, t, desfase_P, desfase_T, T_max, T_min)
-
-
-    [angulo, senal] = Normal_Sol_Panel(w, t, desfase_P-desfase_T);
-
-    temp = (T_max+T_min)/2 + (T_max-T_min)/2*cos(angulo);
-
-end
-
-
-function [angulo, senal] = Normal_Sol_Panel(w, t, desfase)
-
-    angulo = acos(cos(w*t + desfase));      %rad
-    
-    senal = ones(size(angulo));
-    senal(angulo>pi/2) = 0;
-
-end
-
-
-function kcos = Kelly_cos(theta, cos_limit)
-
-    cte = 90/cos_limit;
-    limit = deg2rad(cos_limit);
-    kcos = zeros(size(theta));
-    
-    kcos(theta >= 0 & theta < limit) = cos(theta(theta >= 0 & theta < limit)*cte);
-
-end
-
-
-%}
