@@ -27,7 +27,7 @@ classdef Satelite < handle
                             time, obj.w, obj.solar_panel.Kelly_cosine_Limit,...
                             obj.desfase_P, obj.desfase_T);
                                         
-            I = obj.solar_panel.current(T, G,obj.R);
+            I = obj.solar_panel.current(obj.R,T,G,'R');
             
         end
         

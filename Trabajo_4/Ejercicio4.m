@@ -61,8 +61,6 @@ for r = 1:3
     I(:,r) = Sat.get_current(t);
 end
 
-
-
 figure()
 hold on
     plot(t,I/max(I));
@@ -88,33 +86,114 @@ h = figure();
     axis([0, 2*pi, 0, max(max(I))])
     xlabel('$\theta$ [rad]', 'Interpreter', 'Latex')
     ylabel({'I'; '[A]'}, 'Interpreter', 'Latex')
-    Save_as_PDF(h, 'Figuras/Intensidad_Resistencias_3', 'horizontal');
+    %Save_as_PDF(h, 'Figuras/Intensidad_Resistencias_3', 'horizontal');
 
 %% Efecto de la temperatura    
     
 T = [Env.T_min Tref Env.T_max]';
 G = [Gref Gref Gref]';
-theta = pi/2 * [1 1 1]';
-R = linspace(0,1e12,100);
+V = linspace(0,20,100);
 
 clear I 
-for r = 1:length(R)
-    val = SP.current(T, G, theta,R(r));
-    I(:,r) = val(:);
-    V(:,r) = I(:,r) * R(r);
+for v = 1:length(V)
+    val = SP.current(V(v),T,G,'V');
+    I(:,v) = val(:);
 end
 
-figure()
+lgds = {"$I(T_{\mathrm{min}})$","$I(T_{ref})$","$I(T_{\mathrm{max}})$"};
+mrks = {'-','-','-'};
+colr = {'#000000','#A9A9A9','#D3D3D3'};
+
+h = figure();
 hold on
     for i = 1:length(T)
-        plot(V(:,i),I(:,i));
+        plot(V,I(i,:),...
+            mrks{i}, 'LineWidth', 2, 'Color', colr{i},...
+            'DisplayName', [lgds{i}]);
     end
-    xlabel('V');
-    legend('I(Tmin)','I(Tref)','I(Tmax)');
+    ylim([0 0.6]);
+    xlim([0 20]);
+    legend('Interpreter', 'Latex','Location','Southwest');
     grid on, box on
+    xlabel('$V$ [V]','Interpreter','latex');
+    ylabel({'$I$';'[A]'},'Interpreter','latex');
+    Save_as_PDF(h, ['Figuras/Temperaturas'],'horizontal');
+   
+    
  
-%% Efecto de la irradiancia    
+%% Efecto de la irradiancia       
+    
+T = [Tref Tref Tref]';
+G = [Gref*0.1 Gref*0.5 Gref]';
 
+clear I 
+for v = 1:length(V)
+    val = SP.current(V(v),T,G,'V');
+    I(:,v) = val(:);
+end
+
+lgds = {"$I(0.1 \: G_{ref})$","$I(0.5 \: G_{ref})$","$I(G_{ref})$"};
+mrks = {'-','-','-'};
+colr = {'#000000','#A9A9A9','#D3D3D3'};
+
+h = figure();
+hold on
+    for i = 1:length(T)
+        plot(V,I(i,:),...
+            mrks{i}, 'LineWidth', 2, 'Color', colr{i},...
+            'DisplayName', [lgds{i}]);
+    end
+    ylim([0 0.6]);
+    xlim([0 20]);
+    legend('Interpreter', 'Latex','Location','Best');
+    grid on, box on
+    xlabel('$V$ [V]','Interpreter','latex');
+    ylabel({'$I$';'[A]'},'Interpreter','latex');
+    Save_as_PDF(h, ['Figuras/Irradiancias'],'horizontal');
+    
+%% Cargas    
+    
+T = [Env.T_min Env.T_max]';
+G = [Gref 0.5*Gref]';
+V = linspace(0,20,100);
+
+clear I 
+for v = 1:length(V)
+    val = SP.current(V(v),T,G,'V');
+    I(:,v) = val(:);
+end
+
+% Intensidad para cada resistencia 
+I_r = V'*ones(size(R))./R;
+
+lgds = {"$I(T_{\mathrm{min}},G_{ref})$","$I(T_{\mathrm{max}},0.5\: G_{ref})$","$R = 35 \Omega$","$R = 37.5 \Omega$","$R = 42 \Omega$"};
+mrks = {'--','-.',':'};
+colr = {'#000000','#A9A9A9','#D3D3D3'};
+
+h = figure();
+hold on
+    for i = 1:length(T)
+        plot(V,I(i,:),...
+            '-', 'LineWidth', 2, 'Color', colr{i},...
+            'DisplayName', [lgds{i}]);
+    end
+    for j =1:length(R)
+            plot(V,I_r(:,j),...
+            mrks{j}, 'LineWidth', 1, 'Color', 'k',...
+            'DisplayName', [lgds{i+j}]);
+    end
+    ylim([0 0.6]);
+    xlim([0 20]);
+    legend('Interpreter', 'Latex','Location','Best');
+    grid on, box on
+    xlabel('$V$ [V]','Interpreter','latex');
+    ylabel({'$I$';'[A]'},'Interpreter','latex');
+    Save_as_PDF(h, ['Figuras/Cargas'],'horizontal');
+   
+    
+
+%% Otras cosas
+    
 %{
 
 %t = linspace(0,200,1e3+1);
