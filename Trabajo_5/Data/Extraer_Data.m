@@ -71,54 +71,61 @@ for s = 1:length(sheets)
 end
 
 
-
 %% CARGA
-fields = {'C-5A', 'C-2,5A', 'C-1,5A'};
+
+sheets = [2:2:6];
+names = {'C-5A', 'C-2,5A', 'C-1,5A'};
 Carga = struct();
 
+for s = 1:length(sheets)
+    data = xlsread(filename,sheets(s));
+    
+    Carga(s).Name = names{s};
+    Carga(s).t = data(:,1);
+    Carga(s).I = data(:,2);
+    Carga(s).It = Carga(s).I.*Carga(s).t;
+    Carga(s).V = data(:,3);
+    Carga(s).phi1 = zeros(size(Carga(s).t));
+    Carga(s).phi2 = zeros(size(Carga(s).t));
+
+    for t = 2:length(Carga(s).t)
+        Dt = Carga(s).t(t)-Carga(s).t(t-1);
+        Carga(s).phi1(t) = Carga(s).phi1(t-1) + Carga(s).I(t)*(Carga(s).V(t)+Carga(s).V(t-1))/2 * Dt;
+        Carga(s).phi2(t) = Carga(s).phi2(t-1) + Carga(s).I(t)^2;
+    end
+    
+    figure(s + 3)
+        hold on
+        plot(Carga(s).It, Carga(s).V)
+        title(Carga(s).Name)
+               
+    fields = fieldnames(Carga);
+    if s == 1   % Limpiar los datos de carga
+        V = Carga(s).V;
+        for f = 2:length(fields)
+            Carga(s).(fields{f})(V>24.3) = [];
+        end
+    elseif s == 2
+        V = Carga(s).V;
+        for f = 2:length(fields)
+            Carga(s).(fields{f})(V>24.3) = [];
+            Carga(s).(fields{f})(1,:) = [];
+        end
+    else   
+        V = Carga(s).V;
+        for f = 2:length(fields)
+            Carga(s).(fields{f})(V>24.3) = [];
+            Carga(s).(fields{f})(1,:) = [];
+        end
+    end
+    
+    figure(s + 3)
+        plot(Carga(s).It, Carga(s).V)
+
+        
+end
 
 
 %% GUARDAR DATOS
 
 save('Descarga-Carga.mat', 'Descarga', 'Carga')
-
-%% LIMPIAR DATOS
-%{
-Bateria.D5A(1:2,:) = [];
-Bateria.C2d5A(1,:) = [];
-Bateria.D2d5A(1,:) = [];
-Bateria.D2d5A(end,:) = [];
-Bateria.C1d5A(1,:) = [];
-
-
-%%
-for s = 1:length(sheets)
-    figure(s)
-        plot(Bateria.(fields{s})(:,1), Bateria.(fields{s})(:,3))
-        title(fields{s})
-end
-
-
-%% GUARDAR DATOS DE LA BATERIA CON CAMPOS
-
-Ensayos_Bateria = struct();
-ic = [5, 2.5, 1.5, 5, 2.5, 1.5];
-
-for s = 1:length(sheets)
-    Ensayos_Bateria.(fields{s}).t = Bateria.(fields{s})(:,1)/3600;
-    Ensayos_Bateria.(fields{s}).I = Bateria.(fields{s})(:,2);
-    Ensayos_Bateria.(fields{s}).It = Ensayos_Bateria.(fields{s}).t*ic(s);
-    Ensayos_Bateria.(fields{s}).V = Bateria.(fields{s})(:,3);
-    
-end
-
-save('Data_Ensayos_Bateria.mat', 'Ensayos_Bateria', 'fields', 'ic');
-
-%}
-
-
-
-
-
-%% FUNCIONES
-
