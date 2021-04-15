@@ -3,7 +3,7 @@ clear all
 close all
 
 try
-    load('Data\Descarga-Carga.mat')
+    load('Data\Descarga-carga.mat')
 catch
     disp('No se ha creado el archivo de datos')
     return
