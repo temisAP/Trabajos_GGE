@@ -3,22 +3,12 @@ clear all
 close all
 
 
+
 %% LEER DATOS
 
 filename = 'ensayos_bateria.xlsx';
-% sheets = [1:2:5, 2:2:6];
-% fields = {'D5A', 'D2d5A', 'D1d5A', 'C5A', 'C2d5A', 'C1d5A'};
 xlRange = 'B2:C3';
 
-% Bateria = struct();
-% for s = 1:length(sheets)
-%     Bateria.(fields{s}) = xlsread(filename,sheets(s));
-%     
-%     figure(s)
-%         hold on
-%         plot(Bateria.(fields{s})(:,1), Bateria.(fields{s})(:,3))
-%         title(fields{s})
-% end
 
 
 %% DESCARGA
@@ -69,6 +59,7 @@ for s = 1:length(sheets)
 
         
 end
+
 
 
 %% CARGA
