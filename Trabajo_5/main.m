@@ -157,7 +157,7 @@ function val = expbatt(data, model)
                          p(4)*exp(p(5)*(MAT(:,2)+p(3)*MAT(:,3)) + p(3)*MAT(:,1)) ;
 
   p = model.Coefficients.Estimate;
-  beta0 = [p(1) p(2) p(3) -1e-16 1e-4];
+  beta0 = [p(1) p(2) p(3) 1e-4 -1e-16];
 
   for i = 1:5
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights);
