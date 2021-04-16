@@ -68,7 +68,7 @@ plotmodel(linearmodel,Descarga,'lineal');
 plotmodel(expmodel,Descarga,'exp');
 
 %% Modelo exponencial-lineal
-[explinealmodel, iter_explineal] = explinealbatt(Descarga,expmodel);
+[explinealmodel, , iter_exp] = explinealbatt(Descarga,expmodel);
 plotmodel(explinealmodel,Descarga,'exp-lineal');
 %% Plot
 
@@ -145,7 +145,7 @@ end
 
 %% Modelo exponencial
 
-function [val, check] = expbatt(data, model)
+function val = expbatt(data, model)
 
   [MAT, V] = matrix(data);
 
@@ -161,12 +161,10 @@ function [val, check] = expbatt(data, model)
 
   p = model.Coefficients.Estimate;
   beta0 = [p(1) p(2) p(3) 1e-4 -1e-16];
-  check = beta0;
-  
+
   for i = 1:5
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights);
     beta0(:) = table2array(val.Coefficients(1:5,1));
-    check = [check; beta0];
   end
 
 end
@@ -174,7 +172,7 @@ end
 
 %% Modelo exponencial-lineal
 
-function [val, check]= explinealbatt(data, model)
+function val = explinealbatt(data, model)
 
   [MAT, V] = matrix(data);
 
@@ -190,12 +188,10 @@ function [val, check]= explinealbatt(data, model)
 
   p = model.Coefficients.Estimate;
   beta0 = [p(1) p(2) p(3) p(4) p(5) -1e-5 -1e-5 -1.5e-16];
-  check = beta0;
 
   for i = 1:5
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights);
     beta0(:) = table2array(val.Coefficients(1:8,1));
-    check = [check; beta0];
   end
 
 end
