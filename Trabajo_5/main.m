@@ -58,13 +58,13 @@ Rd = getR(Descarga);
 
 
 %% Modelo lineal
-linearmodel = linearbatt(Descarga,Rd)
+[linearmodel, iter_lineal] = linearbatt(Descarga,Rd);
 plotmodel(linearmodel,Descarga);
 
 
 %% Modelo exponencial
 
-expmodel = linearbatt(Descarga,linearmodel)
+expmodel = expbatt(Descarga,linearmodel);
 plotmodel(expmodel,Descarga);
 
 %% Plot
@@ -79,7 +79,7 @@ function plotmodel(model,data)
 
   % V(It)
 
-  h = figure()
+  h = figure();
     hold on
     for d=1:length(data)
       MAT = matrix(data(d));
@@ -87,7 +87,7 @@ function plotmodel(model,data)
       It = data(d).It;
       plot(It, V, ...
         'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
-      plot(data(d).It, data(d).V,...
+      plot(It, data(d).V,...
         'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
     end
     grid on; box on;
@@ -96,7 +96,7 @@ function plotmodel(model,data)
 
 % V(phi)
 
-  h = figure()
+  h = figure();
     hold on
     for d=1:length(data)
       MAT = matrix(data(d));
@@ -116,7 +116,7 @@ end
 
 %% Modelo lineal
 
-function val = linearbatt(data,R)
+function [val, check] = linearbatt(data,R)
 
   [MAT, V] = matrix(data);
 
@@ -129,10 +129,12 @@ function val = linearbatt(data,R)
   myfunction = @(p,MAT) (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)) ) + p(3)*MAT(:,1) ;
 
   beta0 = [max(V) -1.5e-5 R];
+  check = beta0;
 
   for i = 1:5
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights);
     beta0(:) = table2array(val.Coefficients(1:3,1));
+    check = [check; beta0];
   end
 
 end
