@@ -68,22 +68,6 @@ for s=1:length(Carga)
 end
 modelos_carga = modelos(Carga,Rc);
 
-%% Check
-
-% x = linspace(0,100,100);
-% y = 2*x;
-%
-%
-% h = figure();
-%     hold on
-%     plot(x, y,'--', ...
-%         'LineWidth', 1.5, 'Color', 'k', 'DisplayName', [Carga(1).Name, ' ', Carga(2).Name])
-%     grid on; box on;
-%     legend('Interpreter', 'Latex', 'Location', 'Best')
-%     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
-%     ylabel({'$V$';'[V]'},'Interpreter','latex');
-%     %Save_as_PDF(h_, ['Figuras/It_vs_V_', titulo],'horizontal');
-
 %% Funciones
 
 function md = modelos(data,R)
