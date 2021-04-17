@@ -67,6 +67,44 @@ for s=1:length(Carga)
     Carga(s).phi1 = Descarga_inicial - Carga(s).phi1;
 end
 modelos_carga = modelos(Carga,Rc);
+%% SACAR VALORES BIEN TABLA
+
+%%CARGA
+
+%Lineal
+ modelos_carga(1).iter(:,1:4) = [modelos_carga(1).iter(:,3), modelos_carga(1).iter(:,1), modelos_carga(1).iter(:,2)*3600, modelos_carga(1).iter(:,4)];
+ 
+ %Exp
+ 
+ for i=2:5    
+     modelos_carga(i).iter(:,1:6) = [modelos_carga(i).iter(:,3), modelos_carga(i).iter(:,1),...
+                                     modelos_carga(i).iter(:,2)*3600, modelos_carga(i).iter(:,4), modelos_carga(i).iter(:,5)*3600,modelos_carga(i).iter(:,6)];   
+ end
+ 
+ %Exp_lineal
+
+modelos_carga(6).iter(:,1:9) = [modelos_carga(6).iter(:,3), modelos_carga(6).iter(:,1),...
+                                     modelos_carga(6).iter(:,2)*3600, modelos_carga(6).iter(:,4),...
+                                     modelos_carga(6).iter(:,6),modelos_carga(6).iter(:,7)*3600,...
+                                     modelos_carga(6).iter(:,5)*3600,modelos_carga(6).iter(:,8)*3600,modelos_carga(6).iter(:,9)];
+%%DESCARGA                             
+%Lineal
+ modelos_descarga(1).iter(:,1:4) = [modelos_descarga(1).iter(:,3), modelos_descarga(1).iter(:,1), modelos_descarga(1).iter(:,2)*3600, modelos_descarga(1).iter(:,4)];
+ 
+ %Exp
+ 
+ for i=2:5    
+     modelos_descarga(i).iter(:,1:6) = [modelos_descarga(i).iter(:,3), modelos_descarga(i).iter(:,1),...
+                                     modelos_descarga(i).iter(:,2)*3600, modelos_descarga(i).iter(:,4), modelos_descarga(i).iter(:,5)*3600,modelos_descarga(i).iter(:,6)];   
+ end
+ 
+ %Exp_lineal
+
+modelos_descarga(6).iter(:,1:9) = [modelos_descarga(6).iter(:,3), modelos_descarga(6).iter(:,1),...
+                                     modelos_descarga(6).iter(:,2)*3600, modelos_descarga(6).iter(:,4),...
+                                     modelos_descarga(6).iter(:,6),modelos_descarga(6).iter(:,7)*3600,...
+                                     modelos_descarga(6).iter(:,5)*3600,modelos_descarga(6).iter(:,8)*3600,modelos_descarga(6).iter(:,9)];
+
 
 %% Funciones
 
