@@ -88,12 +88,13 @@ function plotmodel(model,data,titulo)
       MAT = matrix(data(d));
       V = model.Formula.ModelFun(p,MAT);
       It = data(d).It;
-      plot(It, V, ...
+      plot(It, V,'--', ...
         'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
       plot(It, data(d).V,...
         'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
     end
     grid on; box on;
+    ylim([15 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
     title(titulo)
 
@@ -106,12 +107,13 @@ function plotmodel(model,data,titulo)
       V = model.Formula.ModelFun(p,MAT);
       phi = MAT(:,2) + MAT(:,3) * p(3);
 
-      plot(phi, V, ...
+      plot(phi, V, '--',...
         'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
       plot(phi, data(d).V,...
         'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
     end
     grid on; box on;
+    ylim([15 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
     title(titulo)
 
@@ -157,10 +159,10 @@ function [val, check] = expbatt(data, model)
 
 
   myfunction = @(p,MAT) (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)) ) + ...
-                         p(4)*exp(p(5)*(MAT(:,2)+p(3)*MAT(:,3)) + p(3)*MAT(:,1)) ;
+                         p(4)*exp(p(5)*(MAT(:,2)+p(3)*MAT(:,3))) + p(3)*MAT(:,1) ;
 
   p = model.Coefficients.Estimate;
-  beta0 = [p(1) p(2) p(3) 1e-4 -1e-16];
+  beta0 = [p(1) p(2) p(3) -1e-15 3e-5];
   check = beta0;
   
   for i = 1:5
