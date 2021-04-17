@@ -68,9 +68,27 @@ for s=1:length(Carga)
 end
 modelos_carga = modelos(Carga,Rc);
 
+%% Check
+
+% x = linspace(0,100,100);
+% y = 2*x;
+%
+%
+% h = figure();
+%     hold on
+%     plot(x, y,'--', ...
+%         'LineWidth', 1.5, 'Color', 'k', 'DisplayName', [Carga(1).Name, ' ', Carga(2).Name])
+%     grid on; box on;
+%     legend('Interpreter', 'Latex', 'Location', 'Best')
+%     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
+%     ylabel({'$V$';'[V]'},'Interpreter','latex');
+%     %Save_as_PDF(h_, ['Figuras/It_vs_V_', titulo],'horizontal');
+
 %% Funciones
 
 function md = modelos(data,R)
+
+cod = inputname(1);
 
 md = struct('nombre',[],'modelo',[],'iter',[]);
 
@@ -78,38 +96,33 @@ md = struct('nombre',[],'modelo',[],'iter',[]);
 m = 1;
 md(m).nombre = 'Lineal';
 [md(m).modelo, md(m).iter] = linearbatt(data,R);
-plotmodel(md(m).modelo,data,md(m).nombre);
+plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo exponencial
 m = 2;
 md(m).nombre = 'Exponencial';
 [md(m).modelo, md(m).iter] = expbatt(data,md(1).modelo, [-8e-9 3e-5]);
-plotmodel(md(m).modelo,data,md(m).nombre);
+plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 beta = {[-5e-16 3e-5],[-1e-15 3e-5],[-1e-15 3e-5]};
 for s = 1:length(data)
     m=m+1;
     md(m).nombre = ['Exponencial' num2str(s)];
     [md(m).modelo, md(m).iter] = expbatt(data,md(1).modelo,beta{s});
-    plotmodel(md(m).modelo,data,md(m).nombre);
+    plotmodel(md(m).modelo,data(s),md(m).nombre,cod);
 end
 
 % Modelo exponencial-lineal
 m = m+1;
 md(m).nombre = 'Exponencial-Lineal';
 [md(m).modelo, md(m).iter]= explinealbatt(data,md(2).modelo);
-plotmodel(md(m).modelo,data,md(m).nombre);
+plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 md;
 
 end
 
-%% CARGA
-
-
-%% Funciones
-
-function plotmodel(model,data,titulo)
+function plotmodel(model,data,titulo,titulo2)
 
   color = [0, 0.4470, 0.7410;
            0.8500, 0.3250, 0.0980;
@@ -124,17 +137,18 @@ function plotmodel(model,data,titulo)
     for d=1:length(data)
       MAT = matrix(data(d));
       V = model.Formula.ModelFun(p,MAT);
-      It = data(d).It;
+      It = data(d).It/3600;
       plot(It, V,'--', ...
-        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', [data(d).Name, ' ', titulo])
       plot(It, data(d).V,...
-        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', [data(d).Name, ' Experimental'])
     end
     grid on; box on;
-    ylim([15 25])
+    ylim([17 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
-    title(titulo)
-    %Save_as_PDF(h_, ['Figuras/1_Nu_dif_', sheet{s}],'horizontal');
+    xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
+    ylabel({'$V$';'[V]'},'Interpreter','latex');
+    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
 
 % V(phi)
 
@@ -143,18 +157,19 @@ function plotmodel(model,data,titulo)
     for d=1:length(data)
       MAT = matrix(data(d));
       V = model.Formula.ModelFun(p,MAT);
-      phi = MAT(:,2) + MAT(:,3) * p(3);
+      phi = (MAT(:,2) + MAT(:,3) * p(3))/3600;
 
       plot(phi, V, '--',...
-        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', [data(d).Name, ' ', titulo])
       plot(phi, data(d).V,...
-        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', [data(d).Name, ' Experimental'])
     end
     grid on; box on;
-    ylim([15 25])
+    ylim([17 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
-    title(titulo)
-    %Save_as_PDF(h_, ['Figuras/1_Nu_dif_', sheet{s}],'horizontal');
+    xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
+    ylabel({'$V$';'[V]'},'Interpreter','latex');
+    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
 
 %   h = figure();
 %     hold on
@@ -172,7 +187,7 @@ function plotmodel(model,data,titulo)
 
 end
 
-%% Modelo lineal
+% Modelo lineal
 
 function [val, check] = linearbatt(data,R)
 
@@ -198,7 +213,7 @@ function [val, check] = linearbatt(data,R)
 end
 
 
-%% Modelo exponencial
+% Modelo exponencial
 
 function [val, check] = expbatt(data, model, beta)
 
@@ -231,7 +246,7 @@ function [val, check] = expbatt(data, model, beta)
 end
 
 
-%% Modelo exponencial-lineal
+% Modelo exponencial-lineal
 
 function [val, check]= explinealbatt(data, model)
 
@@ -258,7 +273,7 @@ function [val, check]= explinealbatt(data, model)
   end
 
 end
-%% Otras funciones
+% Otras funciones
 
 function [MAT, V] = matrix(data)
   I     = [];
