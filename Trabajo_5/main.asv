@@ -55,7 +55,7 @@ end
 
 Rc = getR(Carga);
 Rd = getR(Descarga);
-
+% AAAAAAAAAaaaa
 
 %% DESCARGA
 
@@ -253,7 +253,7 @@ function [val, check]= explinealbatt(data, model)
   for i = 1:5
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights);
     beta0(:) = table2array(val.Coefficients(1:8,1));
-    check = [check; beta0];
+    check = [check; beta0, val.RMSE];
   end
 
 end

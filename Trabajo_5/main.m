@@ -56,7 +56,6 @@ end
 Rc = getR(Carga);
 Rd = getR(Descarga);
 
-
 %% DESCARGA
 
 modelos_descarga = modelos(Descarga,Rd);
@@ -135,25 +134,27 @@ function plotmodel(model,data,titulo)
     ylim([15 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
     title(titulo)
+    %Save_as_PDF(h_, ['Figuras/1_Nu_dif_', sheet{s}],'horizontal');
 
 % V(phi)
 
-%   h = figure();
-%     hold on
-%     for d=1:length(data)
-%       MAT = matrix(data(d));
-%       V = model.Formula.ModelFun(p,MAT);
-%       phi = MAT(:,2) + MAT(:,3) * p(3);
-% 
-%       plot(phi, V, '--',...
-%         'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
-%       plot(phi, data(d).V,...
-%         'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
-%     end
-%     grid on; box on;
-%     ylim([15 25])
-%     legend('Interpreter', 'Latex', 'Location', 'Best')
-%     title(titulo)
+  h = figure();
+    hold on
+    for d=1:length(data)
+      MAT = matrix(data(d));
+      V = model.Formula.ModelFun(p,MAT);
+      phi = MAT(:,2) + MAT(:,3) * p(3);
+
+      plot(phi, V, '--',...
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
+      plot(phi, data(d).V,...
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
+    end
+    grid on; box on;
+    ylim([15 25])
+    legend('Interpreter', 'Latex', 'Location', 'Best')
+    title(titulo)
+    %Save_as_PDF(h_, ['Figuras/1_Nu_dif_', sheet{s}],'horizontal');
 
 %   h = figure();
 %     hold on
@@ -161,7 +162,7 @@ function plotmodel(model,data,titulo)
 %       MAT = matrix(data(d));
 %       V = model.Formula.ModelFun(p,MAT);
 %       phi = MAT(:,2) + MAT(:,3) * p(3);
-% 
+%
 %       plot(data(d).t, phi, '--',...
 %         'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', data(d).Name)
 %     end
@@ -186,12 +187,12 @@ function [val, check] = linearbatt(data,R)
   myfunction = @(p,MAT) (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)) ) + p(3)*MAT(:,1) ;
 
   beta0 = [max(V) -1.5e-5 R];
-  check = [beta0, 0];
+  check = [];
 
   for i = 1:5
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights);
-    beta0(:) = table2array(val.Coefficients(1:3,1));
     check = [check; beta0 , val.RMSE];
+    beta0(:) = table2array(val.Coefficients(1:3,1));
   end
 
 end
@@ -218,13 +219,13 @@ function [val, check] = expbatt(data, model, beta)
 
   p = model.Coefficients.Estimate;
   beta0 = [p(1) p(2) p(3) beta(1) beta(2)];
-  check = [beta0, 0];
-  
+  check = [];
+
   for i = 1:15
     opts = statset('Display','off','TolFun',1e-16);
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights,'Options',opts);
-    beta0(:) = table2array(val.Coefficients(1:5,1));
     check = [check; beta0, val.RMSE];
+    beta0(:) = table2array(val.Coefficients(1:5,1));
   end
 
 end
@@ -248,12 +249,12 @@ function [val, check]= explinealbatt(data, model)
 
   p = model.Coefficients.Estimate;
   beta0 = [p(1) p(2) p(3) p(4) p(5) -1e-5 -1e-5 -1.5e-16];
-  check = [beta0, 0];
+  check = [];
 
   for i = 1:5
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights);
-    beta0(:) = table2array(val.Coefficients(1:8,1));
     check = [check; beta0, val.RMSE];
+    beta0(:) = table2array(val.Coefficients(1:8,1));
   end
 
 end
