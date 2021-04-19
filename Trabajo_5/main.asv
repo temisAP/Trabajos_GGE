@@ -138,7 +138,7 @@ for s = 1:length(data)
     [md(m).modelo, md(m).iter] = expbatt(data,md(1).modelo,beta{s});
     md_arr{s} = md(m).modelo;
 end
-plotmodel(md_arr, data, 'Exponencial (individual)',cod);
+plotmodel(md_arr,data(s), 'Exponencial2'.nombre,cod);
 
 % Modelo exponencial-lineal
 m = m+1;
@@ -281,7 +281,7 @@ end
 
 %Para plotear los modelos que entren (si entran varios a la vez se combinan
 %las gráficas, tienen que ser un cell)
-function plotmodel(modelos,datas,titulo,titulo2)
+function plotmodel(modelos,data,titulo,titulo2)
 
   color = [0, 0.4470, 0.7410;
            0.8500, 0.3250, 0.0980;
@@ -291,36 +291,32 @@ function plotmodel(modelos,datas,titulo,titulo2)
   % V(It)
   h = figure();
   hold on
-  
   for MM=1:length(modelos)
     
     if length(modelos)>1
         model = modelos{MM};
-        data = datas(MM);
     else 
         model = modelos;
-        data = datas;
     end
         
     p = model.Coefficients.Estimate;
     for d=1:length(data)
-      colornum = d+MM-1;                                  %Por si hubiera más gráficas que colores que haga el ciclo
       MAT = matrix(data(d));
       V = model.Formula.ModelFun(p,MAT);
       It = data(d).It/3600;
       plot(It, V,'--', ...
-        'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName', [data(d).Name, ' ', titulo])
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', [data(d).Name, ' ', titulo])
       plot(It, data(d).V,...
-        'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName', [data(d).Name, ' Experimental'])
-    end 
-  end
-  
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', [data(d).Name, ' Experimental'])
+    end
     grid on; box on;
     ylim([17 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
+    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
+ 
+  end
 
 % V(phi)
 
@@ -330,34 +326,29 @@ function plotmodel(modelos,datas,titulo,titulo2)
       
     if length(modelos)>1
         model = modelos{MM};
-        data = datas(MM);
     else 
         model = modelos;
-        data = datas;
     end
     
     p = model.Coefficients.Estimate;
       
     for d=1:length(data)
-      colornum = d+MM-1;                                 %Por si hubiera más gráficas que colores que haga el ciclo
       MAT = matrix(data(d));
       V = model.Formula.ModelFun(p,MAT);
       phi = (MAT(:,2) + MAT(:,3) * p(3))/3600;
 
       plot(phi, V, '--',...
-        'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName', [data(d).Name, ' ', titulo])
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', [data(d).Name, ' ', titulo])
       plot(phi, data(d).V,...
-        'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName', [data(d).Name, ' Experimental'])
+        'LineWidth', 1.5, 'Color', color(d,:), 'DisplayName', [data(d).Name, ' Experimental'])
     end
-
-  end
-  
     grid on; box on;
     ylim([17 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
+    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
+  end
 
 %   h = figure();
 %     hold on
