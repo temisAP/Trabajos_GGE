@@ -24,7 +24,7 @@ simpleplot(Carga)
 
 % Datasheet
 
-C_cell = 2.850 * 0.97; %A·h
+C_cell = 2.750 * 0.97; %A·h
 V_cell = 4.2 ; %V
 
 % Celdas en serie
@@ -33,7 +33,7 @@ N_Serie = round(Descarga(1).V(1)/V_cell);
 
 % Celdas en paralelo
 
-C = getC(Descarga);
+[C,k] = getC(Descarga);
 N_paralelo = round(C/C_cell);
 
 
@@ -238,7 +238,7 @@ end
 
 %% Otras funciones
 
-function C = getC(data)
+function [C,k] = getC(data)
 
 for i=1:length(data)
     I(i) = data(i).I(end);
@@ -324,7 +324,10 @@ for f = 1:length(data)
 %         'Color', color(f,:), 'DisplayName', data(f).Name)
 end
 grid on; box on;
+ylim([17 25])
 legend('Interpreter', 'Latex', 'Location', 'Best')
+xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
+ylabel({'$V$';'[V]'},'Interpreter','latex');
 Save_as_PDF(h, ['Figures/', tit, '_','datos'],'horizontal');
 if closee == 'y'
       close
