@@ -24,16 +24,17 @@ simpleplot(Carga)
 
 % Datasheet
 
-C_cell = 2.850 * 0.97; %A·h
+C_cell = 2.750 * 0.97; %A·h
 V_cell = 4.2 ; %V
 
 % Celdas en serie
 
-N_Serie = round(Descarga(1).V(1)/V_cell);
+V = Descarga(1).V(1);
+N_Serie = round(V/V_cell);
 
 % Celdas en paralelo
 
-C = getC(Descarga);
+[C,k] = getC(Descarga);
 N_paralelo = round(C/C_cell);
 
 
@@ -211,15 +212,16 @@ for d = 1:length(data)
     i = i+length(data(d).V);
 end
 
-
-if sign(MAT(:,2)) == -1      % i.e. descarga
+% Expresión según carga o descarga
+if sign(MAT(end,2)) == -1      % i.e. descarga
     myfunction = @(p,MAT) (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)))  + ...
         (p(4) + p(6)*MAT(:,1) + p(7).*(MAT(:,1).*MAT(:,1))).*exp((p(5) + p(8)*MAT(:,1)).*(MAT(:,2)+p(3)*MAT(:,3))) + p(3)*MAT(:,1) ;
     
-elseif sign(MAT(:,2)) == 1   % i.e. carga  
+elseif sign(MAT(end,2)) == 1   % i.e. carga  
     myfunction = @(p,MAT) (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)))  + ...
         (p(4)).*exp((p(5) + p(8)*MAT(:,1)).*(MAT(:,2)+p(3)*MAT(:,3))) + p(3)*MAT(:,1) ;
 else 
+    disp('Error in sign of I')
 end
 
 p = model.Coefficients.Estimate;
@@ -228,6 +230,10 @@ check = [];
 
 for i = 1:5
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights);
+    if sign(MAT(end,2)) == -1      % % la ñapa
+        val.Coefficients(6,1) = 0;
+        val.Coefficients(7.1) = 0;
+    end
     check = [check; beta0, val.RMSE];
     beta0(:) = table2array(val.Coefficients(1:8,1));
 end
@@ -237,7 +243,7 @@ end
 
 %% Otras funciones
 
-function C = getC(data)
+function [C,k] = getC(data)
 
 for i=1:length(data)
     I(i) = data(i).I(end);
@@ -323,7 +329,10 @@ for f = 1:length(data)
 %         'Color', color(f,:), 'DisplayName', data(f).Name)
 end
 grid on; box on;
+ylim([17 25])
 legend('Interpreter', 'Latex', 'Location', 'Best')
+xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
+ylabel({'$V$';'[V]'},'Interpreter','latex');
 Save_as_PDF(h, ['Figures/', tit, '_','datos'],'horizontal');
 if closee == 'y'
       close
@@ -343,7 +352,7 @@ color = [0, 0.4470, 0.7410;
 
 % Selector de gráficas que van a extraerse (esto ahorra tiempo que no veas)
 vIT = 'n';
-vIT_error = 'n';
+vIT_error = 'y';
 vPHI = 'y';
 vPHI_error = 'y';
 closee = 'y';
@@ -417,7 +426,7 @@ if vIT_error == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal');
+    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal', 5, 8);
     if closee == 'y'
         close
     end
@@ -496,7 +505,7 @@ if vPHI_error == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal');
+    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal', 5, 8);
     if closee == 'y'
         close
     end
