@@ -243,7 +243,7 @@ p = polyfit(x,y,1);
 k = -p(1);
 
 for i=1:length(data)
-    
+
     C(i) = abs(I(i))^k *t(i);
 end
 C = mean(C);
@@ -254,18 +254,18 @@ function  R = getR(data)
 
 It = [1, 2, 3]*1e4;
 for t = 1:3
-    
+
     i = 0;
     for f = 1:length(data)
-        
+
         i = i + 1;
-        
+
         [val,idx] = min(abs(data(f).It - It(t)));
         V(i) = data(f).V(idx);
         I(i) = abs(data(f).I(idx));
-        
+
     end
-    
+
     R(t) = mean( (V(3) - V(2))/(I(2) - I(3)) + (V(2) - V(1))/(I(1) - I(2)) );
 end
 
@@ -303,10 +303,10 @@ color = [0, 0.4470, 0.7410;
 figure()
 hold on
 for f = 1:length(data)
-    
+
     p = polyfit(data(f).It,data(f).V,1);
     data(f).Lineal = polyval(p,data(f).It);
-    
+
     % Plots
     plot(data(f).It,...
         data(f).V, 'LineWidth', 1.5,...
@@ -338,12 +338,12 @@ vPHI_error = 'y';
 closee = 'y';
 
 if vIT == 'y'
-    
+
     h = figure();
     hold on
-    
+
     for MM=1:length(modelos)
-        
+
         if length(modelos)>1
             model = modelos{MM};
             data = datas(MM);
@@ -351,7 +351,7 @@ if vIT == 'y'
             model = modelos;
             data = datas;
         end
-        
+
         p = model.Coefficients.Estimate;
         for d=1:length(data)
             colornum = d+MM-1;                                  %Por si hubiera más gráficas que colores que haga el ciclo
@@ -364,25 +364,25 @@ if vIT == 'y'
                 'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName', [data(d).Name, ' Experimental'])
         end
     end
-    
+
     grid on; box on;
     ylim([17 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
-    if closee == 'y' 
+    if closee == 'y'
         close
     end
 end
 
 if vIT_error == 'y'
-    
+
     h = figure();
     hold on
-    
+
     for MM=1:length(modelos)
-        
+
         if length(modelos)>1
             model = modelos{MM};
             data = datas(MM);
@@ -390,7 +390,7 @@ if vIT_error == 'y'
             model = modelos;
             data = datas;
         end
-        
+
         p = model.Coefficients.Estimate;
         for d=1:length(data)
             colornum = d+MM-1;                                  %Por si hubiera más gráficas que colores que haga el ciclo
@@ -401,23 +401,23 @@ if vIT_error == 'y'
                 'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName', [data(d).Name, ' ', titulo])
        end
     end
-    
+
     grid on; box on;
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal');
-    if closee == 'y' 
+    if closee == 'y'
         close
     end
 end
 
 if vPHI == 'y'
-    
+
     h = figure();
     hold on
     for MM=1:length(modelos)
-        
+
         if length(modelos)>1
             model = modelos{MM};
             data = datas(MM);
@@ -425,41 +425,41 @@ if vPHI == 'y'
             model = modelos;
             data = datas;
         end
-        
+
         p = model.Coefficients.Estimate;
-        
+
         for d=1:length(data)
             colornum = d+MM-1;                                 %Por si hubiera más gráficas que colores que haga el ciclo
             MAT = matrix(data(d));
             V = model.Formula.ModelFun(p,MAT);
             phi = (MAT(:,2) + MAT(:,3) * p(3))/3600;
-            
+
             plot(phi, V, '--',...
                 'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName', [data(d).Name, ' ', titulo])
             plot(phi, data(d).V,...
                 'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName', [data(d).Name, ' Experimental'])
         end
-        
+
     end
-    
+
     grid on; box on;
     ylim([17 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
-    if closee == 'y' 
+    if closee == 'y'
         close
     end
-    
+
 end
 
 if vPHI_error == 'y'
-    
+
     h = figure();
     hold on
     for MM=1:length(modelos)
-        
+
         if length(modelos)>1
             model = modelos{MM};
             data = datas(MM);
@@ -467,29 +467,29 @@ if vPHI_error == 'y'
             model = modelos;
             data = datas;
         end
-        
+
         p = model.Coefficients.Estimate;
-        
+
         for d=1:length(data)
             colornum = d+MM-1;                                 %Por si hubiera más gráficas que colores que haga el ciclo
             MAT = matrix(data(d));
             V = model.Formula.ModelFun(p,MAT);
             phi = (MAT(:,2) + MAT(:,3) * p(3))/3600;
-            
+
             plot(phi,abs(data(d).V - V), '-',...
                 'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName', [data(d).Name, ' ', titulo])
         end
     end
-    
+
     grid on; box on;
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal');
-    if closee == 'y' 
+    if closee == 'y'
         close
     end
-    
+
 end
 
 %   h = figure();
