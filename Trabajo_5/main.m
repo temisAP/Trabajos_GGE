@@ -211,9 +211,17 @@ for d = 1:length(data)
     i = i+length(data(d).V);
 end
 
-
-myfunction = @(p,MAT) (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)))  + ...
-    (p(4) + p(6)*MAT(:,1) + p(7).*(MAT(:,1).*MAT(:,1))).*exp((p(5) + p(8)*MAT(:,1)).*(MAT(:,2)+p(3)*MAT(:,3))) + p(3)*MAT(:,1) ;
+% Expresión según carga o descarga
+if sign(MAT(end,2)) == -1      % i.e. descarga
+    myfunction = @(p,MAT) (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)))  + ...
+        (p(4) + p(6)*MAT(:,1) + p(7).*(MAT(:,1).*MAT(:,1))).*exp((p(5) + p(8)*MAT(:,1)).*(MAT(:,2)+p(3)*MAT(:,3))) + p(3)*MAT(:,1) ;
+    
+elseif sign(MAT(end,2)) == 1   % i.e. carga  
+    myfunction = @(p,MAT) (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)))  + ...
+        (p(4)).*exp((p(5) + p(8)*MAT(:,1)).*(MAT(:,2)+p(3)*MAT(:,3))) + p(3)*MAT(:,1) ;
+else 
+    disp('Error in sign of I')
+end
 
 p = model.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) -1e-5 -1e-5 -1.5e-16];
@@ -290,7 +298,6 @@ end
 
 %% Plots
 
-
 % Para plotear las curvas del principio
 function simpleplot(data)
 
@@ -301,7 +308,7 @@ color = [0, 0.4470, 0.7410;
     0.8500, 0.3250, 0.0980;
     0.4940, 0.1840, 0.5560];
 
-figure()
+h = figure()
 hold on
 for f = 1:length(data)
 
@@ -312,9 +319,9 @@ for f = 1:length(data)
     plot(data(f).It,...
         data(f).V, 'LineWidth', 1.5,...
         'Color', color(f,:), 'DisplayName', data(f).Name)
-    %plot(data(f).It,...
-        data(f).Lineal, '--', 'LineWidth', 1.5,...
-        'Color', color(f,:), 'DisplayName', data(f).Name)
+%    plot(data(f).It,...
+%         data(f).Lineal, '--', 'LineWidth', 1.5,...
+%         'Color', color(f,:), 'DisplayName', data(f).Name)
 end
 grid on; box on;
 legend('Interpreter', 'Latex', 'Location', 'Best')
@@ -451,7 +458,7 @@ if vPHI == 'y'
     ylim([17 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
-    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
+    ylabel({'$V$';'[V]'},'Interpreter','latex');
     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
     if closee == 'y'
         close
@@ -489,7 +496,7 @@ if vPHI_error == 'y'
     grid on; box on;
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
-    ylabel({'$V$';'[V]'},'Interpreter','latex');
+    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal');
     if closee == 'y'
         close
