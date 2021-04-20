@@ -295,6 +295,7 @@ end
 function simpleplot(data)
 
 tit = inputname(1);
+closee = 'y';
 
 color = [0, 0.4470, 0.7410;
     0.8500, 0.3250, 0.0980;
@@ -311,13 +312,17 @@ for f = 1:length(data)
     plot(data(f).It,...
         data(f).V, 'LineWidth', 1.5,...
         'Color', color(f,:), 'DisplayName', data(f).Name)
-    plot(data(f).It,...
+    %plot(data(f).It,...
         data(f).Lineal, '--', 'LineWidth', 1.5,...
         'Color', color(f,:), 'DisplayName', data(f).Name)
 end
 grid on; box on;
 legend('Interpreter', 'Latex', 'Location', 'Best')
-title(tit)
+Save_as_PDF(h, ['Figures/', tit, '_','datos'],'horizontal');
+if closee == 'y'
+      close
+end
+
 
 end
 
@@ -405,7 +410,7 @@ if vIT_error == 'y'
     grid on; box on;
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
-    ylabel({'$V$';'[V]'},'Interpreter','latex');
+    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal');
     if closee == 'y'
         close
@@ -446,7 +451,7 @@ if vPHI == 'y'
     ylim([17 25])
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
-    ylabel({'$V$';'[V]'},'Interpreter','latex');
+    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
     if closee == 'y'
         close
