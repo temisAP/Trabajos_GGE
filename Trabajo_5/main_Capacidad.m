@@ -18,10 +18,9 @@ end
 % for i = 1:length(Descarga)
 %     k{i} = - ( log(Descarga(i).t) - log(-Descarga(i).It) )./log(Descarga(i).I);
 % end
-
-k = ( log(Descarga(2).t(end)/3600) - log(-Descarga(2).I(end)))/...
-    ( log(Descarga(1).t(end)/3600) - log(-Descarga(1).I(end)) );   
-
+ 
+k = ( log(Descarga(1).t(end)/3600) - log(Descarga(3).t(end)/3600) )/...
+    ( log(-Descarga(3).I(end)) - log(-Descarga(1).I(end)) );  
 
 N_Serie = round(Descarga(1).V(1)/4.);
 

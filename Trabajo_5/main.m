@@ -347,7 +347,7 @@ color = [0, 0.4470, 0.7410;
 
 % Selector de gráficas que van a extraerse (esto ahorra tiempo que no veas)
 vIT = 'n';
-vIT_error = 'n';
+vIT_error = 'y';
 vPHI = 'y';
 vPHI_error = 'y';
 closee = 'y';
@@ -421,7 +421,7 @@ if vIT_error == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal');
+    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal', 5, 8);
     if closee == 'y'
         close
     end
@@ -500,7 +500,7 @@ if vPHI_error == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal');
+    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal', 5, 8);
     if closee == 'y'
         close
     end
