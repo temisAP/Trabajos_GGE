@@ -24,8 +24,8 @@ simpleplot(Carga)
 
 % Datasheet
 
-C_cell = 2.850 ; %A·h
-V_cell = 3.65 ; %V
+C_cell = 2.850 * 0.97; %A·h
+V_cell = 4.2 ; %V
 
 % Celdas en serie
 
