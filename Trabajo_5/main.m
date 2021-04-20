@@ -320,7 +320,7 @@ function plotmodel(modelos,datas,titulo,titulo2)
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
+    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
 
 % V(phi)
 
@@ -357,7 +357,7 @@ function plotmodel(modelos,datas,titulo,titulo2)
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
+    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
 
 %   h = figure();
 %     hold on
