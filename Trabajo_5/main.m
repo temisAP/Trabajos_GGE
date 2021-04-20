@@ -229,6 +229,10 @@ check = [];
 
 for i = 1:5
     val = fitnlm(MAT, V, myfunction, beta0,'Weights',weights);
+    if sign(MAT(end,2)) == -1      % % la ñapa
+        val.Coefficients(6,1) = 0;
+        val.Coefficients(7.1) = 0;
+    end
     check = [check; beta0, val.RMSE];
     beta0(:) = table2array(val.Coefficients(1:8,1));
 end
