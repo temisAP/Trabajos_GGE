@@ -130,8 +130,10 @@ f = figure(12);
     end
     tipo = {'Descarga','Carga'};
     set(gca,'xticklabel',tipo,'TickLabelInterpreter','latex');
-%     legend('', 'Interpreter', 'Latex', 'location', 'Eastoutside');  
+    leyenda = {modelos_descarga(1).nombre, modelos_descarga(2).nombre, modelos_descarga(6).nombre};
+    legend(leyenda, 'Interpreter', 'Latex', 'location', 'Eastoutside');  
     ylabel({'RMSE';'[V]'},'Interpreter','latex');
+    %Save_as_PDF(f, ['Figures/barplot_CyD'],'horizontal',-17.5,8);
     
 f = figure(13);
     h_ = bar(RMSE_exp_d,'FaceColor','flat');
@@ -143,7 +145,7 @@ f = figure(13);
     end
     set(gca,'xticklabel',tipo2,'TickLabelInterpreter','latex');
     ylabel({'RMSE';'[V]'},'Interpreter','latex');
- 
+    %Save_as_PDF(f, ['Figures/barplot_D_individuales'],'horizontal', 9,5);
 
 %% %%% FUNCIONES %%%  %%
 
@@ -166,7 +168,7 @@ plotmodel(md(m).modelo,data,md(m).nombre,cod);
 % Modelo exponencial
 m = 2;
 md(m).nombre = 'Exponencial';
-[md(m).modelo, md(m).iter] = expbatt(data,md(1).modelo, [-8e-9 3e-5]);
+[md(m).modelo, md(m).iter] = expbatt(data,md(1).modelo, [-1e-10 2.6e-5]);
 plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo exponencial ajustado individualmente (para cada intensidad)
@@ -439,7 +441,7 @@ if vIT == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
-    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
+%     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
     if closee == 'y'
         close
     end
@@ -475,7 +477,7 @@ if vIT_error == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal', 5, 8);
+%     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal', 5, 8);
     if closee == 'y'
         close
     end
@@ -516,8 +518,8 @@ if vPHI == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
-    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
-    if closee == 'n'
+%     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
+    if closee == 'y'
         close
     end
 
@@ -554,7 +556,7 @@ if vPHI_error == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-    %Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal', 5, 8);
+%     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal', 5, 8);
     if closee == 'y'
         close
     end
