@@ -29,7 +29,8 @@ V_cell = 4.2 ; %V
 
 % Celdas en serie
 
-N_Serie = round(Descarga(1).V(1)/V_cell);
+V = Descarga(1).V(1);
+N_Serie = round(V/V_cell);
 
 % Celdas en paralelo
 
