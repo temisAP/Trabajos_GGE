@@ -131,9 +131,9 @@ f = figure(12);
     tipo = {'Descarga','Carga'};
     set(gca,'xticklabel',tipo,'TickLabelInterpreter','latex');
     leyenda = {modelos_descarga(1).nombre, modelos_descarga(2).nombre, modelos_descarga(6).nombre};
-    legend(leyenda, 'Interpreter', 'Latex', 'location', 'Eastoutside');  
+    legend(leyenda, 'Interpreter', 'Latex', 'location', 'NorthEast');  
     ylabel({'RMSE';'[V]'},'Interpreter','latex');
-    %Save_as_PDF(f, ['Figures/barplot_CyD'],'horizontal',-15.5,9);
+    %Save_as_PDF(f, ['Figures/barplot_CyD'],'horizontal',-21.5,5);
     
 f = figure(13);
     h_ = bar(RMSE_exp_d,'FaceColor','flat');
