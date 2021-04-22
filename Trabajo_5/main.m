@@ -133,7 +133,7 @@ f = figure(12);
     leyenda = {modelos_descarga(1).nombre, modelos_descarga(2).nombre, modelos_descarga(6).nombre};
     legend(leyenda, 'Interpreter', 'Latex', 'location', 'Eastoutside');  
     ylabel({'RMSE';'[V]'},'Interpreter','latex');
-    %Save_as_PDF(f, ['Figures/barplot_CyD'],'horizontal',-17.5,8);
+    %Save_as_PDF(f, ['Figures/barplot_CyD'],'horizontal',-15.5,9);
     
 f = figure(13);
     h_ = bar(RMSE_exp_d,'FaceColor','flat');
@@ -315,33 +315,31 @@ end
 
 % Para la primera estimación de resistencias
 function  R = getR(data)
-
-It = 3;
-[val, idx3] = min(abs(data(3).It - 2));
-[val, idx1] = min(abs(data(1).It - 2));
-
-R = abs((data(3).V(idx3) - data(1).V(idx1))/(5 - 1.5));
-
-%It = [1, 2, 3]*1e4;
-% for t = 1:3
-
-%     i = 0;
-%     for f = 1:length(data)
+% % It = 3;
+% [val, idx3] = min(abs(data(3).It - 2));
+% [val, idx1] = min(abs(data(1).It - 2));
 % 
-%         i = i + 1;
-% 
-%         [val,idx] = min(abs(data(f).It - It(t)));
-%         V(i) = data(f).V(idx);
-%         I(i) = abs(data(f).I(idx));
-% 
-%     end
+% R = abs((data(3).V(idx3) - data(1).V(idx1))/(5 - 1.5));
 
+It = [1, 2, 3];
+% It = 2;
+for t = 1:3
 
+    i = 0;
+    for f = 1:length(data)
+        i = i + 1;
 
-%     R(t) = mean( (V(3) - V(2))/(I(2) - I(3)) + (V(2) - V(1))/(I(1) - I(2)) );
-% end
-% 
-% R = abs(mean(R));
+        [val,idx] = min(abs(data(f).It - It(t)));
+        V(i) = data(f).V(idx);
+        I(i) = abs(data(f).I(idx));
+
+    end
+%     R(t) = ( abs((V(3) - V(2))/(I(2) - I(3))) + abs((V(2) - V(1))/(I(1) - I(2)) ))/2;
+      R(t) = ( abs((V(3) - V(1))/(I(3) - I(1))) + abs((V(2) - V(1))/(I(1) - I(2)) ))/2;
+%     R(t) =  abs((V(3) - V(1))/(I(3) - I(1))) ;
+end
+
+R = abs(mean(R));
 
 end
 

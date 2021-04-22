@@ -63,40 +63,40 @@ modelos_carga = modelos(Carga,Rc);
 
 %% SACAR VALORES BIEN TABLA
 
-%%CARGA
+%CARGA
 
-% %Lineal
-% modelos_carga(1).iter(:,1:4) = [modelos_carga(1).iter(:,3), modelos_carga(1).iter(:,1), modelos_carga(1).iter(:,2)*3600, modelos_carga(1).iter(:,4)];
-% 
-% %Exp
-% for i=2:5
-%     modelos_carga(i).iter(:,1:6) = [modelos_carga(i).iter(:,3), modelos_carga(i).iter(:,1),...
-%         modelos_carga(i).iter(:,2)*3600, modelos_carga(i).iter(:,4), modelos_carga(i).iter(:,5)*3600,modelos_carga(i).iter(:,6)];
-% end
-% 
-% %Exp_lineal
-% modelos_carga(6).iter(:,1:9) = [modelos_carga(6).iter(:,3), modelos_carga(6).iter(:,1),...
-%     modelos_carga(6).iter(:,2)*3600, modelos_carga(6).iter(:,4),...
-%     modelos_carga(6).iter(:,6),modelos_carga(6).iter(:,7)*3600,...
-%     modelos_carga(6).iter(:,5)*3600,modelos_carga(6).iter(:,8)*3600,modelos_carga(6).iter(:,9)];
-% %%DESCARGA
-% 
-% %Lineal
-% modelos_descarga(1).iter(:,1:4) = [modelos_descarga(1).iter(:,3), modelos_descarga(1).iter(:,1), modelos_descarga(1).iter(:,2)*3600, modelos_descarga(1).iter(:,4)];
-% 
-% %Exp
-% 
-% for i=2:5
-%     modelos_descarga(i).iter(:,1:6) = [modelos_descarga(i).iter(:,3), modelos_descarga(i).iter(:,1),...
-%         modelos_descarga(i).iter(:,2)*3600, modelos_descarga(i).iter(:,4), modelos_descarga(i).iter(:,5)*3600,modelos_descarga(i).iter(:,6)];
-% end
-% 
-% %Exp_lineal
-% 
-% modelos_descarga(6).iter(:,1:9) = [modelos_descarga(6).iter(:,3), modelos_descarga(6).iter(:,1),...
-%     modelos_descarga(6).iter(:,2)*3600, modelos_descarga(6).iter(:,4),...
-%     modelos_descarga(6).iter(:,6),modelos_descarga(6).iter(:,7)*3600,...
-%     modelos_descarga(6).iter(:,5)*3600,modelos_descarga(6).iter(:,8)*3600,modelos_descarga(6).iter(:,9)];
+%Lineal
+modelos_carga(1).iter(:,1:4) = [modelos_carga(1).iter(:,3), modelos_carga(1).iter(:,1), modelos_carga(1).iter(:,2)*3600, modelos_carga(1).iter(:,4)];
+
+%Exp
+for i=2:5
+    modelos_carga(i).iter(:,1:6) = [modelos_carga(i).iter(:,3), modelos_carga(i).iter(:,1),...
+        modelos_carga(i).iter(:,2)*3600, modelos_carga(i).iter(:,4), modelos_carga(i).iter(:,5)*3600,modelos_carga(i).iter(:,6)];
+end
+
+%Exp_lineal
+modelos_carga(6).iter(:,1:9) = [modelos_carga(6).iter(:,3), modelos_carga(6).iter(:,1),...
+    modelos_carga(6).iter(:,2)*3600, modelos_carga(6).iter(:,4),...
+    modelos_carga(6).iter(:,6),modelos_carga(6).iter(:,7)*3600,...
+    modelos_carga(6).iter(:,5)*3600,modelos_carga(6).iter(:,8)*3600,modelos_carga(6).iter(:,9)];
+%%DESCARGA
+
+%Lineal
+modelos_descarga(1).iter(:,1:4) = [modelos_descarga(1).iter(:,3), modelos_descarga(1).iter(:,1), modelos_descarga(1).iter(:,2)*3600, modelos_descarga(1).iter(:,4)];
+
+%Exp
+
+for i=2:5
+    modelos_descarga(i).iter(:,1:6) = [modelos_descarga(i).iter(:,3), modelos_descarga(i).iter(:,1),...
+        modelos_descarga(i).iter(:,2)*3600, modelos_descarga(i).iter(:,4), modelos_descarga(i).iter(:,5)*3600,modelos_descarga(i).iter(:,6)];
+end
+
+%Exp_lineal
+
+modelos_descarga(6).iter(:,1:9) = [modelos_descarga(6).iter(:,3), modelos_descarga(6).iter(:,1),...
+    modelos_descarga(6).iter(:,2)*3600, modelos_descarga(6).iter(:,4),...
+    modelos_descarga(6).iter(:,6),modelos_descarga(6).iter(:,7)*3600,...
+    modelos_descarga(6).iter(:,5)*3600,modelos_descarga(6).iter(:,8)*3600,modelos_descarga(6).iter(:,9)];
 
 %% Pintar RMSE
 
@@ -316,32 +316,32 @@ end
 % Para la primera estimación de resistencias
 function  R = getR(data)
 
-It = 3;
-[val, idx3] = min(abs(data(3).It - 2));
-[val, idx1] = min(abs(data(1).It - 2));
-
-R = abs((data(3).V(idx3) - data(1).V(idx1))/(5 - 1.5));
-
-%It = [1, 2, 3]*1e4;
-% for t = 1:3
-
-%     i = 0;
-%     for f = 1:length(data)
+% % It = 3;
+% [val, idx3] = min(abs(data(3).It - 2));
+% [val, idx1] = min(abs(data(1).It - 2));
 % 
-%         i = i + 1;
-% 
-%         [val,idx] = min(abs(data(f).It - It(t)));
-%         V(i) = data(f).V(idx);
-%         I(i) = abs(data(f).I(idx));
-% 
-%     end
+% R = abs((data(3).V(idx3) - data(1).V(idx1))/(5 - 1.5));
+
+It = [1, 2, 3]*1e0;
+for t = 1:3
+
+    i = 0;
+    for f = 1:3
+
+        i = i + 1;
+
+        [val,idx] = min(abs(data(f).It - It(t)));
+        V(i) = data(f).V(idx);
+        I(i) = abs(data(f).I(idx));
+
+    end
 
 
 
-%     R(t) = mean( (V(3) - V(2))/(I(2) - I(3)) + (V(2) - V(1))/(I(1) - I(2)) );
-% end
-% 
-% R = abs(mean(R));
+    R(t) = mean( abs((V(3) - V(2))/(I(2) - I(3))) + abs((V(2) - V(1))/(I(1) - I(2)) ));
+end
+
+R = abs(mean(R));
 
 end
 
