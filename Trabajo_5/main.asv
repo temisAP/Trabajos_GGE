@@ -64,7 +64,7 @@ modelos_carga = modelos(Carga,Rc);
 %% Ajustar oo modelos más
 
 
-modelos_descarga = mas_modelos(Descarga,modelos_descarga,[1e-6 , pi/2/50]);
+modelos_descarga = mas_modelos(Descarga,modelos_descarga,[1e-22 , pi/2/50]);
 
 %modelos_carga = mas_modelos(Descarga,modelos_carga);
 
