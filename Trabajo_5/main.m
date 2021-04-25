@@ -61,10 +61,8 @@ end
 
 modelos_carga = modelos(Carga,Rc);
 
-%% Ajustar oo modelos más
 
-
-modelos_descarga = mas_modelos(Descarga,modelos_descarga,[1e-6 , pi/2/50]);
+%modelos_descarga = mas_modelos(Descarga,modelos_descarga,[A1, omega1, A2, omega2]);
 
 %modelos_carga = mas_modelos(Descarga,modelos_carga);
 
@@ -197,16 +195,18 @@ end
 plotmodel(md_arr, data, 'Exponencial (individual)',cod);
 
 % Modelo exponencial-lineal
-m = m+1;
+m = 6;
 md(m).nombre = 'Exponencial-Lineal';
 p = md(2).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) -1e-5 -1e-5 -1.5e-16];
 [md(m).modelo, md(m).iter]= explinealbatt(data,beta0);
 plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
+if cod == 'Descarga'
+
 % Modelo 24
 
-m = m+1;
+m = 7;
 md(m).nombre = 'Modelo 24';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) -p(3)/10 ];
@@ -215,7 +215,7 @@ plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo 25
 
-m = m+1;
+m = 8;
 md(m).nombre = 'Modelo 25';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) -1e-14 ];
@@ -224,7 +224,7 @@ plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo 26
 
-m = m+1;
+m = 9;
 md(m).nombre = 'Modelo 26';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) -1e-13];
@@ -234,7 +234,7 @@ plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo 27
 
-m = m+1;
+m = 10;
 md(m).nombre = 'Modelo 27';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) 1e-5 1e-5];
@@ -243,13 +243,37 @@ plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo 28
 
-m = m+1;
+m = 11;
 md(m).nombre = 'Modelo 28';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) 1e-5 1e-5];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'28');
 plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
+% %% Cosenos %% %
+
+% Modelo coseno 1
+
+m = 12;
+md(m).nombre = 'coseno1';
+p = md(11).modelo.Coefficients.Estimate;
+A1 = 2e-1;
+A2 = 1e-8;
+omega =  6.28870429062523e-06; %pi/2/(50*3600);
+beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) A1 A2 omega];
+[md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'coseno1');
+plotmodel(md(m).modelo,data,md(m).nombre,cod);
+
+% Modelo coseno 2
+
+m = 13;
+md(m).nombre = 'coseno2';
+p = md(12).modelo.Coefficients.Estimate;
+beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) p(14) p(15) p(16) -0.01 1.05897691988906e-05 -0.01 3.21100926265863e-08];
+[md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'coseno2');
+plotmodel(md(m).modelo,data,md(m).nombre,cod);
+
+end
 
 end
 
@@ -259,13 +283,11 @@ cod = inputname(1);                                                         % Pa
 
 m = length(md);
 
-% Modelo cosh
-
 m = m+1;
-md(m).nombre = 'cosh';
-p = md(m-1).modelo.Coefficients.Estimate;
-beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) beta(1) beta(2)];
-[md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'cosh');
+md(m).nombre = 'coseno2';
+p = md(19).modelo.Coefficients.Estimate;
+beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) p(14) p(15) p(16) beta];
+[md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'coseno2');
 plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 end
@@ -426,14 +448,25 @@ switch type
              p(12).* exp((MAT(:,2)+p(3).*MAT(:,3))*p(13))) +...
             (p(3)+p(9).*abs(MAT(:,1))).*MAT(:,1);
         
-    case 'cosh'
+    case 'coseno1'
          myfunction = @(p,MAT) (p(1) +...
             (p(2)+p(10).*MAT(:,1)+p(11).*MAT(:,1).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3)))+ ...
             (p(4) + p(6).*MAT(:,1) + p(7).*(MAT(:,1).*MAT(:,1))).*...
             exp((p(5) + p(8).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3))+...
              p(12).* exp((MAT(:,2)+p(3).*MAT(:,3))*p(13))) +...
             (p(3)+p(9).*abs(MAT(:,1))).*MAT(:,1) + ...
-            p(14)*cos((MAT(:,2)+p(3).*MAT(:,3)) * p(15));
+            (p(14)- p(15).*MAT(:,3).*MAT(:,3)).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(16));
+        
+    case 'coseno2'
+        myfunction = @(p,MAT) (p(1) +...
+            (p(2)+p(10).*MAT(:,1)+p(11).*MAT(:,1).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3)))+ ...
+            (p(4) + p(6).*MAT(:,1) + p(7).*(MAT(:,1).*MAT(:,1))).*...
+            exp((p(5) + p(8).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3))+...
+            p(12).* exp((MAT(:,2)+p(3).*MAT(:,3))*p(13))) +...
+            (p(3)+p(9).*abs(MAT(:,1))).*MAT(:,1) + ...
+            (p(14)- p(15).*MAT(:,3).*MAT(:,3)).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(16)) + ...
+            p(17).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(18)) + ...
+            p(19).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(20));
         
     otherwise
         disp('Error in type')
