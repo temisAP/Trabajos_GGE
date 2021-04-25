@@ -61,25 +61,6 @@ end
 
 modelos_carga = modelos(Carga,Rc);
 
-%% Ajustar oo modelos más
-
-A1 = -1e-2;
-omega1 =  pi/2/(100*3600);
-A2 = -1e-2;
-omega2 =  pi/2/(350*3600);
-
-A1 = 0;
-omega1 = 0;
-A2 = 0;
-omega2 = 0;
-
-
-modelos_descarga = mas_modelos(Descarga,modelos_descarga,[A1, omega1, A2, omega2]);
-
-%modelos_carga = mas_modelos(Descarga,modelos_carga);
-
-
-
 %% SACAR VALORES BIEN TABLA
 
 %CARGA
@@ -214,6 +195,8 @@ beta0 = [p(1) p(2) p(3) p(4) p(5) -1e-5 -1e-5 -1.5e-16];
 [md(m).modelo, md(m).iter]= explinealbatt(data,beta0);
 plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
+if strcmp(cod,'Descarga')
+
 % Modelo 24
 
 m = 7;
@@ -260,18 +243,30 @@ beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) 1e-5 1e-5];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'28');
 plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
+% %% Cosenos %% %
+
 % Modelo coseno 1
 
 m = 12;
 md(m).nombre = 'coseno1';
-p = md(m-1).modelo.Coefficients.Estimate;
-omega =  6.28870429062523e-06; %pi/2/(50*3600);
+p = md(11).modelo.Coefficients.Estimate;
 A1 = 2e-1;
 A2 = 1e-8;
-beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) beta];
+omega =  6.28870429062523e-06; %pi/2/(50*3600);
+beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) A1 A2 omega];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'coseno1');
 plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
+% Modelo coseno 2
+
+m = 13;
+md(m).nombre = 'coseno2';
+p = md(12).modelo.Coefficients.Estimate;
+beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) p(14) p(15) p(16) -0.01 1.05897691988906e-05 -0.01 3.21100926265863e-08];
+[md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'coseno2');
+plotmodel(md(m).modelo,data,md(m).nombre,cod);
+
+end
 
 end
 
@@ -281,23 +276,9 @@ cod = inputname(1);                                                         % Pa
 
 m = length(md);
 
-% Modelo coseno 1
-
-md(m).nombre = 'coseno1';
-p = md(m-1).modelo.Coefficients.Estimate;
-omega =  6.28870429062523e-06; %pi/2/(50*3600);
-A1 = 2e-1;
-A2 = 1e-8;
-beta = [A1, A2, omega]
-beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) beta];
-[md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'coseno1');
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
-
-% Modelo coseno 2
-
 m = m+1;
 md(m).nombre = 'coseno2';
-p = md(m-1).modelo.Coefficients.Estimate;
+p = md(19).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) p(14) p(15) p(16) beta];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'coseno2');
 plotmodel(md(m).modelo,data,md(m).nombre,cod);

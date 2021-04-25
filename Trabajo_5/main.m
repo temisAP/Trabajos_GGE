@@ -1,5 +1,5 @@
 clc
-%clear all
+clear all
 close all
 
 try
@@ -60,13 +60,6 @@ end
 % Ajuste de modelos de CARGA: (lineal, exponencial, exponencial (ind) y exponencial-lineal
 
 modelos_carga = modelos(Carga,Rc);
-
-
-%modelos_descarga = mas_modelos(Descarga,modelos_descarga,[A1, omega1, A2, omega2]);
-
-%modelos_carga = mas_modelos(Descarga,modelos_carga);
-
-
 
 %% SACAR VALORES BIEN TABLA
 
@@ -202,7 +195,7 @@ beta0 = [p(1) p(2) p(3) p(4) p(5) -1e-5 -1e-5 -1.5e-16];
 [md(m).modelo, md(m).iter]= explinealbatt(data,beta0);
 plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
-if cod == 'Descarga'
+if strcmp(cod,'Descarga')
 
 % Modelo 24
 
