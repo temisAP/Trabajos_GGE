@@ -95,57 +95,102 @@ end
 
 modelos_descarga(6).iter(:,1:9) = [modelos_descarga(6).iter(:,3), modelos_descarga(6).iter(:,1),...
     modelos_descarga(6).iter(:,2)*3600, modelos_descarga(6).iter(:,4),...
-    modelos_descarga(6).iter(:,6),modelos_descarga(6).iter(:,7)*3600,...
+    0*modelos_descarga(6).iter(:,6),0*modelos_descarga(6).iter(:,7),...
     modelos_descarga(6).iter(:,5)*3600,modelos_descarga(6).iter(:,8)*3600,modelos_descarga(6).iter(:,9)];
 
+%Eq.24 [E_0,E_1,E_2,X,X,E_30,E_31,Rd0,Rd1, RMSE]
+
+modelos_descarga(7).iter(:,1:10) = [modelos_descarga(7).iter(:,1),...
+    modelos_descarga(7).iter(:,2)*3600, modelos_descarga(7).iter(:,4),...
+    0*modelos_descarga(7).iter(:,6),0*modelos_descarga(7).iter(:,7),...
+    modelos_descarga(7).iter(:,5)*3600,modelos_descarga(7).iter(:,8)*3600,modelos_descarga(7).iter(:,3),...
+    modelos_descarga(7).iter(:,9),modelos_descarga(7).iter(:,10)];
+
+%Eq.25 [E_0,E_1,X,E_20,E_21,E_22,E_30,E_31,Rd0,Rd1,RMSE]
+
+modelos_descarga(8).iter(:,1:11) = [modelos_descarga(8).iter(:,1),...
+    modelos_descarga(8).iter(:,2)*3600,0*modelos_descarga(8).iter(:,10)*3600, modelos_descarga(8).iter(:,4),...
+    modelos_descarga(8).iter(:,6),modelos_descarga(8).iter(:,7),...
+    modelos_descarga(8).iter(:,5)*3600,modelos_descarga(8).iter(:,8)*3600,modelos_descarga(8).iter(:,3),...
+    modelos_descarga(8).iter(:,9),modelos_descarga(8).iter(:,11)];
+
+
+%Eq.26 [E_0,E_10,E_11,E_12,E_20,E_21,E_22,E_30,E_31,Rd0,Rd1,RMSE]
+
+modelos_descarga(9).iter(:,1:12) = [modelos_descarga(9).iter(:,1),...
+    modelos_descarga(9).iter(:,2)*3600,modelos_descarga(9).iter(:,10)*3600,modelos_descarga(9).iter(:,11)*3600,...
+    modelos_descarga(9).iter(:,4),modelos_descarga(9).iter(:,6),modelos_descarga(9).iter(:,7),...
+    modelos_descarga(9).iter(:,5)*3600,modelos_descarga(9).iter(:,8)*3600,modelos_descarga(9).iter(:,3),...
+    modelos_descarga(9).iter(:,9),modelos_descarga(9).iter(:,12)];
+
+
+%Eq.27 [E_0,E_10,E_11,E_12,E_20,E_21,E_22,E_30,E_31,E_41,E_42,Rd0,Rd1,RMSE]
+
+modelos_descarga(10).iter(:,1:14) = [modelos_descarga(10).iter(:,1),...
+    modelos_descarga(10).iter(:,2)*3600,modelos_descarga(10).iter(:,10)*3600,modelos_descarga(10).iter(:,11)*3600,...
+    modelos_descarga(10).iter(:,4),modelos_descarga(10).iter(:,6),modelos_descarga(10).iter(:,7),...
+    modelos_descarga(10).iter(:,5)*3600,modelos_descarga(10).iter(:,8)*3600,...
+    modelos_descarga(10).iter(:,12),modelos_descarga(10).iter(:,13),modelos_descarga(10).iter(:,3),...
+    modelos_descarga(10).iter(:,9),modelos_descarga(10).iter(:,14)];
+
+
+%Eq.28 [E_0,E_10,E_11,E_12,E_20,E_21,E_22,E_30,E_31,E_41,E_42,Rd0,Rd1,RMSE]
+
+modelos_descarga(11).iter(:,1:14) = [modelos_descarga(11).iter(:,1),...
+    modelos_descarga(11).iter(:,2)*3600,modelos_descarga(11).iter(:,10)*3600,modelos_descarga(11).iter(:,11)*3600,...
+    modelos_descarga(11).iter(:,4),modelos_descarga(11).iter(:,6),modelos_descarga(11).iter(:,7),...
+    modelos_descarga(11).iter(:,5)*3600,modelos_descarga(11).iter(:,8)*3600,modelos_descarga(10).iter(:,12),...
+    modelos_descarga(11).iter(:,13),modelos_descarga(11).iter(:,3),modelos_descarga(11).iter(:,9),modelos_descarga(11).iter(:,14)];
+
+
 %% Pintar RMSE
-
-n_cl = length( modelos_carga(1).iter(:,4));
-n_ce = length( modelos_descarga(2).iter(:,6));
-
-n_de2 = length( modelos_descarga(3).iter(:,6));
-RMSE_exp_d = [modelos_descarga(3).iter(n_de2,6),modelos_descarga(4).iter(n_de2,6),modelos_descarga(5).iter(n_de2,6)];
-
-n_cel = length( modelos_carga(6).iter(:,4));
-
-RMSE_carga = [modelos_carga(1).iter(n_cl,4),modelos_carga(2).iter(n_ce(1),6),modelos_carga(6).iter(n_cel,9)];
-
-n_dl = length( modelos_descarga(1).iter(:,4));
-n_de = length( modelos_descarga(2).iter(:,4));
-n_del = length( modelos_descarga(6).iter(:,4));
-
-RMSE_descarga = [modelos_descarga(1).iter(n_dl,4),modelos_descarga(2).iter(n_de,6),modelos_descarga(6).iter(n_del,9)];
-
-
-
-RMSE = [ RMSE_descarga; RMSE_carga];
-
-
-f = figure(12);
-    h_ = bar(RMSE,'FaceColor','flat');
-    cmap = colormap(gray);
-    
-    for k = 1:size(RMSE,2)
-        h_(k).FaceColor = cmap(80*k,:);
-    end
-    tipo = {'Descarga','Carga'};
-    set(gca,'xticklabel',tipo,'TickLabelInterpreter','latex');
-    leyenda = {modelos_descarga(1).nombre, modelos_descarga(2).nombre, modelos_descarga(6).nombre};
-    legend(leyenda, 'Interpreter', 'Latex', 'location', 'NorthEast');  
-    ylabel({'RMSE';'[V]'},'Interpreter','latex');
-    %Save_as_PDF(f, ['Figures/barplot_CyD'],'horizontal',-21.5,5);
-    
-f = figure(13);
-    h_ = bar(RMSE_exp_d,'FaceColor','flat');
-        
-    cmap = colormap(gray);
-    tipo2 = {'Descarga 5 A','Descarga 2,5 A', 'Descarga 1,5 A'};
-    for k = 1:size(RMSE_exp_d,1)
-        h_(k).FaceColor = cmap(80*k,:);
-    end
-    set(gca,'xticklabel',tipo2,'TickLabelInterpreter','latex');
-    ylabel({'RMSE';'[V]'},'Interpreter','latex');
-    %Save_as_PDF(f, ['Figures/barplot_D_individuales'],'horizontal', 9,5);
+% 
+% n_cl = length( modelos_carga(1).iter(:,4));
+% n_ce = length( modelos_descarga(2).iter(:,6));
+% 
+% n_de2 = length( modelos_descarga(3).iter(:,6));
+% RMSE_exp_d = [modelos_descarga(3).iter(n_de2,6),modelos_descarga(4).iter(n_de2,6),modelos_descarga(5).iter(n_de2,6)];
+% 
+% n_cel = length( modelos_carga(6).iter(:,4));
+% 
+% RMSE_carga = [modelos_carga(1).iter(n_cl,4),modelos_carga(2).iter(n_ce(1),6),modelos_carga(6).iter(n_cel,9)];
+% 
+% n_dl = length( modelos_descarga(1).iter(:,4));
+% n_de = length( modelos_descarga(2).iter(:,4));
+% n_del = length( modelos_descarga(6).iter(:,4));
+% 
+% RMSE_descarga = [modelos_descarga(1).iter(n_dl,4),modelos_descarga(2).iter(n_de,6),modelos_descarga(6).iter(n_del,9)];
+% 
+% 
+% 
+% RMSE = [ RMSE_descarga; RMSE_carga];
+% 
+% 
+% f = figure(12);
+%     h_ = bar(RMSE,'FaceColor','flat');
+%     cmap = colormap(gray);
+%     
+%     for k = 1:size(RMSE,2)
+%         h_(k).FaceColor = cmap(80*k,:);
+%     end
+%     tipo = {'Descarga','Carga'};
+%     set(gca,'xticklabel',tipo,'TickLabelInterpreter','latex');
+%     leyenda = {modelos_descarga(1).nombre, modelos_descarga(2).nombre, modelos_descarga(6).nombre};
+%     legend(leyenda, 'Interpreter', 'Latex', 'location', 'NorthEast');  
+%     ylabel({'RMSE';'[V]'},'Interpreter','latex');
+%     %Save_as_PDF(f, ['Figures/barplot_CyD'],'horizontal',-21.5,5);
+%     
+% f = figure(13);
+%     h_ = bar(RMSE_exp_d,'FaceColor','flat');
+%         
+%     cmap = colormap(gray);
+%     tipo2 = {'Descarga 5 A','Descarga 2,5 A', 'Descarga 1,5 A'};
+%     for k = 1:size(RMSE_exp_d,1)
+%         h_(k).FaceColor = cmap(80*k,:);
+%     end
+%     set(gca,'xticklabel',tipo2,'TickLabelInterpreter','latex');
+%     ylabel({'RMSE';'[V]'},'Interpreter','latex');
+%     %Save_as_PDF(f, ['Figures/barplot_D_individuales'],'horizontal', 9,5);
 
 %% %%% FUNCIONES %%%  %%
 
@@ -200,7 +245,7 @@ if strcmp(cod,'Descarga')
 % Modelo 24
 
 m = 7;
-md(m).nombre = 'Modelo 24';
+md(m).nombre = 'Modelo 22';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) -p(3)/10 ];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'24');
@@ -209,7 +254,7 @@ plotmodel(md(m).modelo,data,md(m).nombre,cod);
 % Modelo 25
 
 m = 8;
-md(m).nombre = 'Modelo 25';
+md(m).nombre = 'Modelo 23';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) -1e-14 ];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'25');
@@ -218,7 +263,7 @@ plotmodel(md(m).modelo,data,md(m).nombre,cod);
 % Modelo 26
 
 m = 9;
-md(m).nombre = 'Modelo 26';
+md(m).nombre = 'Modelo 24';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) -1e-13];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'26');
@@ -228,7 +273,7 @@ plotmodel(md(m).modelo,data,md(m).nombre,cod);
 % Modelo 27
 
 m = 10;
-md(m).nombre = 'Modelo 27';
+md(m).nombre = 'Modelo 25';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) 1e-5 1e-5];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'27');
@@ -237,7 +282,7 @@ plotmodel(md(m).modelo,data,md(m).nombre,cod);
 % Modelo 28
 
 m = 11;
-md(m).nombre = 'Modelo 28';
+md(m).nombre = 'Modelo 26';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) 1e-5 1e-5];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'28');
@@ -408,13 +453,13 @@ switch type
     case '24'
         myfunction = @(p,MAT) (p(1) +...
             (p(2)).*(MAT(:,2)+p(3).*MAT(:,3)))+ ...
-            (p(4) + p(6)*MAT(:,1) + p(7).*(MAT(:,1).*MAT(:,1))).*...
+            (p(4) + 0*p(6)*MAT(:,1) + 0*p(7).*(MAT(:,1).*MAT(:,1))).*...
             exp((p(5) + p(8).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3))) +...
             (p(3)+p(9).*abs(MAT(:,1))).*MAT(:,1);
     
     case '25'
         myfunction = @(p,MAT) (p(1) +...
-            (p(2)+p(10).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3)))+ ...
+            (p(2)+0*p(10).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3)))+ ...
             (p(4) + p(6).*MAT(:,1) + p(7).*(MAT(:,1).*MAT(:,1))).*...
             exp((p(5) + p(8).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3))) +...
             (p(3)+p(9).*abs(MAT(:,1))).*MAT(:,1);
@@ -448,7 +493,7 @@ switch type
             exp((p(5) + p(8).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3))+...
              p(12).* exp((MAT(:,2)+p(3).*MAT(:,3))*p(13))) +...
             (p(3)+p(9).*abs(MAT(:,1))).*MAT(:,1) + ...
-            (p(14)- p(15).*MAT(:,3).*MAT(:,3)).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(16));
+            (p(14)- p(15).*(MAT(:,2)+p(3).*MAT(:,3))).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(16));
         
     case 'coseno2'
         myfunction = @(p,MAT) (p(1) +...
@@ -457,7 +502,7 @@ switch type
             exp((p(5) + p(8).*MAT(:,1)).*(MAT(:,2)+p(3).*MAT(:,3))+...
             p(12).* exp((MAT(:,2)+p(3).*MAT(:,3))*p(13))) +...
             (p(3)+p(9).*abs(MAT(:,1))).*MAT(:,1) + ...
-            (p(14)- p(15).*MAT(:,3).*MAT(:,3)).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(16)) + ...
+            (p(14)- p(15).*(MAT(:,2)+p(3).*MAT(:,3))).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(16)) + ...
             p(17).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(18)) + ...
             p(19).*cos((MAT(:,2)+p(3).*MAT(:,3)) .* p(20));
         
@@ -597,7 +642,7 @@ vIT = 'n';
 vIT_error = 'y';
 vPHI = 'y';
 vPHI_error = 'y';
-closee = 'y';
+closee = 'n';
 
 if vIT == 'y'
 
@@ -632,7 +677,7 @@ if vIT == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
+%     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It'],'horizontal');
     if closee == 'y'
         close
     end
@@ -668,7 +713,7 @@ if vIT_error == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('\textit{I$\cdot$t} [A$\cdot$h]','Interpreter','latex');
     ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal', 5, 8);
+%     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_It(Error)'],'horizontal', 5, 8);
     if closee == 'y'
         close
     end
@@ -709,7 +754,7 @@ if vPHI == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$V$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
+%     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi'],'horizontal');
     if closee == 'y'
         close
     end
@@ -747,7 +792,7 @@ if vPHI_error == 'y'
     legend('Interpreter', 'Latex', 'Location', 'Best')
     xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
     ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal', 5, 8);
+%     Save_as_PDF(h, ['Figures/', titulo2, '_', titulo, '_phi(Error)'],'horizontal', 5, 8);
     if closee == 'y'
         close
     end
