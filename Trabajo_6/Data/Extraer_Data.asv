@@ -27,7 +27,9 @@ for s = 1:length(sheets)
 
     % Criterio de signos: descarga negativa
     Data(s).I = -Data(s).I; 
+
     Data(s).It = Data(s).I.*Data(s).t/3600;
+
     Data(s).phi1 = zeros(size(Data(s).t));
     Data(s).phi2 = zeros(size(Data(s).t));
 
@@ -74,11 +76,8 @@ for s = 1:length(sheets)
 
     figure()
         hold on
-        plot(Data(s).t, Data(s).phi1, 'LineWidth', 2, 'DisplayName', '$\phi_1$')
-        plot(Data(s).t, Data(s).phi2, 'LineWidth', 2, 'DisplayName', '$\phi_2$')
-        grid on; box on;
-        legend('Interpreter', 'Latex', 'Location', 'Best')
-        
+        plot(Data(s).t, Data(s).p, ':', 'LineWidth', 2)
+
 end
 
 
