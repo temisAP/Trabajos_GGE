@@ -235,7 +235,7 @@ m = 1;
 md(m).nombre = 'Lineal';
 [MAT, V] = matrix(data);
 [md(m).modelo, md(m).iter] = linearbatt(data,[max(V) -1.5e-5 R]);
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo exponencial
 m = 2;
