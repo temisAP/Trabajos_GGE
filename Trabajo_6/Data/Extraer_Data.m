@@ -25,11 +25,16 @@ for s = 1:length(sheets)
     Data(s).V = data(:,2);
     Data(s).I = data(:,3);
 
-    % Criterio de signos: descarga negativa
-    Data(s).I = -Data(s).I; 
     Data(s).It = Data(s).I.*Data(s).t/3600;
     Data(s).phi1 = zeros(size(Data(s).t));
     Data(s).phi2 = zeros(size(Data(s).t));
+    
+    % Internal energy
+    for t = 2:length(Data(s).t)
+        Dt = Data(s).t(t)-Data(s).t(t-1);
+        Data(s).phi1(t) = Data(s).phi1(t-1) + Data(s).I(t)*(Data(s).V(t)+Data(s).V(t-1))/2 * Dt;
+        Data(s).phi2(t) = Data(s).phi2(t-1) + Data(s).I(t)^2;
+    end
 
     % Initial plot
     figure(1)
@@ -43,7 +48,9 @@ for s = 1:length(sheets)
         plot(Data(s).t, Data(s).I, ':', 'LineWidth', 2)
         title('I')
         grid on
-
+        
+    % Criterio de signos: descarga negativa
+    Data(s).I = -Data(s).I; 
 
     % Clear data    
     fields = fieldnames(Data);
@@ -65,12 +72,6 @@ for s = 1:length(sheets)
         grid on; box on
 
 
-    % Internal energy
-    for t = 2:length(Data(s).t)
-        Dt = Data(s).t(t)-Data(s).t(t-1);
-        Data(s).phi1(t) = Data(s).phi1(t-1) + Data(s).I(t)*(Data(s).V(t)+Data(s).V(t-1))/2 * Dt;
-        Data(s).phi2(t) = Data(s).phi2(t-1) + Data(s).I(t)^2;
-    end
 
     figure()
         hold on

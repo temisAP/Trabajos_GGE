@@ -7,13 +7,15 @@ close all
 % Load experimental data
 
 try
-    load('Data\DATOS_EXPERIMENTALES.mat')
+    load('Data\Bateria_Dinamica_Experimental.mat')
 catch
     disp('No se ha creado el archivo de datos')
     return
 end
 
 [MAT, V] = matrix(Data);
+
+%MAT(:,2) = - MAT(:,2);
 
 % Load static behaviour data 
 
@@ -52,14 +54,14 @@ end
 
 %% Plot 
 
-figure()
+figure(1)
 hold on
    plot(Data.t, Data.V)
    plot(Data.t, V_car)
    plot(Data.t, V_des)
    legend('Experimentales','Vcar','Vdes')
    
-figure()
+figure(2)
 hold on
    plot(Data.t, DeltaV)
    legend('DeltaV')
