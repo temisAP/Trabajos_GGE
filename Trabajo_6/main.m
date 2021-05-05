@@ -32,15 +32,26 @@ end
 
 p = modelos_descarga(9).modelo.Coefficients.Estimate;
 V_des = modelos_descarga(9).modelo.Formula.ModelFun(p,MAT); 
-E_des = V_des - p(3)*MAT(:,1); 
+Rsd = p(3);
+E_des = V_des - Rsd*MAT(:,1); 
+
 
 % Charge
 
 p = modelos_carga(6).modelo.Coefficients.Estimate;
 V_car = modelos_carga(6).modelo.Formula.ModelFun(p,MAT);
-E_car = V_des - p(3)*MAT(:,1);
+Rsc = p(3);
+E_car = V_des - Rsc*MAT(:,1);
+td = Data.t;
 
+%Condensadores
+C1 = 1000;
+C2 = 1000;
 
+R_s1 = 0.01;
+R_s2 = 0.01;
+
+save('td_Ec_Ed.mat','td','E_des','E_car'); 
 %% Get transitory curves
 
 for t=1:length(Data.t)
@@ -84,3 +95,5 @@ for d = 1:length(data)
 end
 MAT = [I,phi1,phi2];
 end
+
+
