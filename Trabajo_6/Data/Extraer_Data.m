@@ -49,7 +49,7 @@ for s = 1:length(sheets)
     fields = fieldnames(Data);
     if s == 1 
         for f = 2:length(fields)
-            Data(s).(fields{f})(1,:) = [];
+            Data(s).(fields{f})(1:150,:) = [];
         end
     else         
     end
