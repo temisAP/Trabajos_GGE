@@ -164,6 +164,11 @@ modelos_descarga(13).iter(:,1:21) = [modelos_descarga(13).iter(:,1),...
     modelos_descarga(13).iter(:,19),modelos_descarga(13).iter(:,20)*3600,...
     modelos_descarga(13).iter(:,21)];
 
+%% Exportar modelos
+
+save('Modelos.mat','modelos_descarga','modelos_carga');
+
+
 %% Pintar RMSE
 % 
 % n_cl = length( modelos_carga(1).iter(:,4));
@@ -238,7 +243,7 @@ md(m).nombre = 'Exponencial';
 p = md(1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) -1e-10 2.6e-5];
 [md(m).modelo, md(m).iter] = expbatt(data, beta0);
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo exponencial ajustado individualmente (para cada intensidad)
 p = md(1).modelo.Coefficients.Estimate;
@@ -251,7 +256,7 @@ for s = 1:length(data)
     [md(m).modelo, md(m).iter] = expbatt(data,[p(1) p(2) p(3) beta{s}]);
     md_arr{s} = md(m).modelo;
 end
-plotmodel(md_arr, data, 'Exponencial (individual)',cod);
+%plotmodel(md_arr, data, 'Exponencial (individual)',cod);
 
 % Modelo exponencial-lineal
 m = 6;
@@ -259,7 +264,7 @@ md(m).nombre = 'Exponencial-Lineal';
 p = md(2).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) -1e-5 -1e-5 -1.5e-16];
 [md(m).modelo, md(m).iter]= explinealbatt(data,beta0);
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 if strcmp(cod,'Descarga')
 
@@ -270,7 +275,7 @@ md(m).nombre = 'Modelo 22';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) -p(3)/10 ];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'24');
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo 25
 
@@ -279,7 +284,7 @@ md(m).nombre = 'Modelo 23';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) -1e-14 ];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'25');
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo 26
 
@@ -288,7 +293,7 @@ md(m).nombre = 'Modelo 24';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) -1e-13];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'26');
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 
 % Modelo 27
@@ -298,7 +303,7 @@ md(m).nombre = 'Modelo 25';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) 1e-5 1e-5];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'27');
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo 28
 
@@ -307,7 +312,7 @@ md(m).nombre = 'Modelo 26';
 p = md(m-1).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) 1e-5 1e-5];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'28');
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % %% Cosenos %% %
 
@@ -321,7 +326,7 @@ A2 = 1e-8;
 omega =  6.28870429062523e-06; %pi/2/(50*3600);
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) A1 A2 omega];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'coseno1');
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 % Modelo coseno 2
 
@@ -330,7 +335,7 @@ md(m).nombre = 'coseno2';
 p = md(12).modelo.Coefficients.Estimate;
 beta0 = [p(1) p(2) p(3) p(4) p(5) p(6) p(7) p(8) p(9) p(10) p(11) p(12) p(13) p(14) p(15) p(16) -0.01 1.05897691988906e-05 -0.01 3.21100926265863e-08];
 [md(m).modelo, md(m).iter]= modelosbateria(data,beta0,'coseno2');
-plotmodel(md(m).modelo,data,md(m).nombre,cod);
+%plotmodel(md(m).modelo,data,md(m).nombre,cod);
 
 end
 
