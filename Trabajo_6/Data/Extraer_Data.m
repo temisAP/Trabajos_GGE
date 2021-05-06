@@ -54,12 +54,12 @@ for s = 1:length(sheets)
 
     % Clear data    
     fields = fieldnames(Data);
-    if s == 1 
-        for f = 2:length(fields)
-            Data(s).(fields{f})(1:150,:) = [];
-        end
-    else         
-    end
+%     if s == 1 
+%         for f = 2:length(fields)
+%             Data(s).(fields{f})(1:150,:) = [];
+%         end
+%     else         
+%     end
 
     figure(1)
         subplot(2,1,1)
