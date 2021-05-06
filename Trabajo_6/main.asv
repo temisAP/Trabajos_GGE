@@ -66,28 +66,29 @@ end
 %% Plot 
    
 % Voltaje
-h = figure(1); set(h, 'Visible', 'off')
+h = figure(); set(h, 'Visible', 'off')
    hold on
    plot(Data.t, Data.V, '-',...
        'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Datos experimentales')     
    plot(Data.t, V_car, '--',...
-       'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo est\'atico (carga)")
+       'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Modelo est\'ático (carga)')
    plot(Data.t, V_des, '-.',...
-       'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo est\'atico (descarga)")  
+       'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Modelo estático (descarga)')  
    grid on; box on;
    legend('Interpreter', 'Latex', 'Location', 'Best')
-   xlabel('$t$ [s]','Interpreter','latex');
-   ylabel({'$|V|$';'[V]'},'Interpreter','latex');
+   xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
+   ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
    Save_as_PDF(h, ['Figures/','Extract_data'],'horizontal');
    %close
 
 % Delta
-h = figure(2); set(h, 'Visible', 'off')
+h = figure(); set(h, 'Visible', 'off')
    hold on
    plot(Data.t, DeltaV, '-',...
-       'LineWidth', 1.5, 'Color', 'k')       
+       'LineWidth', 1.5, 'Color', color(colornum,:), 'DisplayName')       
    grid on; box on;
-   xlabel('$t$ [s]','Interpreter','latex');
+   legend('Interpreter', 'Latex', 'Location', 'Best')
+   xlabel('$\phi$ [W$\cdot$h]','Interpreter','latex');
    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
    Save_as_PDF(h, ['Figures/','Delta_V'],'horizontal');
    %close    
