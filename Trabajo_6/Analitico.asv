@@ -194,7 +194,7 @@ figure()
     hold on
 for c = 1:length(curva)
     
-    t = curva(c).t/( curva(c).R1*curva(c).C1 );
+    t = curva(c).t/( curva(c).R1*curva(c).C1;
     
     % Ecuacion en t0
     curva(c).L = log(curva(c).adim + 1);
@@ -209,7 +209,7 @@ for c = 1:length(curva)
     curva(c).log2 = polyval(p,curva(c).t);
     
     
-    curva(c).DV2 = -curva(c).difI*curva(c).R1*exp( p(2)*curva(c).t + p(3)*curva(c).t.^2 + p(4)*curva(c).t.^3 );
+    
     
     
     figure()
@@ -223,14 +223,3 @@ for c = 1:length(curva)
 end
 
 
-for c = 1:length(curva)
-    
-    figure()
-        title('Logaritmic')
-        hold on
-        % Plot log
-        plot(curva(c).t, curva(c).DV, 'LineWidth', 1.25, 'DisplayName', ['Datos'])
-        plot(curva(c).t, curva(c).DV2, 'LineWidth', 1.25, 'DisplayName', ['Datos'])
-        
-    
-end
