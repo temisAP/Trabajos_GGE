@@ -119,7 +119,7 @@ for s=1:length(DCDC)
             legend('Interpreter', 'Latex', 'Location', 'Best')
             xlabel('$P_{out}$ [W]','Interpreter','latex');
             ylabel({'$\eta$'},'Interpreter','latex');
-            Save_as_PDF(h, ['Figures/', DCDC(s).Name],'horizontal');
+            %Save_as_PDF(h, ['Figures/', DCDC(s).Name],'horizontal');
             
         h = figure(s + length(DCDC));
         hold on
@@ -129,15 +129,29 @@ for s=1:length(DCDC)
             legend('Interpreter', 'Latex', 'Location', 'Best')
             xlabel('$P_{out}$ [W]','Interpreter','latex');
             ylabel({'$\left| \eta - \eta_{exp} \right|$'},'Interpreter','latex');
-            Save_as_PDF(h, ['Figures/Error ', DCDC(s).Name],'horizontal', 7.5, 10);
+            %Save_as_PDF(h, ['Figures/Error ', DCDC(s).Name],'horizontal', 7.5, 10);
  
 end
 
-%% Tabla RMSE
+%% Tablas Overleaf
 
-RMSE = [DCDC.RMSE; DCDC.RMSE2; DCDC.RMSE3];
+% RMSE
+Matrix_RMSE = [DCDC.RMSE; DCDC.RMSE2; DCDC.RMSE3];
 
+% Coeficientes
+Matrix_coef_3_3V = zeros(length(DCDC), length(DCDC(1).coef3));
+Matrix_coef_5V = zeros(length(DCDC), length(DCDC(1).coef3));
+Matrix_coef_15V = zeros(length(DCDC), length(DCDC(1).coef3));
 
+Matrix_coef_3_3V(1,1:2) = DCDC(1).coef;
+Matrix_coef_3_3V(2,1:3) = DCDC(1).coef2;
+Matrix_coef_3_3V(3,1:4) = DCDC(1).coef3;
 
+Matrix_coef_5V(1,1:2) = DCDC(2).coef;
+Matrix_coef_5V(2,1:3) = DCDC(2).coef2;
+Matrix_coef_5V(3,1:4) = DCDC(2).coef3;
 
+Matrix_coef_15V(1,1:2) = DCDC(3).coef;
+Matrix_coef_15V(2,1:3) = DCDC(3).coef2;
+Matrix_coef_15V(3,1:4) = DCDC(3).coef3;
 
