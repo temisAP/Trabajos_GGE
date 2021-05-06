@@ -88,7 +88,7 @@ h = figure(2); set(h, 'Visible', 'off')
        'LineWidth', 1.5, 'Color', 'k')       
    grid on; box on;
    xlabel('$t$ [s]','Interpreter','latex');
-   ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
+   ylabel({'$|\Delta V|$';'[V]'},'Interpreter','latex');
    Save_as_PDF(h, ['Figures/','Delta_V'],'horizontal');
    %close    
 
