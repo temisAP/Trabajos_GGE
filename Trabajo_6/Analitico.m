@@ -12,33 +12,49 @@ figure()
     plot(Data.V)
     xlabel('t [s]')
     ylabel('V [V]')
+    grid on
+
+figure()
+    hold on
+    plot(Data.I)
+    xlabel('t [s]')
+    ylabel('I [V]')
+    grid on
     
     
 %% SEPARAR CURVAS A ESTUDIAR
 
 % Curvas de descarga
 curva(1).Tipo = 'Descarga';
-curva(1).V = Data.V(4586:5177);
-curva(1).t = Data.t(4586:5177) - Data.t(4586);
-curva(1).I = Data.I(4586);
-curva(1).difI = Data.I(4586) - Data.I(4585);
+curva(1).V = Data.V(4:1776);
+curva(1).t = Data.t(4:1776) - Data.t(4);
+curva(1).I = Data.I(4);
+curva(1).difI = Data.I(4) - 0;
+
+% curva(2).Tipo = 'Descarga';
+% curva(2).V = Data.V(3552:4735);
+% curva(2).t = Data.t(3552:4735) - Data.t(3552);
+% curva(2).I = Data.I(3552);
+% curva(2).difI = Data.I(3552) - Data.I(3552-1);
+
 curva(2).Tipo = 'Descarga';
-curva(2).V = Data.V(6361:end);
-curva(2).t = Data.t(6361:end) - Data.t(6361);
-curva(2).I = Data.I(6361);
-curva(2).difI = Data.I(6361) - Data.I(6360);
+curva(2).V = Data.V(6511:end);
+curva(2).t = Data.t(6511:end) - Data.t(6511);
+curva(2).I = Data.I(6511);
+curva(2).difI = Data.I(6511) - Data.I(6510);
 
 % Curvas de carga
 curva(3).Tipo = 'Carga';
-curva(3).V = Data.V(1627:3401);
-curva(3).t = Data.t(1627:3401) - Data.t(1627);
-curva(3).I = Data.I(1627);
-curva(3).difI = Data.I(1627) - Data.I(1626);
+curva(3).V = Data.V(1777:3551);
+curva(3).t = Data.t(1777:3551) - Data.t(1777);
+curva(3).I = Data.I(1777);
+curva(3).difI = Data.I(1777) - Data.I(1776);
 curva(4).Tipo = 'Carga';
-curva(4).V = Data.V(5178:6360);
-curva(4).t = Data.t(5178:6360) - Data.t(5178);
-curva(4).I = Data.I(6360);
-curva(4).difI = Data.I(5178) - Data.I(5177);
+curva(4).V = Data.V(5328:6510);
+curva(4).t = Data.t(5328:6510) - Data.t(5328);
+curva(4).I = Data.I(5328);
+curva(4).difI = Data.I(5328) - Data.I(5327);
+
 
 % Representacion todas curvas
 figure()
@@ -60,11 +76,18 @@ close all
 for c = 1:length(curva)
     
     % Filtrado
-    [envHigh, envLow] = envelope(flip(curva(c).V),20,'peak');
-    curva(c).filt = flip((envHigh+envLow)/2);
-    envHigh = flip(envHigh);
-    envLow = flip(envLow);
-    
+    if c == 2
+        [envHigh, envLow] = envelope(flip(curva(c).V),100,'peak');
+        curva(c).filt = flip((envHigh+envLow)/2);
+        envHigh = flip(envHigh);
+        envLow = flip(envLow);
+    else
+        [envHigh, envLow] = envelope(flip(curva(c).V),20,'peak');
+        curva(c).filt = flip((envHigh+envLow)/2);
+        envHigh = flip(envHigh);
+        envLow = flip(envLow);
+    end
+        
     % Sacar la recta que ajusta al tramo lineal    
     lin_end = length(curva(c).V);
     lin_start = round(lin_end*.6);
