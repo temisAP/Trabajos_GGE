@@ -127,7 +127,7 @@ for c = 1:length(curva)
     
     % Ecuacion en t0
     curva(c).R1 = -curva(c).final(1)/curva(c).difI;
-    curva(c).adim = abs( curva(c).final/( curva(c).R1*curva(c).difI ) );
+    curva(c).adim = abs( curva(c).final/( curva(c).R1*curva(c).difI ) );    
     
     [~, idx] = min( abs( curva(c).adim - exp(-1)) );
     curva(c).tc = curva(c).t(idx);
@@ -150,7 +150,7 @@ figure()
     hold on
 for c = 1:length(curva)
         plot(curva(c).t, curva(c).final, 'LineWidth', 1.25, 'DisplayName', ['Datos'])
-        plot(curva(c).t, curva(c).DV, 'LineWidth', 1.25, 'DisplayName', ['Modelo'])
+        plot(curva(c).t, curva(c).DV, 'LineWidth', 1.25, 'DisplayName', ['Modelo'])        
 end
     grid on; box on
     legend('Location', 'Best')
@@ -160,3 +160,5 @@ end
 
 R1 = mean([curva(:).R1]);
 C1 = mean([curva(:).C1]);
+
+save('Data/Modelo_Analitico_1C.mat', 'R1', 'C1')
