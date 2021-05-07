@@ -6,6 +6,7 @@ close all
 
 % Load experimental data
 
+
 try
     load('Data\Bateria_Dinamica_Experimental.mat')
 catch
@@ -25,16 +26,22 @@ catch
     disp('No se ha incluido el archivo de modelos')
     return
 end
+%Analitico
+
+load('C1.mat');
+load ('R1.mat');
+
 
 %% Create E values for each phi (both are running while simulation, diodes cut current)
 
-% Discharge
+% % Discharge
 
-p = modelos_descarga(6).modelo.Coefficients.Estimate;
-V_des = modelos_descarga(6).modelo.Formula.ModelFun(p,MAT); 
-Rsd = p(3);
+p= modelos_descarga(6).modelo.Coefficients.Estimate;
+pd=p;
+ V_des = modelos_descarga(6).modelo.Formula.ModelFun(p,MAT); 
+ Rsd = p(3);
 E_des = V_des - Rsd*MAT(:,1); 
-
+%%
 
 % Charge
 
@@ -43,13 +50,15 @@ V_car = modelos_carga(6).modelo.Formula.ModelFun(p,MAT);
 Rsc = p(3);
 E_car = V_des - Rsc*MAT(:,1);
 td = Data.t;
-
 %Condensadores
-C1 = 1000;
+C1_i = C1;
 C2 = 1000;
 
-R_s1 = 0.01;
+
+R_s1 = R1;
 R_s2 = 0.01;
+
+% Rint = Rsd-R_s1;
 
 save('td_Ec_Ed.mat','td','E_des','E_car'); 
 %% Get transitory curves
@@ -78,7 +87,7 @@ h = figure(1); %set(h, 'Visible', 'off')
    legend('Interpreter', 'Latex', 'Location', 'Best')
    xlabel('$t$ [s]','Interpreter','latex');
    ylabel({'$|V|$';'[V]'},'Interpreter','latex');
-   Save_as_PDF(h, ['Figures/','Extract_data'],'horizontal', 0, 0);
+%    Save_as_PDF(h, ['Figures/','Extract_data'],'horizontal', 0, 0);
    %close
 
 % Delta
@@ -89,7 +98,7 @@ h = figure(2); %set(h, 'Visible', 'off')
    grid on; box on;
    xlabel('$t$ [s]','Interpreter','latex');
    ylabel({'$|\Delta V|$';'[V]'},'Interpreter','latex');
-   Save_as_PDF(h, ['Figures/','Delta_V'],'horizontal', 5, 7.5);
+%    Save_as_PDF(h, ['Figures/','Delta_V'],'horizontal', 5, 7.5);
    %close    
 
 %% Functions
