@@ -28,14 +28,25 @@ for s = 1:length(sheets)
     Data(s).It = Data(s).I.*Data(s).t/3600;
     Data(s).phi1 = zeros(size(Data(s).t));
     Data(s).phi2 = zeros(size(Data(s).t));
+  
     
+    
+   
+        
+        
     % Internal energy
-    for t = 2:length(Data(s).t)
-        Dt = Data(s).t(t)-Data(s).t(t-1);
-        Data(s).phi1(t) = Data(s).phi1(t-1) + Data(s).I(t)*(Data(s).V(t)+Data(s).V(t-1))/2 * Dt;
-        Data(s).phi2(t) = Data(s).phi2(t-1) + Data(s).I(t)^2;
-    end
+        for t = 2:length(Data(s).t)
+            Dt = Data(s).t(t)-Data(s).t(t-1);
+            Data(s).phi1(t) = Data(s).phi1(t-1) + Data(s).I(t)*(Data(s).V(t)+Data(s).V(t-1))/2 * Dt;
+            Data(s).phi2(t) = Data(s).phi2(t-1) + Data(s).I(t)^2;
+        end
+  
+   while Data(s).I < 0  
+       
+     Descarga_inicial = Data(s).phi1(t-1) + Data(s).phi2(t-1)*0.1378;
+     Data(s).phi1(t) = Descarga_inicial - Data(s).phi1(t);
 
+    end
     % Initial plot
     figure(1)
         subplot(2,1,1)
@@ -49,9 +60,10 @@ for s = 1:length(sheets)
         title('I')
         grid on
         
-    % Criterio de signos: descarga negativa
-    Data(s).I = -Data(s).I; 
 
+  % Criterio de signos: descarga negativa
+    Data(s).I = -Data(s).I; 
+    
     % Clear data    
     fields = fieldnames(Data);
     if s == 1 

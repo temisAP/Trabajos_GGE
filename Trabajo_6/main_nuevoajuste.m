@@ -1,5 +1,6 @@
 clc
 clear all
+close all
 
     % Load experimental data
 
@@ -51,16 +52,17 @@ R_s2 = 0.01;
  beta0d2(:) = table2array(val.Coefficients(1:8,1));
 
  p=beta0d2;
-
  E_des = (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)))  + ...
         (p(4) + p(6)*MAT(:,1) + p(7).*(MAT(:,1).*MAT(:,1))).*exp((p(5) + p(8)*MAT(:,1)).*(MAT(:,2)+p(3)*MAT(:,3))) + p(3)*MAT(:,1) ;
-    
+   
  V_des = (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)))  + ...
         (p(4) + p(6)*MAT(:,1) + p(7).*(MAT(:,1).*MAT(:,1))).*exp((p(5) + p(8)*MAT(:,1)).*(MAT(:,2)+p(3)*MAT(:,3))) + p(3)*MAT(:,1);
     
+DV_des = V_des +p(3)*MAT(:,1);
+    
  Rsd = p(3);
 %% AJUSTE MODELO CARGA
-
+ 
  beta0c =[p(1) p(2) 0.15];
 
  myfunction = @(pc,MAT) (pc(1) + pc(2).*(MAT(:,2)+pc(3).*MAT(:,3)) ) + pc(3).*MAT(:,1) ;
@@ -90,15 +92,16 @@ beta0c2 = [p(1) p(2) p(3) p(4) p(5) 8e-07];
 val = fitnlm(MAT, V, myfunction, beta0c2,'Options',opts);
 pc3(:) = table2array(val.Coefficients(1:6,1));   
 
-
-
+% pc3 =[24.504854148612687,-4.622806382560464e-06,0.0875,1.041085732423661,-0.908856458443049,0.126041193590313];
+ 
  E_car = (pc3(1) + pc3(2).*(MAT(:,2)+pc3(3).*MAT(:,3)))  + ...
          (pc3(4)).*exp((pc3(5) + pc3(6).*MAT(:,1)).*(MAT(:,2)+pc3(3).*MAT(:,3))) + pc3(3).*MAT(:,1) ;
      
-     
+   
  V_car = (pc3(1) + pc3(2).*(MAT(:,2)+pc3(3).*MAT(:,3)))  + ...
          (pc3(4)).*exp((pc3(5) + pc3(6).*MAT(:,1)).*(MAT(:,2)+pc3(3).*MAT(:,3))) + pc3(3).*MAT(:,1) ;
  
+DV_car = V_car + +p(3)*MAT(:,1);
 Rsc =  pc3(3);
 td = Data.t;
 
