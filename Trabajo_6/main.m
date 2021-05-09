@@ -38,7 +38,7 @@ load ('R1.mat');
 
 p= modelos_descarga(6).modelo.Coefficients.Estimate;
 pd=p;
-p(3) = 0.1378; % Rd
+%p(3) = 0.1378; % Rd
 p(2) = -3.294182823595574e-06; % E0
 V_des = modelos_descarga(6).modelo.Formula.ModelFun(p,MAT); 
  Rsd = p(3);
@@ -48,7 +48,7 @@ E_des = V_des - Rsd*MAT(:,1);
 % Charge
 
 p = modelos_carga(6).modelo.Coefficients.Estimate;
-p(3) = 0.0885;
+%p(3) = 0.0885;
 V_car = modelos_carga(6).modelo.Formula.ModelFun(p,MAT);
 Rsc = p(3);
 E_car = V_car - Rsc*MAT(:,1);
