@@ -37,6 +37,8 @@ t_exp =Data.t;
 V = V_sim(pos);
 dif_V = abs(V_exp - V);
 
+rmse_1C_01 = RMSE(V_exp, V, length(V));
+
 %%
 % Voltaje
 h = figure(1); %set(h, 'Visible', 'off')
@@ -100,6 +102,8 @@ t_exp =Data.t;
 V = V_sim(pos);
 dif_V = abs(V_exp - V);
 
+rmse_2C = RMSE(V_exp, V, length(V));
+
 %%
 % Voltaje
 h = figure(3); %set(h, 'Visible', 'off')
@@ -161,6 +165,8 @@ t_exp = Data.t;
 [val, pos] = intersect(t_sim, t_exp);
 V = V_sim(pos);
 dif_V = abs(V_exp - V);
+
+rmse_1C_02 = RMSE(V_exp, V, length(V))
 
 %%
 % Voltaje
@@ -224,6 +230,8 @@ t_exp = Data.t;
 [val, pos] = intersect(t_sim, t_exp);
 V = V_sim(pos);
 dif_V = abs(V_exp - V);
+
+rmse_1C_03 = RMSE(V_exp, V, length(V));
 
 %%
 % Voltaje
