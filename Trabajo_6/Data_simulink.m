@@ -40,17 +40,26 @@ dif_V = abs(V_exp - V);
 rmse_1C_01 = RMSE(V_exp, V, length(V));
 
 %%
+
+colors = [0, 0.4470, 0.7410;
+          [220,20,6]/255;
+          [255,140,0]/255;
+          [139,0,139]/255;
+          [50,205,50]/255];
+      
 % Voltaje
 h = figure(1); %set(h, 'Visible', 'off')
    hold on    
     plot(t_sim, V_sim, '--',...
-     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo din\'amico")
+     'LineWidth', 1.5, 'Color', colors(1,:), 'DisplayName', "Modelo din\'amico")
     plot(t_exp, V_exp, '-',...
-     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Datos experimentales")
+     'LineWidth', 1.5, 'Color', colors(2,:), 'DisplayName', "Datos experimentales")
+    xlim([0, t_sim(end)])
+   ylim([22.9 24.2])
    grid on; box on;
    legend('Interpreter', 'Latex', 'Location', 'Best')
    xlabel('$t$ [s]','Interpreter','latex');
-   ylabel({'$|V|$ [V]'},'Interpreter','latex');
+   ylabel({'$V$';'[V]'},'Interpreter','latex');
    Save_as_PDF(h, ['Figures/','resultado1C'],'horizontal', 2, 10);
    close
 
@@ -58,6 +67,7 @@ h = figure(2); %set(h, 'Visible', 'off')
    hold on    
     plot(t_exp,dif_V, '-',...
      'LineWidth', 0.8, 'Color', 'k')
+    xlim([0, t_sim(end)])
    grid on; box on;
    xlabel('$t$ [s]','Interpreter','latex');
    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
@@ -105,17 +115,26 @@ dif_V = abs(V_exp - V);
 rmse_2C = RMSE(V_exp, V, length(V));
 
 %%
+
+colors = [0, 0.4470, 0.7410;
+          [220,20,6]/255;
+          [255,140,0]/255;
+          [139,0,139]/255;
+          [50,205,50]/255];
+
 % Voltaje
 h = figure(3); %set(h, 'Visible', 'off')
    hold on    
     plot(t_sim, V_sim, '--',...
-     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo din\'amico")
+     'LineWidth', 1.5, 'Color', colors(1,:), 'DisplayName', "Modelo din\'amico")
     plot(t_exp, V_exp, '-',...
-     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Datos experimentales")
+     'LineWidth', 1.5, 'Color', colors(2,:), 'DisplayName', "Datos experimentales")
+    xlim([0, t_sim(end)])
+   ylim([22.9 24.2])
    grid on; box on;
    legend('Interpreter', 'Latex', 'Location', 'Best')
    xlabel('$t$ [s]','Interpreter','latex');
-   ylabel({'$|V|$ [V]'},'Interpreter','latex');
+   ylabel({'$V$';'[V]'},'Interpreter','latex');
    Save_as_PDF(h, ['Figures/','resultado2C'],'horizontal', 2, 10);
    close
 
@@ -123,6 +142,7 @@ h = figure(4); %set(h, 'Visible', 'off')
    hold on    
     plot(t_exp,dif_V, '-',...
      'LineWidth', 0.8, 'Color', 'k')
+    xlim([0, t_sim(end)])
    grid on; box on;
    xlabel('$t$ [s]','Interpreter','latex');
    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
@@ -166,22 +186,29 @@ t_exp = Data.t;
 V = V_sim(pos);
 dif_V = abs(V_exp - V);
 
-rmse_1C_02 = RMSE(V_exp, V, length(V))
+rmse_1C_02 = RMSE(V_exp, V, length(V));
 
 %%
+
+colors = [0, 0.4470, 0.7410;
+          [220,20,6]/255;
+          [255,140,0]/255;
+          [139,0,139]/255;
+          [50,205,50]/255];
+
 % Voltaje
 h = figure(5); %set(h, 'Visible', 'off')
    hold on    
     plot(t_sim, V_sim, '--',...
-     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo din\'amico")
+     'LineWidth', 1.5, 'Color', colors(1,:), 'DisplayName', "Modelo din\'amico")
     plot(t_exp, V_exp, '-',...
-     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Datos experimentales")
+     'LineWidth', 1.5, 'Color', colors(2,:), 'DisplayName', "Datos experimentales")
     xlim([0, t_sim(end)])
    ylim([22.9 24.2])
    grid on; box on;
    legend('Interpreter', 'Latex', 'Location', 'Best')
    xlabel('$t$ [s]','Interpreter','latex');
-   ylabel({'$|V|$'; '[V]'},'Interpreter','latex');
+   ylabel({'$V$'; '[V]'},'Interpreter','latex');
    Save_as_PDF(h, ['Figures/','resultado1C_02'],'horizontal', 2, 10);
    close
 
@@ -237,13 +264,20 @@ dif_V = abs(V_exp - V);
 rmse_1C_03 = RMSE(V_exp, V, length(V));
 
 %%
+
+colors = [0, 0.4470, 0.7410;
+          [220,20,6]/255;
+          [255,140,0]/255;
+          [139,0,139]/255;
+          [50,205,50]/255];
+
 % Voltaje
 h = figure(7); %set(h, 'Visible', 'off')
    hold on    
     plot(t_sim, V_sim, '--',...
-     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo din\'amico")
+     'LineWidth', 1.5, 'Color', colors(1,:), 'DisplayName', "Modelo din\'amico")
     plot(t_exp, V_exp, '-',...
-     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Datos experimentales")
+     'LineWidth', 1.5, 'Color', colors(2,:), 'DisplayName', "Datos experimentales")
    xlim([0, t_sim(end)])
    ylim([22.9 24.2])
    grid on; box on;
