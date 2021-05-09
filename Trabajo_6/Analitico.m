@@ -9,19 +9,19 @@ load('Data/Bateria_Dinamica_Experimental.mat')
 
 h = figure();
     subplot(2,1,1)
-    plot(Data.t, Data.V, 'k', 'LineWidth', 1.5)
+    plot(Data.t, Data.V, 'k', 'LineWidth', 1.25)
     xlim([0, Data.t(end)])
-    xlabel('t [s]', 'Interpreter', 'Latex')
-    ylabel({'V'; '[V]'}, 'Interpreter', 'Latex')
+    xlabel('$t$ [s]', 'Interpreter', 'Latex')
+    ylabel({'$V$'; '[V]'}, 'Interpreter', 'Latex')
     grid on; box on
     Save_as_PDF(h, 'Figures/V_vs_t', 'horizontal');
     subplot(2,1,2)
     hold on
-    plot(Data.I, 'k', 'LineWidth', 1.5)
+    plot(Data.I, 'k', 'LineWidth', 1.25)
     xlim([0, Data.t(end)])
     ylim([-5, 1.5])
-    xlabel('t [s]', 'Interpreter', 'Latex')
-    ylabel({'I'; '[A]'}, 'Interpreter', 'Latex')
+    xlabel('$t$ [s]', 'Interpreter', 'Latex')
+    ylabel({'$I$'; '[A]'}, 'Interpreter', 'Latex')
     grid on; box on
   
     Save_as_PDF(h, 'Figures/V_vs_t', 'horizontal');
@@ -30,8 +30,8 @@ h = figure();
 
 % Curvas de descarga
 curva(1).Tipo = 'Descarga';
-curva(1).V = Data.V(3:1500);
-curva(1).t = Data.t(3:1500) - Data.t(3);
+curva(1).V = Data.V(3:1774);
+curva(1).t = Data.t(3:1774) - Data.t(3);
 curva(1).I = Data.I(3);
 curva(1).difI = Data.I(3) - 0;
 
@@ -53,7 +53,6 @@ curva(4).t = Data.t(5327:6509) - Data.t(5327);
 curva(4).I = Data.I(5327);
 curva(4).difI = Data.I(5327) - Data.I(5326);
 
-
 % Representacion todas curvas
 colors = [0, 0.4470, 0.7410;
           [220,20,6]/255;
@@ -64,14 +63,14 @@ colors = [0, 0.4470, 0.7410;
 h = figure();
     hold on
     for c = 1:length(curva)
-        plot(curva(c).t, curva(c).V, 'Linewidth', 1.5, 'Color', colors(c,:),...
-            'DisplayName', [curva(c).Tipo ' a I = ' num2str(abs(round(curva(c).I,1))) ' [A]'])
+        plot(curva(c).t, curva(c).V, 'Linewidth', 1.25, 'Color', colors(c,:),...
+            'DisplayName', [curva(c).Tipo ' a $I$ = ' num2str(abs(round(curva(c).I,1))) ' A'])
     end
     xlim([1, 1773])
     grid on; box on;
-    legend('Location', 'Best', 'Interpreter', 'Latex')
-    xlabel('t [s]', 'Interpreter', 'Latex')
-    ylabel({'V'; '[V]'}, 'Interpreter', 'Latex') 
+    legend('Location', 'East', 'Interpreter', 'Latex')
+    xlabel('$t$ [s]', 'Interpreter', 'Latex')
+    ylabel({'$V$'; '[V]'}, 'Interpreter', 'Latex') 
     Save_as_PDF(h, 'Figures/Curvas_Individuales', 'horizontal');
     
     
@@ -82,7 +81,7 @@ close all
 
 for c = 1:length(curva)
     curva(c).smooth = curva(c).V;
-    for j = 1:20
+    for j = 1:50
         for t = 2:length(curva(c).smooth)-1
             curva(c).smooth(t) = (curva(c).smooth(t-1) +...
                                   curva(c).smooth(t) +...
@@ -92,12 +91,12 @@ for c = 1:length(curva)
     h = figure();
         hold on
         plot(curva(c).t, curva(c).V, 'Color', colors(1,:), 'Linewidth', 1.5, 'DisplayName', 'Datos experimentales')
-        plot(curva(c).t, curva(c).smooth, 'Color', colors(2,:), 'Linewidth', 1.5, 'DisplayName', 'Datos suavizados')
+        plot(curva(c).t, curva(c).smooth, 'Color', colors(2,:), 'Linewidth', 1, 'DisplayName', 'Datos suavizados')
         xlim([0, curva(c).t(end)])
         grid on; box on;
         legend('Location', 'SouthEast', 'Interpreter', 'Latex')
-        xlabel('t [s]', 'Interpreter', 'Latex')
-        ylabel({'V'; '[V]'}, 'Interpreter', 'Latex') 
+        xlabel('$t$ [s]', 'Interpreter', 'Latex')
+        ylabel({'$V$'; '[V]'}, 'Interpreter', 'Latex') 
 end
 Save_as_PDF(h, 'Figures/Curva_Suavizada', 'horizontal');
 
@@ -108,33 +107,13 @@ h = figure();
     axis([375, 650, 23.665, 23.705])
     grid on; box on;
     legend('Location', 'SouthEast', 'Interpreter', 'Latex')
-    xlabel('t [s]', 'Interpreter', 'Latex')
-    ylabel({'V'; '[V]'}, 'Interpreter', 'Latex')
-    %Save_as_PDF(h, 'Figures/Curva_Suavizada_Detalle', 'horizontal', 0, 0);
+    xlabel('$t$ [s]', 'Interpreter', 'Latex')
+    ylabel({'$V$'; '[V]'}, 'Interpreter', 'Latex')
+    Save_as_PDF(h, 'Figures/Curva_Suavizada_Detalle', 'horizontal', 0, 0);
 
 
     
-%% FILTER DESIGN --> Savitzky-Golay
-%{
-close all
-
-% Filter design
-framelen = [21, 151, 301, 251];
-order = [1, 3, 3, 4];  
-
-for c = 1:length(curva)
-    
-    curva(c).SG = sgolayfilt(curva(c).smooth, order(c), framelen(c));  
-    figure()
-        plot(curva(c).smooth, 'LineWidth', 1.) 
-        hold on 
-        plot(curva(c).SG, 'LineWidth', 1.5) 
-        legend('signal','sgolay', 'Location', 'Best')
-        
-end
-%}
-
-    
+ 
 %% TRAMO LINEAL
 
 close all
@@ -161,8 +140,8 @@ for c = 1:length(curva)
         plot(curva(c).t, curva(c).recta, 'Color', colors(2,:), 'LineWidth', 1.25, 'DisplayName', ['Ejuste lineal'])        
         grid on; box on
         legend('Location', 'SouthEast', 'Interpreter', 'Latex')
-        xlabel('t [s]', 'Interpreter', 'Latex')
-        ylabel({'V'; '[V]'}, 'Interpreter', 'Latex')
+        xlabel('$t$ [s]', 'Interpreter', 'Latex')
+        ylabel({'$V$'; '[V]'}, 'Interpreter', 'Latex')
 end
 Save_as_PDF(h, 'Figures/Zona_Lineal', 'horizontal', 0, 0);
 
@@ -207,10 +186,11 @@ for c = 1:length(curva)
     % Plot curves
     h = figure();
         hold on
-        plot(curva(c).t,  curva(c).exp,'Color', colors(1,:), 'LineWidth', 1.25)
+        plot(curva(c).t,  curva(c).exp, 'k', 'LineWidth', 1.5)
+        xlim([0, curva(c).t(end)])
         grid on; box on
-        xlabel('t [s]', 'Interpreter', 'Latex')
-        ylabel({'$\Delta$V'; '[V]'}, 'Interpreter', 'Latex')
+        xlabel('$t$ [s]', 'Interpreter', 'Latex')
+        ylabel({'$\Delta V$'; '[V]'}, 'Interpreter', 'Latex')
 end
 Save_as_PDF(h, 'Figures/Transitorio', 'horizontal', 0, 0);
 
@@ -270,7 +250,7 @@ for c = 1:length(curva)
         plot([0,curva(c).t(end)], [exp(-1), exp(-1)], 'Color', 'k', 'LineWidth', 1.25, 'DisplayName', '$\exp(-1)$')
         xlim([0,curva(c).t(end)])
         grid on; box on;
-        xlabel('t [s]', 'Interpreter', 'Latex')
+        xlabel('$t$ [s]', 'Interpreter', 'Latex')
         legend('Location', 'Best', 'Interpreter', 'Latex')
 end
 Save_as_PDF(h, 'Figures/Curvas_Modelo', 'horizontal');
@@ -282,12 +262,12 @@ h = figure();
     hold on
     for c = 1:length(curva)
         plot(curva(c).t, curva(c).adim, 'Linewidth', 1.25, 'Color', colors(c,:),...
-            'DisplayName', [curva(c).Tipo ' a I = ' num2str(abs(round(curva(c).I,1))) ' [A]'])
+            'DisplayName', [curva(c).Tipo ' a $I$ = ' num2str(abs(round(curva(c).I,1))) ' A'])
     end
     xlim([1, 1773])
     grid on; box on;
     legend('Location', 'Best', 'Interpreter', 'Latex')
-    xlabel('t [s]', 'Interpreter', 'Latex')
+    xlabel('$t$ [s]', 'Interpreter', 'Latex')
     Save_as_PDF(h, 'Figures/Curvas_adimensionalizadas', 'horizontal');
 
 
@@ -296,7 +276,7 @@ h = figure();
 R1 = mean([curva(:).R1]);
 C1 = mean([curva(:).C1]);
 
-save('Data/Modelo_Analitico_1C.mat', 'R1', 'C1')
+save('Data/Modelo_Analitico_1C.mat', 'R1', 'C1', 'curva')
 
 
 %%
