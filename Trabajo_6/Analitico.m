@@ -63,8 +63,13 @@ colors = [0, 0.4470, 0.7410;
 h = figure();
     hold on
     for c = 1:length(curva)
+        st = ['$' num2str(abs(round(curva(c).I,1))) '$'];
+        if curva(c).I > 0
+            st(3) = ',';
+            st
+        end
         plot(curva(c).t, curva(c).V, 'Linewidth', 1.25, 'Color', colors(c,:),...
-            'DisplayName', [curva(c).Tipo ' a $I$ = ' num2str(abs(round(curva(c).I,1))) ' A'])
+            'DisplayName', [curva(c).Tipo ' a $I$ = ' st ' A'])
     end
     xlim([1, 1773])
     grid on; box on;
@@ -261,8 +266,13 @@ Save_as_PDF(h, 'Figures/Curvas_Modelo', 'horizontal');
 h = figure();
     hold on
     for c = 1:length(curva)
+        st = ['$' num2str(abs(round(curva(c).I,1))) '$'];
+        if curva(c).I > 0
+            st(3) = ',';
+            st
+        end
         plot(curva(c).t, curva(c).adim, 'Linewidth', 1.25, 'Color', colors(c,:),...
-            'DisplayName', [curva(c).Tipo ' a $I$ = ' num2str(abs(round(curva(c).I,1))) ' A'])
+            'DisplayName', [curva(c).Tipo ' a $I$ = $' st '$ A'])
     end
     xlim([1, 1773])
     grid on; box on;

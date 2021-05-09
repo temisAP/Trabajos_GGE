@@ -176,12 +176,10 @@ h = figure(5); %set(h, 'Visible', 'off')
      'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo din\'amico")
     plot(t_exp, V_exp, '-',...
      'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Datos experimentales")
-    xlim([0, t_sim(end)])
-   ylim([22.9 24.2])
    grid on; box on;
    legend('Interpreter', 'Latex', 'Location', 'Best')
    xlabel('$t$ [s]','Interpreter','latex');
-   ylabel({'$|V|$'; '[V]'},'Interpreter','latex');
+   ylabel({'$|V|$ [V]'},'Interpreter','latex');
    Save_as_PDF(h, ['Figures/','resultado1C_02'],'horizontal', 2, 10);
    close
 
@@ -189,11 +187,10 @@ h = figure(6); %set(h, 'Visible', 'off')
    hold on    
     plot(t_exp,dif_V, '-',...
      'LineWidth', 0.8, 'Color', 'k')
-   xlim([0, t_sim(end)])
    grid on; box on;
    xlabel('$t$ [s]','Interpreter','latex');
    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-   Save_as_PDF(h, ['Figures/','error1C_02'],'horizontal', 7, 10);
+   Save_as_PDF(h, ['Figures/','error1C_02'],'horizontal', 6, 10);
    close
    
 %%
@@ -245,7 +242,6 @@ h = figure(7); %set(h, 'Visible', 'off')
     plot(t_exp, V_exp, '-',...
      'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Datos experimentales")
    xlim([0, t_sim(end)])
-   ylim([22.9 24.2])
    grid on; box on;
    legend('Interpreter', 'Latex', 'Location', 'Best')
    xlabel('$t$ [s]','Interpreter','latex');

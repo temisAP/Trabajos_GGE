@@ -131,7 +131,7 @@ colors = [0, 0.4470, 0.7410;
 h = figure(1); %set(h, 'Visible', 'off')
     hold on
     plot(Data.t, Data.V, 'LineWidth', 1.75, 'Color', colors(1,:), 'DisplayName', 'Datos experimentales')     
-    plot(Data.t, V_car, 'LineWidth', 1.75, 'Color', colors(2,:), 'DisplayName', "Modelo est\'atico (carga)")
+    plot(Data.t, V_car, 'LineWidth', 1.75, 'Color', colors(2,:), 'DisplayName', "Modelo est\'atico")
 %     plot(Data.t, V_des, ':',...
 %         'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo est\'atico (descarga)")  
     xlim([0, Data.t(end)])
