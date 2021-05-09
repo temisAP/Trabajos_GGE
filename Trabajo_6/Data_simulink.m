@@ -16,7 +16,7 @@ end
 
 save('C1_parameters.mat','parameters');
 
-Data_sim = load('C1_estatico.mat');
+Data_sim = load('1D_data.mat');
 
 try
     load('Data\Bateria_Dinamica_Experimental.mat')
