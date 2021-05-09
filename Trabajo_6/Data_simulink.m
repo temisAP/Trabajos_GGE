@@ -14,9 +14,9 @@ for i=1:4
 parameters(i,1) = SDOSessionData.Data.Workspace.LocalWorkspace.Exp.Parameters(i,1).Value;
 end
 
-save('C1_parameters.mat','parameters');
+save('C1_data/C1_parameters.mat','parameters');
 
-Data_sim = load('1D_data.mat');
+Data_sim = load('C1_data/1D_data.mat');
 
 try
     load('Data\Bateria_Dinamica_Experimental.mat')
@@ -64,7 +64,7 @@ h = figure(2); %set(h, 'Visible', 'off')
 
 clear all
    
-   load('2D_parameter_estimator2.mat')
+   load('C2_data/2D_parameter_estimator2.mat')
 
 C1_sim =SDOSessionData.Data.Workspace.LocalWorkspace.Exp.Parameters(1, 1).Value;
 C2_sim =SDOSessionData.Data.Workspace.LocalWorkspace.Exp.Parameters(2, 1).Value; 
@@ -77,9 +77,9 @@ for i=1:6
 parameters(i,1) = SDOSessionData.Data.Workspace.LocalWorkspace.Exp.Parameters(i,1).Value;
 end
 
-save('C2_parameters.mat','parameters');
+save('C2_data/C2_parameters.mat','parameters');
 
-Data_sim = load('2C_data.mat');
+Data_sim = load('C2_data/2C_data.mat');
 
 try
     load('Data\Bateria_Dinamica_Experimental.mat')
