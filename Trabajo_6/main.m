@@ -28,7 +28,7 @@ catch
 end
 %Analitico
 
-load('C1.mat');
+load('C1_data/C1.mat');
 load ('R1.mat');
 
 
@@ -77,27 +77,32 @@ end
 
 %% Plot 
    
+
+colors = [0, 0.4470, 0.7410;
+          [220,20,6]/255;
+          [255,140,0]/255;
+          [139,0,139]/255;
+          [50,205,50]/255];
+      
 % Voltaje
 h = figure(1); %set(h, 'Visible', 'off')
    hold on
-   plot(Data.t, Data.V, '-',...
-       'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Datos experimentales')     
-   plot(Data.t, V_car, '--',...
-       'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo est\'atico (carga)")
-   plot(Data.t, V_des, ':',...
-       'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo est\'atico (descarga)")  
+   plot(Data.t, Data.V, 'LineWidth', 1.5, 'Color', colors(1,:), 'DisplayName', 'Datos experimentales')     
+   plot(Data.t, V_car, 'LineWidth', 1.5, 'Color', colors(2,:), 'DisplayName', "Modelo est\'atico (carga)")
+   plot(Data.t, V_des,'LineWidth', 1.5, 'Color', colors(3,:), 'DisplayName', "Modelo est\'atico (descarga)")  
+   xlim([0, Data.t(end)])
    grid on; box on;
    legend('Interpreter', 'Latex', 'Location', 'Best')
    xlabel('$t$ [s]','Interpreter','latex');
-   ylabel({'$|V|$';'[V]'},'Interpreter','latex');
+   ylabel({'$V$';'[V]'},'Interpreter','latex');
 %    Save_as_PDF(h, ['Figures/','Extract_data'],'horizontal', 0, 0);
    %close
 
 % Delta
 h = figure(2); %set(h, 'Visible', 'off')
    hold on
-   plot(Data.t, DeltaV, '-',...
-       'LineWidth', 1.5, 'Color', 'k')       
+   plot(Data.t, DeltaV, 'LineWidth', 1.5, 'Color', 'k')  
+   xlim([0, Data.t(end)])
    grid on; box on;
    xlabel('$t$ [s]','Interpreter','latex');
    ylabel({'$|\Delta V|$';'[V]'},'Interpreter','latex');
