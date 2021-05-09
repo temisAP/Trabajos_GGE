@@ -186,3 +186,66 @@ h = figure(6); %set(h, 'Visible', 'off')
    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
    Save_as_PDF(h, ['Figures/','error1C_02'],'horizontal', 6, 10);
    close
+   
+%%
+
+clear all
+   
+   load('C1_data/1C_data_03_session.mat')
+
+C1_sim =SDOSessionData.Data.Workspace.LocalWorkspace.Exp.Parameters(1, 1).Value; 
+Rs1_sim =SDOSessionData.Data.Workspace.LocalWorkspace.Exp.Parameters(2, 1).Value; 
+Rsc_sim =SDOSessionData.Data.Workspace.LocalWorkspace.Exp.Parameters(3, 1).Value; 
+Rsd_sim =SDOSessionData.Data.Workspace.LocalWorkspace.Exp.Parameters(4, 1).Value;
+
+for i=1:4
+parameters(i,1) = SDOSessionData.Data.Workspace.LocalWorkspace.Exp.Parameters(i,1).Value;
+end
+
+save('C1_data/C1_03_parameters.mat','parameters');
+
+Data_sim = load('C1_data/1C_data_03.mat');
+
+try
+    load('Data\Bateria_Dinamica_Experimental.mat')
+catch
+    disp('No se ha creado el archivo de datos')
+    return
+end
+
+
+t_sim = Data_sim.data.time;
+V_sim = Data_sim.data.Data;
+% Error_sim = abs(Data.V-V_sim);
+V_exp = Data.V;
+t_exp = Data.t;
+
+%Pintar Error
+[val, pos] = intersect(t_sim, t_exp);
+V = V_sim(pos);
+dif_V = abs(V_exp - V);
+
+%%
+% Voltaje
+h = figure(7); %set(h, 'Visible', 'off')
+   hold on    
+    plot(t_sim, V_sim, '--',...
+     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo din\'amico")
+    plot(t_exp, V_exp, '-',...
+     'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Datos experimentales")
+   grid on; box on;
+   legend('Interpreter', 'Latex', 'Location', 'Best')
+   xlabel('$t$ [s]','Interpreter','latex');
+   ylabel({'$|V|$ [V]'},'Interpreter','latex');
+   Save_as_PDF(h, ['Figures/','resultado1C_03'],'horizontal', 2, 10);
+   close
+
+h = figure(8); %set(h, 'Visible', 'off')
+   hold on    
+    plot(t_exp,dif_V, '-',...
+     'LineWidth', 0.8, 'Color', 'k')
+   grid on; box on;
+   xlabel('$t$ [s]','Interpreter','latex');
+   ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
+   Save_as_PDF(h, ['Figures/','error1C_03'],'horizontal', 6, 10);
+   close

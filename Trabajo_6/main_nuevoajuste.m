@@ -26,7 +26,7 @@ catch
 end
 %Analitico
 
-load('C1.mat');
+load('C1_data/C1.mat');
 load ('R1.mat');
 C2 = 1000;
 
