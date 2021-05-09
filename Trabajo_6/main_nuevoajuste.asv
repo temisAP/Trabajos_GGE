@@ -50,8 +50,8 @@ beta0d2 = [12.15 -1.4357e-05 0.059666 3.1792e-14 1.7216e-14 -2.9258e-13 -6.6763e
  opts = statset('Display','off','TolFun',1e-16);
  val = fitnlm(MAT, V, myfunction, beta0d2,'Options',opts);
  beta0d2(:) = table2array(val.Coefficients(1:8,1));
- 
- p=beta0d2;
+% 
+% p=beta0d2;
 % p(3)=0.128443935982512;
 % p=pd_check;
  E_des = (p(1) + p(2)*(MAT(:,2)+p(3)*MAT(:,3)))  + ...
@@ -82,7 +82,7 @@ DV_des = V_des +p(3)*MAT(:,1);
  
  pc2(:) = table2array(val.Coefficients(1:5,1));
 
- beta0c2 = [p(1) p(2) p(3) p(4) p(5) 8e-07];
+beta0c2 = [p(1) p(2) p(3) p(4) p(5) 8e-07];
 
 
 %Exp-lineal
@@ -90,13 +90,12 @@ DV_des = V_des +p(3)*MAT(:,1);
  myfunction = @(pc2,MAT) (pc2(1) + pc2(2).*(MAT(:,2)+pc2(3).*MAT(:,3)))  + ...
                (pc2(4)).*exp((pc2(5) + pc2(6).*MAT(:,1)).*(MAT(:,2)+pc2(3).*MAT(:,3))) + pc2(3).*MAT(:,1) ;
 
- val = fitnlm(MAT, V, myfunction, beta0c2,'Options',opts);
- pc3(:) = table2array(val.Coefficients(1:6,1));   
+val = fitnlm(MAT, V, myfunction, beta0c2,'Options',opts);
+pc3(:) = table2array(val.Coefficients(1:6,1));   
 
 % pc3 =[24.504854148612687,-4.622806382560464e-06,0.0875,1.041085732423661,-0.908856458443049,0.126041193590313];
 %  pc3(3)  =0.137687348168866;
 %  pc3 = pc_check;
-
  E_car = (pc3(1) + pc3(2).*(MAT(:,2)+pc3(3).*MAT(:,3)))  + ...
          (pc3(4)).*exp((pc3(5) + pc3(6).*MAT(:,1)).*(MAT(:,2)+pc3(3).*MAT(:,3))) ;
      
