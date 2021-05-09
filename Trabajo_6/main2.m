@@ -7,12 +7,15 @@ close all
 
 try
     load('Data\Bateria_Dinamica_Experimental.mat')
+    load('Data\Datos_Suavizados.mat')
 catch
     disp('No se ha creado el archivo de datos')
     return
 end
 
 [MAT, V] = matrix(Data);
+
+V = Datos_Suavizados;
 
 %MAT(:,2) = - MAT(:,2);
 
@@ -68,7 +71,7 @@ td = Data.t;
  % Voltaje
 h = figure(1); %set(h, 'Visible', 'off')
    hold on
-   plot(Data.t, Data.V, '-',...
+   plot(Data.t, V, '-',...
        'LineWidth', 1.5, 'Color', 'k', 'DisplayName', 'Datos experimentales')     
     plot(Data.t, V_car, '--',...
      'LineWidth', 1.5, 'Color', 'k', 'DisplayName', "Modelo est\'atico (carga)")
