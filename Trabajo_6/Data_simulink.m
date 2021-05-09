@@ -16,7 +16,7 @@ end
 
 save('C1_data/C1_parameters.mat','parameters');
 
-Data_sim = load('C1_data/1D_data.mat');
+Data_sim = load('C1_data/1C_data.mat');
 
 try
     load('Data\Bateria_Dinamica_Experimental.mat')
@@ -26,8 +26,8 @@ catch
 end
 
 
-t_sim=Data_sim.data.time;
-V_sim = Data_sim.data.Data;
+t_sim=Data_sim.Data_sim.time;
+V_sim = Data_sim.Data_sim.Data;
 % Error_sim = abs(Data.V-V_sim);
 V_exp =Data.V;
 t_exp =Data.t;
@@ -48,9 +48,9 @@ h = figure(1); %set(h, 'Visible', 'off')
    grid on; box on;
    legend('Interpreter', 'Latex', 'Location', 'Best')
    xlabel('$t$ [s]','Interpreter','latex');
-   ylabel({'$|V|$';'[V]'},'Interpreter','latex');
-   Save_as_PDF(h, ['Figures/','resultado1C'],'horizontal', 0, 0);
-   %close
+   ylabel({'$|V|$ [V]'},'Interpreter','latex');
+   Save_as_PDF(h, ['Figures/','resultado1C'],'horizontal', 2, 10);
+   close
 
 h = figure(2); %set(h, 'Visible', 'off')
    hold on    
@@ -59,8 +59,8 @@ h = figure(2); %set(h, 'Visible', 'off')
    grid on; box on;
    xlabel('$t$ [s]','Interpreter','latex');
    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-   Save_as_PDF(h, ['Figures/','error1C'],'horizontal', 0, 0);
-   %close
+   Save_as_PDF(h, ['Figures/','error1C'],'horizontal', 6, 10);
+   close
 
 clear all
    
@@ -111,9 +111,9 @@ h = figure(3); %set(h, 'Visible', 'off')
    grid on; box on;
    legend('Interpreter', 'Latex', 'Location', 'Best')
    xlabel('$t$ [s]','Interpreter','latex');
-   ylabel({'$|V|$';'[V]'},'Interpreter','latex');
-   Save_as_PDF(h, ['Figures/','resultado2C'],'horizontal', 0, 0);
-   %close
+   ylabel({'$|V|$ [V]'},'Interpreter','latex');
+   Save_as_PDF(h, ['Figures/','resultado2C'],'horizontal', 2, 10);
+   close
 
 h = figure(4); %set(h, 'Visible', 'off')
    hold on    
@@ -122,6 +122,6 @@ h = figure(4); %set(h, 'Visible', 'off')
    grid on; box on;
    xlabel('$t$ [s]','Interpreter','latex');
    ylabel({'$|V-V_{exp}|$';'[V]'},'Interpreter','latex');
-   Save_as_PDF(h, ['Figures/','error2C'],'horizontal', 0, 0);
-   %close
+   Save_as_PDF(h, ['Figures/','error2C'],'horizontal', 6, 10);
+   close
    
