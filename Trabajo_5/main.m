@@ -202,22 +202,34 @@ RMSE_descarga = [modelos_descarga(1).iter(n_dl,4),modelos_descarga(2).iter(n_de,
 %RMSE = [ RMSE_descarga2; RMSE_carga];
 
 f = figure(13);
-h_ = bar(RMSE_descarga,'FaceColor','flat');
-tipo2 = {' ',' ', ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
+b = bar(RMSE_descarga');
+b.FaceColor = 'flat';
 cmap = colormap(jet);
-for k = 1:size(RMSE_descarga,2)
-     h_(k).FaceColor = cmap(26*k,:);
-end
-%     set(h_, {'DisplayName'}, leyenda');
 
-set(gca,'xticklabel',tipo2,'TickLabelInterpreter','latex');
+for k = 1:size(RMSE_descarga,2)
+         b.CData(k,:) = cmap(23*k,:);
+end
+set(gca,'xticklabel',{'(17)','(20)','(21)','(22)','(23)','(24)','(25)','(26)','(27)','(28)'})
 ylabel({'RMSE';'[V]'},'Interpreter','latex');
-leyenda = {modelos_descarga(1).nombre, modelos_descarga(2).nombre, modelos_descarga(6).nombre...
-    modelos_descarga(7).nombre, modelos_descarga(8).nombre, modelos_descarga(9).nombre...
-    modelos_descarga(10).nombre, modelos_descarga(11).nombre, modelos_descarga(12).nombre...
-    modelos_descarga(13).nombre};
-legend('Interpreter', 'Latex', 'location', 'NorthEast');
-%Save_as_PDF(f, ['Figures/barplot_D_individuales'],'horizontal', 9,5);
+
+Save_as_PDF(f, ['Figures/barplot_presentacion'],'horizontal', 9,7.5);
+
+% f = figure(13);
+%     h_ = bar(RMSE_descarga,'FaceColor','flat');
+%     tipo2 = {' ',' ', ' ',' ',' ',' ',' ',' ',' ',' '};
+%     cmap = colormap(gray);
+%     for k = 1:size(RMSE_descarga,2)
+%          h_(k).FaceColor = cmap(26*k,:);
+%     end
+% 
+%     set(gca,'xticklabel',tipo2,'TickLabelInterpreter','latex');
+%     ylabel({'RMSE';'[V]'},'Interpreter','latex');
+%     leyenda = {modelos_descarga(1).nombre, modelos_descarga(2).nombre, modelos_descarga(6).nombre...
+%                 modelos_descarga(7).nombre, modelos_descarga(8).nombre, modelos_descarga(9).nombre...
+%                 modelos_descarga(10).nombre, modelos_descarga(11).nombre, modelos_descarga(12).nombre...
+%                 modelos_descarga(13).nombre};
+%     legend('Interpreter', 'Latex', 'location', 'NorthEast');
+%     %Save_as_PDF(f, ['Figures/barplot_D_individuales'],'horizontal', 9,5);
 
 % f = figure(12);
 %     h_ = bar(RMSE,'FaceColor','flat');
@@ -236,7 +248,7 @@ legend('Interpreter', 'Latex', 'location', 'NorthEast');
 % f = figure(13);
 %     h_ = bar(RMSE_exp_d,'FaceColor','flat');
 %         
-%     cmap = colormap(gray);
+%     cmap = colormap(jet);
 %     tipo2 = {'Descarga 5 A','Descarga 2,5 A', 'Descarga 1,5 A'};
 %     for k = 1:size(RMSE_exp_d,1)
 %         h_(k).FaceColor = cmap(80*k,:);
