@@ -170,28 +170,55 @@ save('Modelos.mat','modelos_descarga','modelos_carga');
 
 
 %% Pintar RMSE
-% 
-% n_cl = length( modelos_carga(1).iter(:,4));
-% n_ce = length( modelos_descarga(2).iter(:,6));
-% 
-% n_de2 = length( modelos_descarga(3).iter(:,6));
-% RMSE_exp_d = [modelos_descarga(3).iter(n_de2,6),modelos_descarga(4).iter(n_de2,6),modelos_descarga(5).iter(n_de2,6)];
-% 
-% n_cel = length( modelos_carga(6).iter(:,4));
-% 
-% RMSE_carga = [modelos_carga(1).iter(n_cl,4),modelos_carga(2).iter(n_ce(1),6),modelos_carga(6).iter(n_cel,9)];
-% 
-% n_dl = length( modelos_descarga(1).iter(:,4));
-% n_de = length( modelos_descarga(2).iter(:,4));
-% n_del = length( modelos_descarga(6).iter(:,4));
-% 
-% RMSE_descarga = [modelos_descarga(1).iter(n_dl,4),modelos_descarga(2).iter(n_de,6),modelos_descarga(6).iter(n_del,9)];
-% 
-% 
-% 
-% RMSE = [ RMSE_descarga; RMSE_carga];
-% 
-% 
+
+n_cl = length( modelos_carga(1).iter(:,4));
+n_ce = length( modelos_descarga(2).iter(:,6));
+
+n_de2 = length( modelos_descarga(3).iter(:,6));
+RMSE_exp_d = [modelos_descarga(3).iter(n_de2,6),modelos_descarga(4).iter(n_de2,6),modelos_descarga(5).iter(n_de2,6)];
+
+n_cel = length( modelos_carga(6).iter(:,4));
+
+RMSE_carga = [modelos_carga(1).iter(n_cl,4),modelos_carga(2).iter(n_ce(1),6),modelos_carga(6).iter(n_cel,9)];
+
+n_dl = length( modelos_descarga(1).iter(:,4));
+n_de = length( modelos_descarga(2).iter(:,6));
+n_del = length( modelos_descarga(6).iter(:,9));
+n_de7 = length( modelos_descarga(7).iter(:,10));
+n_de8 = length( modelos_descarga(8).iter(:,11));
+n_de9 = length( modelos_descarga(9).iter(:,12));
+n_de10 = length( modelos_descarga(10).iter(:,14));
+n_de11 = length( modelos_descarga(11).iter(:,14));
+n_de12 = length( modelos_descarga(12).iter(:,17));
+n_de13 = length( modelos_descarga(13).iter(:,21));
+
+RMSE_descarga = [modelos_descarga(1).iter(n_dl,4),modelos_descarga(2).iter(n_de,6),modelos_descarga(6).iter(n_del,9),...
+                 modelos_descarga(7).iter(n_de7,10), modelos_descarga(8).iter(n_de8,11), modelos_descarga(9).iter(n_de9,12)...
+                 modelos_descarga(10).iter(n_de10,14), modelos_descarga(11).iter(n_de11,14), modelos_descarga(12).iter(n_de12,17)...
+                 modelos_descarga(13).iter(n_de13,21)];
+             
+%RMSE_descarga2 = [modelos_descarga(1).iter(n_dl,4),modelos_descarga(2).iter(n_de,6),modelos_descarga(6).iter(n_del,9)];
+
+%RMSE = [ RMSE_descarga2; RMSE_carga];
+
+f = figure(13);
+h_ = bar(RMSE_descarga,'FaceColor','flat');
+tipo2 = {' ',' ', ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
+cmap = colormap(jet);
+for k = 1:size(RMSE_descarga,2)
+     h_(k).FaceColor = cmap(26*k,:);
+end
+%     set(h_, {'DisplayName'}, leyenda');
+
+set(gca,'xticklabel',tipo2,'TickLabelInterpreter','latex');
+ylabel({'RMSE';'[V]'},'Interpreter','latex');
+leyenda = {modelos_descarga(1).nombre, modelos_descarga(2).nombre, modelos_descarga(6).nombre...
+    modelos_descarga(7).nombre, modelos_descarga(8).nombre, modelos_descarga(9).nombre...
+    modelos_descarga(10).nombre, modelos_descarga(11).nombre, modelos_descarga(12).nombre...
+    modelos_descarga(13).nombre};
+legend('Interpreter', 'Latex', 'location', 'NorthEast');
+%Save_as_PDF(f, ['Figures/barplot_D_individuales'],'horizontal', 9,5);
+
 % f = figure(12);
 %     h_ = bar(RMSE,'FaceColor','flat');
 %     cmap = colormap(gray);
