@@ -284,7 +284,7 @@ for s = 1:length(sheet)
                 legend('Interpreter', 'Latex', 'location', 'SouthWest')
                 xlabel('$V$ [V]','Interpreter','latex');
                 ylabel({'$I$';'[A]'},'Interpreter','latex');
-                Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal',1);
+                %Save_as_PDF(h_, ['Figuras/1_Nu_', sheet{s}],'horizontal',1);
                 hold off
                 
         case 2
@@ -310,7 +310,7 @@ for s = 1:length(sheet)
                 legend('Interpreter', 'Latex', 'location', 'NorthWest')
                 xlabel('$V$ [V]','Interpreter','latex');
                 ylabel({'$I-I_{exp}$';'[A]'},'Interpreter','latex');
-                Save_as_PDF(h_, ['Figuras/1_Nu_dif_', sheet{s}],'horizontal', 7.5, 10);
+                %Save_as_PDF(h_, ['Figuras/1_Nu_dif_', sheet{s}],'horizontal', 7.5, 10);
                 hold off
                 
         otherwise
@@ -335,7 +335,7 @@ f = figure(12);
      ylim([0 14]);
      legend(sheet, 'Interpreter', 'Latex', 'location', 'Eastoutside');   
 
-    Save_as_PDF(f, ['Figuras/1_Nu_barplot'],'horizontal',-17.5,0);
+    %Save_as_PDF(f, ['Figuras/1_Nu_barplot'],'horizontal',-17.5,0);
 
 %% DHV
 %{
