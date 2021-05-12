@@ -1,0 +1,26 @@
+- Circuito equivalente, los diodos para separar las ramas
+
+- Nos pasamos a energía descargada en lugar de It -> La carga se ve al revés
+
+- Modelo lineal (presentación formal)
+
+- Modelo exponencial, notable mejora -> Se ve mejor con los errores
+
+- Modelo exponencial individual para tratar de ajustarse mejor
+
+- Otra opción es un modelo más complejo -> Modelo exponencial lineal
+
+- Comparación (histograma gris)
+
+- Intentar reducir aún más el error -> Modelos con resistencia dependiente de la intensidad
+
+- En un histograma se ve mejor jeje
+
+- Modelos cosenoidales, ¿por qué? porque el error tiene una forma oscilatoria
+
+- Tratamos de extenderlo aún más pero no funciona :(
+
+- Comparación con el histograma
+
+- Fin 
+
