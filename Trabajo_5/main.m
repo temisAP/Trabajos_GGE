@@ -194,8 +194,7 @@ n_de13 = length( modelos_descarga(13).iter(:,21));
 
 RMSE_descarga = [modelos_descarga(1).iter(n_dl,4),modelos_descarga(2).iter(n_de,6),modelos_descarga(6).iter(n_del,9),...
                  modelos_descarga(7).iter(n_de7,10), modelos_descarga(8).iter(n_de8,11), modelos_descarga(9).iter(n_de9,12)...
-                 modelos_descarga(10).iter(n_de10,14), modelos_descarga(11).iter(n_de11,14), modelos_descarga(12).iter(n_de12,17)...
-                 modelos_descarga(13).iter(n_de13,21)];
+                 modelos_descarga(10).iter(n_de10,14), modelos_descarga(11).iter(n_de11,14)];
              
 %RMSE_descarga2 = [modelos_descarga(1).iter(n_dl,4),modelos_descarga(2).iter(n_de,6),modelos_descarga(6).iter(n_del,9)];
 
@@ -207,29 +206,13 @@ b.FaceColor = 'flat';
 cmap = colormap(jet);
 
 for k = 1:size(RMSE_descarga,2)
-         b.CData(k,:) = cmap(23*k,:);
+         b.CData(k,:) = cmap(27*k,:);
 end
-set(gca,'xticklabel',{'(17)','(20)','(21)','(22)','(23)','(24)','(25)','(26)','(27)','(28)'})
+set(gca,'xticklabel',{'(17)','(20)','(21)','(22)','(23)','(24)','(25)','(26)'})
 ylabel({'RMSE';'[V]'},'Interpreter','latex');
 
-Save_as_PDF(f, ['Figures/barplot_presentacion'],'horizontal', 9,7.5);
+Save_as_PDF(f, ['Figures/barplot_presentacion_peque'],'horizontal', 9,7.5);
 
-% f = figure(13);
-%     h_ = bar(RMSE_descarga,'FaceColor','flat');
-%     tipo2 = {' ',' ', ' ',' ',' ',' ',' ',' ',' ',' '};
-%     cmap = colormap(gray);
-%     for k = 1:size(RMSE_descarga,2)
-%          h_(k).FaceColor = cmap(26*k,:);
-%     end
-% 
-%     set(gca,'xticklabel',tipo2,'TickLabelInterpreter','latex');
-%     ylabel({'RMSE';'[V]'},'Interpreter','latex');
-%     leyenda = {modelos_descarga(1).nombre, modelos_descarga(2).nombre, modelos_descarga(6).nombre...
-%                 modelos_descarga(7).nombre, modelos_descarga(8).nombre, modelos_descarga(9).nombre...
-%                 modelos_descarga(10).nombre, modelos_descarga(11).nombre, modelos_descarga(12).nombre...
-%                 modelos_descarga(13).nombre};
-%     legend('Interpreter', 'Latex', 'location', 'NorthEast');
-%     %Save_as_PDF(f, ['Figures/barplot_D_individuales'],'horizontal', 9,5);
 
 % f = figure(12);
 %     h_ = bar(RMSE,'FaceColor','flat');
