@@ -66,7 +66,6 @@ h = figure();
         st = ['$' num2str(abs(round(curva(c).I,1))) '$'];
         if curva(c).I > 0
             st(3) = ',';
-            st
         end
         plot(curva(c).t, curva(c).V, 'Linewidth', 1.25, 'Color', colors(c,:),...
             'DisplayName', [curva(c).Tipo ' a $I$ = ' st ' A'])

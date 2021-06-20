@@ -34,6 +34,8 @@ C2 = 1000;
 R_s1 = R1;
 R_s2 = 0.01;
 
+load('Data\Modelo_Analitico_1C.mat')
+
 %% Valores de los trabajos anteriores
 
  pc_check =[24.159028155390455;-3.294182823595574e-06;0.137687348168866;3.496647512653960e-12;-2.439240769984952e-05;-1.000000000000000e-05;-1.000000000000000e-05;-1.500000000000000e-16]
@@ -62,6 +64,8 @@ beta0d2 = [12.15 -1.4357e-05 0.059666 3.1792e-14 1.7216e-14 -2.9258e-13 -6.6763e
 DV_des = V_des +p(3)*MAT(:,1);
     
  Rsd = p(3);
+ 
+ 
 %% AJUSTE MODELO CARGA
  
  beta0c =[p(1) p(2) 0.15];
@@ -97,11 +101,11 @@ DV_des = V_des +p(3)*MAT(:,1);
 %  pc3(3)  =0.137687348168866;
 %  pc3 = pc_check;
 
- E_car = (pc3(1) + pc3(2).*(MAT(:,2)+pc3(3).*MAT(:,3)))  + ...
-         (pc3(4)).*exp((pc3(5) + pc3(6).*MAT(:,1)).*(MAT(:,2)+pc3(3).*MAT(:,3))) ;
+E_car = (pc3(1) + pc3(2).*(MAT(:,2)+pc3(3).*MAT(:,3)))  + ...
+        (pc3(4)).*exp((pc3(5) + pc3(6).*MAT(:,1)).*(MAT(:,2)+pc3(3).*MAT(:,3))) ;
      
    
- V_car = E_car + pc3(3).*MAT(:,1) ;
+V_car = E_car + pc3(3).*MAT(:,1) ;
  
 DV_car = V_car + +p(3)*MAT(:,1);
 Rsc =  pc3(3);
@@ -146,15 +150,18 @@ h = figure(1); %set(h, 'Visible', 'off')
    % Delta
 h = figure(2); %set(h, 'Visible', 'off')
     hold on
-    plot(Data.t, DeltaV, '-',...
+    plot(Data.t, abs(DeltaV), '-',...
         'LineWidth', 1.25, 'Color', 'k')  
     xlim([0, Data.t(end)])
     grid on; box on;
     xlabel('$t$ [s]','Interpreter','latex');
-    ylabel({'$\Delta V$';'[V]'},'Interpreter','latex');
-    Save_as_PDF(h, ['Figures/','Delta_V'],'horizontal', 0, 0);
-   %close   
-
+    ylabel({'$|V_{est} - V_{exp}|$';'[V]'},'Interpreter','latex');
+    Save_as_PDF(h, ['Figures/','Delta_V'],'horizontal', 7.5, 11);
+   %close  
+   
+   
+rmse = RMSE(Data.V, V_car, length(V_car))
+   
 
 %% Functions
 
